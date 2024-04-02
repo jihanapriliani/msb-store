@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class CategoryController extends Controller
 {
@@ -12,7 +13,11 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
+        $categories = Category::orderBy('created_at', 'desc')->get();
+
+        return Inertia::render('Admin/Category/Index', [
+           'categories' => $categories
+        ]);
     }
 
     /**
@@ -20,7 +25,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Admin/Category/Create');
     }
 
     /**
@@ -28,7 +33,22 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         $validatedData = $request->validate([
+            'display_name' => 'required|string',
+            'slug' => 'required|string|unique:categories,slug',
+            'image' => 'required|image|mimes:jpeg,png,jpg', 
+        ]);
+        
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('storage/images/category/'), $imageName);
+            $validatedData['image'] = 'storage/images/category/' . $imageName;
+        }
+        
+        Category::create($validatedData);
+
+        return to_route('category.index');
     }
 
     /**
@@ -44,7 +64,11 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $category = Category::findOrFail($id);
+
+        return Inertia::render('Admin/Category/Edit', [
+           'category' => $category
+        ]);
     }
 
     /**
