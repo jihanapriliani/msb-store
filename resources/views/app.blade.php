@@ -19,9 +19,9 @@
         <link href="{{ asset('assets/plugins/font-awesome/css/all.min.css') }}" rel="stylesheet">
         <link href="{{ asset('assets/plugins/perfectscroll/perfect-scrollbar.css') }}" rel="stylesheet">
         <link href="{{ asset('assets/plugins/apexcharts/apexcharts.css') }}" rel="stylesheet">
-       
-        
-           
+        <link href="{{ asset('assets/plugins/DataTables/datatables.min.css') }}" rel="stylesheet">
+         
+    
         <!-- Theme Styles -->
         <link href="{{ asset('assets/css/main.min.css') }}" rel="stylesheet">
         <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
@@ -37,7 +37,9 @@
         <script src="{{ asset('assets/plugins/apexcharts/apexcharts.min.js') }}"></script>
         <script src="{{ asset('assets/js/main.min.js') }}"></script>
         <script src="{{ asset('assets/js/pages/dashboard.js') }}"></script>
-
+{{-- 
+        <script src="{{ asset('assets/plugins/DataTables/datatables.min.js') }}"></script>
+        <script src="{{ asset('assets/js/pages/datatables.js') }}"></script> --}}
     
         <!-- Scripts -->
         @routes

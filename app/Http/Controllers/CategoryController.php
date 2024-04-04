@@ -76,7 +76,25 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validatedData = $request->validate([
+            'display_name' => 'required|string',
+            'slug' => 'required|string|unique:categories,slug',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg', 
+        ]);
+
+        $category = Category::findOrFail($id);
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('storage/images/category/'), $imageName);
+            $validatedData['image'] = 'storage/images/category/' . $imageName;
+        }
+
+        $category->update($validatedData);
+
+        return to_route('category.index');
+    
     }
 
     /**
@@ -84,6 +102,10 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $category = Category::findOrFail($id);
+
+        $category->delete();
+
+        return to_route('category.index');
     }
 }
