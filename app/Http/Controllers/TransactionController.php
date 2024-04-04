@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class TransactionController extends Controller
 {
@@ -12,7 +13,11 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        //
+        $transactions = Transaction::all();
+
+        return Inertia::render('Admin/Transaction/Index', [
+           'transactions' => $transactions
+        ]);   
     }
 
     /**

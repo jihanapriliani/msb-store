@@ -32,15 +32,15 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    return Inertia::render('Admin/Dashboard/Index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
 
 Route::resource('category', CategoryController::class);
-Route::resource('products', ProductController::class);
+Route::resource('product', ProductController::class);
 Route::resource('user', UserController::class);
-Route::resource('Transaction', TransactionController::class);
+Route::resource('transaction', TransactionController::class);
 
 
 Route::middleware('auth')->group(function () {
