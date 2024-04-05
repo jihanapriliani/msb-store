@@ -11,26 +11,38 @@ const Example = (props) => {
     const columns = useMemo(
         () => [
             {
-                accessorKey: "name",
-                header: "Nama",
+                accessorKey: "code",
+                header: "No Transaksi",
             },
             {
-                accessorKey: "price",
-                header: "Harga",
+                accessorKey: "user.fullname",
+                header: "User",
             },
             {
-                accessorKey: "stock",
-                header: "Stok",
+                accessorKey: "user_address.address",
+                header: "Alamat",
+            },
+
+            {
+                accessorKey: "total_weight",
+                header: "Berat",
+            },
+
+            {
+                accessorKey: "delivery_code",
+                header: "No Resi",
             },
             {
-                accessorKey: "category.display_name",
-                header: "Kategori",
+                accessorKey: "shipping_cost",
+                header: "Ongkir",
             },
+
             {
-                accessorKey: "unit_weight",
-                header: "Unit Weight",
+                accessorKey: "status",
+                header: "Status",
             },
         ],
+
         []
     );
 
@@ -39,6 +51,7 @@ const Example = (props) => {
         data,
         createDisplayMode: "modal", //default ('row', and 'custom' are also available)
         editDisplayMode: "modal", //default ('row', 'cell', 'table', and 'custom' are also available)
+        enableEditing: true,
         positionActionsColumn: "last",
         enableRowActions: true,
         renderRowActions: ({ row }) => (
@@ -47,24 +60,18 @@ const Example = (props) => {
             gap-2"
             >
                 <Link
-                    className="text-white bg-yellow-500 p-1 px-2 rounded-lg"
-                    href={route("product.edit", row.original.id)}
+                    className="text-white bg-yellow-500 p-1 px-2 rounded-lg text-center"
+                    href={route("transaction.edit", row.original.id)}
                 >
-                    Edit
+                    Update
                 </Link>
 
-                <button
-                    onClick={() => {
-                        router.delete(
-                            route("product.destroy", {
-                                id: row.original.id,
-                            })
-                        );
-                    }}
-                    className="text-white bg-red-500 p-1 px-2 rounded-lg"
+                <Link
+                    className="text-white bg-blue-500 p-1 px-2 rounded-lg"
+                    href={route("transaction.show", row.original.id)}
                 >
-                    Delete
-                </button>
+                    Detail
+                </Link>
             </div>
         ),
     });

@@ -46,7 +46,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string',
             'phone' => 'required|string',
-            'roles.*.id' => 'required|exists:roles',
+            'roles.*.name' => 'required|exists:roles',
         ]);
 
         $user = User::create($validatedData);
@@ -79,7 +79,7 @@ class UserController extends Controller
         $roles = Role::all();
 
         return Inertia::render('Admin/User/Edit', [
-            'user' => $user,
+            'userData' => $user,
             'roles' => $roles
         ]);
     }

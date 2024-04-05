@@ -22,10 +22,6 @@ export default function Edit(props) {
         new_product_images: [],
     });
 
-    console.log("GAMBAR LAMA", data.old_product_images);
-    console.log("GAMBAR BARU", data.new_product_images);
-    console.log("ID", product.id);
-
     const submit = (e) => {
         e.preventDefault();
 

@@ -33,10 +33,52 @@ class UserSeeder extends Seeder
         ])->assignRole('admin');
 
 
-        // assign role user
-        User::factory()->count(10)->create()->each(function ($user) {
-            $user->assignRole('user');
-        });
-        
+               
+        User::updateOrCreate([
+            'username' => 'jihan',
+            'fullname' => 'Jihan',
+            'email' => 'jihan@gmail.com',
+            'password' => bcrypt('test'),
+            'email_verified_at' => now(),
+            'remember_token' => '1234567890',
+        ])->assignRole('user');
+
+        User::updateOrCreate([
+            'username' => 'nisa',
+            'fullname' => 'Nisa',
+            'email' => 'nisa@gmail.com',
+            'password' => bcrypt('test'),
+            'email_verified_at' => now(),
+            'remember_token' => '1234567890',
+        ])->assignRole('user');
+
+        User::updateOrCreate([
+            'username' => 'diba',
+            'fullname' => 'Diba',
+            'email' => 'diba@gmail.com',
+            'password' => bcrypt('test'),
+            'email_verified_at' => now(),
+            'remember_token' => '1234567890',
+        ])->assignRole('user');
+
+        User::updateOrCreate([
+            'username' => 'bijar',
+            'fullname' => 'Bijar',
+            'email' => 'bijar@gmail.com',
+            'password' => bcrypt('test'),
+            'email_verified_at' => now(),
+            'remember_token' => '1234567890',
+        ])->assignRole('user');
+
+        User::updateOrCreate([
+            'username' => 'ikhsan',
+            'fullname' => 'Ikhsan',
+            'email' => 'ikhsan@gmail.com',
+            'password' => bcrypt('test'),
+            'email_verified_at' => now(),
+            'remember_token' => '1234567890',
+        ])->assignRole('user');
+    
+    
     }
 }
