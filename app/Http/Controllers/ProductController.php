@@ -174,11 +174,14 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::findOrFail($product->id);
         $productImages = ProductImage::where('product_id', $product->id)->get();
-
+    
+        $productImages->each(function ($productImage) {
+            $productImage->delete();
+        });
+    
         $product->delete();
-        $productImages->delete();
 
         return to_route('product.index');
     }
