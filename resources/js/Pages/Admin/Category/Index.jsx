@@ -48,9 +48,7 @@ export default function Index(props) {
                                 <h5 className="card-title text-2xl mb-2 text-gray-700">
                                     {category.display_name}
                                 </h5>
-                                <h6 className="card-subtitle text-muted mb-2">
-                                    Slug: {category.slug}
-                                </h6>
+
                                 <h6 className="card-subtitle text-muted">
                                     Jumlah Produk :{" "}
                                     {category.productCount
@@ -58,7 +56,7 @@ export default function Index(props) {
                                         : "0"}
                                 </h6>
 
-                                <div className="mt-2">
+                                <div className="mt-4">
                                     <Link
                                         href={`/category/${category.id}/edit`}
                                         className="card-link text-yellow-500"
