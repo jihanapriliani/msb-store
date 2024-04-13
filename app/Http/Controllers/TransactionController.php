@@ -78,7 +78,7 @@ class TransactionController extends Controller
 
         $transaction->update($validatedData);
 
-        return to_route('transaction.index');
+        return redirect()->route('transaction.index')->with('success', 'Status transaksi berhasil diubah!');
     }
 
     /**

@@ -4,10 +4,31 @@ import { Box } from "@mantine/core";
 
 import { Link, router } from "@inertiajs/react";
 
+import Swal from "sweetalert2";
+
 const Example = (props) => {
     const { data } = props;
 
-    console.log(data);
+    const handleDelete = (row) => {
+        Swal.fire({
+            title: "Yakin ingin menghapus?",
+            text: "Aksi berikut tidak bisa mengembalikan data!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "gray",
+            confirmButtonText: "Hapus!",
+            cancelButtonText: "Batal",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                router.delete(
+                    route("product.destroy", {
+                        id: row.original.id,
+                    })
+                );
+            }
+        });
+    };
 
     const columns = useMemo(
         () => [
@@ -91,13 +112,7 @@ const Example = (props) => {
                 </Link>
 
                 <button
-                    onClick={() => {
-                        router.delete(
-                            route("product.destroy", {
-                                id: row.original.id,
-                            })
-                        );
-                    }}
+                    onClick={() => handleDelete(row)}
                     className="text-white bg-red-500 p-1 px-2 rounded-lg"
                 >
                     Delete

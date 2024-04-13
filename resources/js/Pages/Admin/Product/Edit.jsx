@@ -19,7 +19,6 @@ export default function Edit(props) {
         stock: product.stock,
         price: product.price,
         unit_weight: product.unit_weight,
-        // product_images: product_images,
         old_product_images: product_images,
         new_product_images: [],
     });
@@ -46,8 +45,6 @@ export default function Edit(props) {
             }
         );
     };
-
-    console.log("ISI KATEGORI", product);
 
     const handleImageChange = (e) => {
         const files = Array.from(e.target.files);

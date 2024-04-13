@@ -3,24 +3,61 @@ import React, { useEffect } from "react";
 
 import { Link, router } from "@inertiajs/react";
 
+import { usePage } from "@inertiajs/react";
+
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+import Swal from "sweetalert2";
+
 export default function Index(props) {
     const { categories } = props;
 
-    useEffect(() => {}, []);
+    const { flash } = usePage().props;
+
+    useEffect(() => {
+        if (flash.success) {
+            toast.success(flash.success, {
+                position: "top-right",
+            });
+        }
+    }, [categories]);
+
+    const handleDelete = (e, id) => {
+        Swal.fire({
+            title: "Yakin ingin menghapus?",
+            text: "Aksi berikut tidak bisa mengembalikan data!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "gray",
+            confirmButtonText: "Hapus!",
+            cancelButtonText: "Batal",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                router.delete(
+                    route("category.destroy", {
+                        id: id,
+                    })
+                );
+            }
+        });
+    };
 
     return (
         <AuthenticatedLayout>
+            <ToastContainer />
             <div className="mb-5 flex justify-between items-center">
                 <h1 className="text-3xl block">Manajemen Kategori Produk</h1>
 
                 <div>
-                    <input
+                    {/* <input
                         type="search"
                         name=""
                         id=""
                         className="outline-none p-3 mr-7 rounded-xl text-lg text-gray-700"
                         placeholder="search bolts..."
-                    />
+                    /> */}
 
                     <Link
                         href="/category/create"
@@ -30,7 +67,6 @@ export default function Index(props) {
                     </Link>
                 </div>
             </div>
-
             <div className="flex flex-wrap justify-evenly">
                 {categories.map((category) => (
                     <div
@@ -65,13 +101,9 @@ export default function Index(props) {
                                     </Link>
 
                                     <button
-                                        onClick={() => {
-                                            router.delete(
-                                                route("category.destroy", {
-                                                    id: category.id,
-                                                })
-                                            );
-                                        }}
+                                        onClick={(e) =>
+                                            handleDelete(e, category.id)
+                                        }
                                         className="text-red-500 ml-4 outline-none"
                                     >
                                         Hapus

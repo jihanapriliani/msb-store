@@ -35,7 +35,7 @@ class CategoryController extends Controller
     {
          $validatedData = $request->validate([
             'display_name' => 'required|string',
-            'slug' => 'required|string|unique:categories,slug',
+            'slug' => 'required|string',
             'image' => 'required|image|mimes:jpeg,png,jpg', 
         ]);
         
@@ -48,7 +48,7 @@ class CategoryController extends Controller
         
         Category::create($validatedData);
 
-        return to_route('category.index');
+        return redirect()->route('category.index')->with('success', 'Kategori baru berhasil ditambahkan!');
     }
 
     /**
@@ -78,8 +78,8 @@ class CategoryController extends Controller
     {
         $validatedData = $request->validate([
             'display_name' => 'required|string',
-            'slug' => 'required|string|unique:categories,slug',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg', 
+            'slug' => 'required|string',
+            'image' => 'required', 
         ]);
 
         $category = Category::findOrFail($id);
@@ -93,8 +93,7 @@ class CategoryController extends Controller
 
         $category->update($validatedData);
 
-        return to_route('category.index');
-    
+        return redirect()->route('category.index')->with('success', 'Kategori berhasil diperbarui!');
     }
 
     /**
@@ -106,6 +105,6 @@ class CategoryController extends Controller
 
         $category->delete();
 
-        return to_route('category.index');
+        return redirect()->route('category.index')->with('success', 'Kategori berhasil dihapus!');
     }
 }
