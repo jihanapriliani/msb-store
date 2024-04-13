@@ -7,6 +7,9 @@ use App\Models\TransactionDetail;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
+
 class TransactionController extends Controller
 {
     /**
@@ -71,14 +74,25 @@ class TransactionController extends Controller
      */
     public function update(Request $request, Transaction $transaction)
     {
-        $validatedData = $request->validate([
-            'status' => 'required|string',
-            'delivery_code' => 'required',
-        ]);
-
-        $transaction->update($validatedData);
-
-        return redirect()->route('transaction.index')->with('success', 'Status transaksi berhasil diubah!');
+        try {
+            $validatedData = $request->validate([
+                'status' => 'required|string',
+                'delivery_code' => [
+                    'required',
+                    'unique:transactions,delivery_code',
+                ],
+            ]);
+    
+            $transaction->update($validatedData);
+    
+            return redirect()->route('transaction.index')->with('success', 'Status transaksi berhasil diubah!');
+        } catch (ValidationException $e) {
+            if ($e->validator->errors()->has('delivery_code')) {
+                return redirect()->back()->withInput()->with('error', 'Nomor resi telah digunakan sebelumnya.');
+            } else {
+                throw $e;
+            }
+        }
     }
 
     /**

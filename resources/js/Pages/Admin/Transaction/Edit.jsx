@@ -1,8 +1,13 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout/Index";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { useForm, router } from "@inertiajs/react";
 import { Link } from "@inertiajs/react";
+
+import { usePage } from "@inertiajs/react";
+
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Edit(props) {
     const { transaction } = props;
@@ -37,14 +42,31 @@ export default function Edit(props) {
             },
             {
                 forceFormData: true,
+                onError: (e) => {
+                    console.log(e);
+                    if (e.errors) {
+                        form.errors(e.errors);
+                    }
+                },
             }
         );
     };
 
+    const { flash } = usePage().props;
+
+    useEffect(() => {
+        if (flash.error) {
+            toast.error(flash.error, {
+                position: "top-right",
+            });
+        }
+    }, [transaction]);
+
     return (
         <AuthenticatedLayout>
+            <ToastContainer />
             <div className="mb-5 flex justify-between items-center">
-                <h1 className="text-3xl block">Manajemen Kategori Produk</h1>
+                <h1 className="text-3xl block">Manajemen Riwayat Transaksi</h1>
             </div>
 
             <div className="row">
