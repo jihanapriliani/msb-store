@@ -2,7 +2,9 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout/Index";
 import React, { useEffect, useState } from "react";
 
 import { useForm } from "@inertiajs/react";
-import { Link, router } from "@inertiajs/react";
+import { router } from "@inertiajs/react";
+
+import CurrencyInput from "react-currency-input-field";
 
 export default function Edit(props) {
     const { categories, product, product_images } = props;
@@ -13,7 +15,7 @@ export default function Edit(props) {
         name: product.name,
         description: product.description,
         slug: product.slug,
-        category: product.category,
+        category: product.category_id,
         stock: product.stock,
         price: product.price,
         unit_weight: product.unit_weight,
@@ -44,6 +46,8 @@ export default function Edit(props) {
             }
         );
     };
+
+    console.log("ISI KATEGORI", product);
 
     const handleImageChange = (e) => {
         const files = Array.from(e.target.files);
@@ -157,17 +161,18 @@ export default function Edit(props) {
                                     >
                                         Harga
                                     </label>
-                                    <input
-                                        type="number"
+
+                                    <CurrencyInput
+                                        prefix="Rp "
+                                        id="input-example"
+                                        name="input-name"
                                         className="form-control"
-                                        id=""
-                                        aria-describedby=""
-                                        name="price"
-                                        value={data.price}
-                                        onChange={(e) =>
-                                            setData("price", e.target.value)
-                                        }
-                                        placeholder="example: 12000"
+                                        placeholder="Please enter a number"
+                                        defaultValue={data.price}
+                                        decimalsLimit={2}
+                                        onValueChange={(value) => {
+                                            setData("price", value);
+                                        }}
                                     />
                                 </div>
 
@@ -193,6 +198,10 @@ export default function Edit(props) {
                                             <option
                                                 key={category.id}
                                                 value={category.id}
+                                                selected={
+                                                    data.category ===
+                                                    category.id
+                                                } // Added selected attribute
                                             >
                                                 {category.display_name}
                                             </option>
@@ -212,13 +221,14 @@ export default function Edit(props) {
                                             type="number"
                                             className="form-control"
                                             id=""
+                                            min={0}
                                             aria-describedby=""
                                             name="stock"
                                             value={data.stock}
                                             onChange={(e) =>
                                                 setData("stock", e.target.value)
                                             }
-                                            placeholder="example: bolts..."
+                                            placeholder="0"
                                         />
                                     </div>
 
@@ -227,12 +237,14 @@ export default function Edit(props) {
                                             htmlFor="exampleInputEmail1"
                                             className="form-label"
                                         >
-                                            Berat Barang
+                                            Berat Barang (KG)
                                         </label>
                                         <input
                                             type="number"
                                             className="form-control"
                                             id=""
+                                            min={0}
+                                            step={0.1}
                                             aria-describedby=""
                                             name="unit_weight"
                                             value={data.unit_weight}
@@ -242,7 +254,7 @@ export default function Edit(props) {
                                                     e.target.value
                                                 )
                                             }
-                                            placeholder="example: bolts..."
+                                            placeholder="0"
                                         />
                                     </div>
                                 </div>

@@ -90,12 +90,16 @@ export default function Show(props) {
                                                         {detail.product.name}
                                                     </td>
                                                     <td>
-                                                        {detail.actual_price}
+                                                        Rp{" "}
+                                                        {detail.actual_price.toLocaleString()}
                                                     </td>
                                                     <td>{detail.amount}</td>
                                                     <td>
-                                                        {detail.actual_price *
-                                                            detail.amount}
+                                                        Rp{" "}
+                                                        {(
+                                                            detail.actual_price *
+                                                            detail.amount
+                                                        ).toLocaleString()}
                                                     </td>
                                                 </tr>
                                             ))}
@@ -117,25 +121,31 @@ export default function Show(props) {
                                 <div class="col-3">
                                     <div class="invoice-info">
                                         <p>
-                                            Subtotal <span>Rp {subtotal}</span>
+                                            Subtotal{" "}
+                                            <span>
+                                                Rp {subtotal.toLocaleString()}
+                                            </span>
                                         </p>
                                         <p>
                                             Shipping Cost{" "}
                                             <span>
-                                                Rp {transaction.shipping_cost}
+                                                Rp{" "}
+                                                {transaction.shipping_cost.toLocaleString()}
                                             </span>
                                         </p>
                                         <p class="bold">
                                             Total{" "}
                                             <span>
                                                 Rp{" "}
-                                                {subtotal +
-                                                    transaction.shipping_cost}
+                                                {(
+                                                    subtotal +
+                                                    transaction.shipping_cost
+                                                ).toLocaleString()}
                                             </span>
                                         </p>
                                         <div class="d-grid gap-2">
                                             <button
-                                                class="btn btn-danger m-t-xs"
+                                                class="btn btn-primary m-t-xs"
                                                 type="button"
                                             >
                                                 Print

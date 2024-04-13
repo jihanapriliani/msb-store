@@ -1,4 +1,6 @@
 import { useMemo } from "react";
+
+import { Box } from "@mantine/core";
 import { MantineReactTable, useMantineReactTable } from "mantine-react-table";
 
 import { Link, router } from "@inertiajs/react";
@@ -25,21 +27,66 @@ const Example = (props) => {
 
             {
                 accessorKey: "total_weight",
-                header: "Berat",
+                header: "Berat (KG)",
+            },
+
+            {
+                accessorKey: "status",
+                header: "Status",
+                Cell: ({ cell }) => (
+                    <Box
+                        sx={(theme) => ({
+                            backgroundColor:
+                                cell.getValue() === "canceled"
+                                    ? theme.colors.red[7]
+                                    : cell.getValue() === "unpaid"
+                                    ? theme.colors.gray[6]
+                                    : cell.getValue() === "rejected"
+                                    ? theme.colors.red[9]
+                                    : cell.getValue() === "processed"
+                                    ? theme.colors.yellow[7]
+                                    : cell.getValue() === "shipped"
+                                    ? theme.colors.blue[7]
+                                    : theme.colors.green[7],
+                            borderRadius: "4px",
+                            color: "#fff",
+                            maxWidth: "10ch",
+
+                            textAlign: "center",
+                            padding: "4px",
+                        })}
+                    >
+                        {cell.getValue()}
+                    </Box>
+                ),
             },
 
             {
                 accessorKey: "delivery_code",
                 header: "No Resi",
             },
-            {
-                accessorKey: "shipping_cost",
-                header: "Ongkir",
-            },
 
             {
-                accessorKey: "status",
-                header: "Status",
+                accessorKey: "shipping_cost",
+                header: "Biaya Kirim",
+                Cell: ({ cell }) => (
+                    <Box
+                        sx={(theme) => ({
+                            fontSize: "1rem",
+                            fontWeight: "500",
+                        })}
+                    >
+                        {cell
+                            .getValue()
+                            ?.toLocaleString?.("en-US", {
+                                style: "currency",
+                                currency: "IDR",
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 0,
+                            })
+                            .replace("IDR", "Rp")}
+                    </Box>
+                ),
             },
         ],
 

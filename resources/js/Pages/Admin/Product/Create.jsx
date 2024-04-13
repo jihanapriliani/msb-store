@@ -2,7 +2,8 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout/Index";
 import React, { useState } from "react";
 
 import { useForm } from "@inertiajs/react";
-import { Link } from "@inertiajs/react";
+
+import CurrencyInput from "react-currency-input-field";
 
 export default function Create(props) {
     const { categories } = props;
@@ -67,7 +68,6 @@ export default function Create(props) {
                         <div className="card">
                             <div className="card-body">
                                 <h5 className="card-title">Tambah Produk</h5>
-
                                 <div className="mb-3">
                                     <label
                                         htmlFor="exampleInputEmail1"
@@ -84,10 +84,9 @@ export default function Create(props) {
                                         onChange={(e) =>
                                             setData("name", e.target.value)
                                         }
-                                        placeholder="example: Bolts.."
+                                        placeholder="example: New Bolts.."
                                     />
                                 </div>
-
                                 <div className="mb-3">
                                     <label
                                         htmlFor="exampleInputDescription"
@@ -106,10 +105,9 @@ export default function Create(props) {
                                                 e.target.value
                                             )
                                         }
-                                        placeholder="example: Bolts.."
+                                        placeholder="example: This is a new bolts made from.."
                                     ></textarea>
                                 </div>
-
                                 <div className="mb-3">
                                     <label
                                         htmlFor="exampleInputEmail1"
@@ -132,7 +130,6 @@ export default function Create(props) {
                                         Slug adalah nama yang muncul pada url.
                                     </div>
                                 </div>
-
                                 <div className="mb-3">
                                     <label
                                         htmlFor="exampleInputEmail1"
@@ -140,16 +137,18 @@ export default function Create(props) {
                                     >
                                         Harga
                                     </label>
-                                    <input
-                                        type="number"
+
+                                    <CurrencyInput
+                                        prefix="Rp "
+                                        id="input-example"
+                                        name="input-name"
                                         className="form-control"
-                                        id=""
-                                        aria-describedby=""
-                                        name={data.price}
-                                        onChange={(e) =>
-                                            setData("price", e.target.value)
-                                        }
-                                        placeholder="example: 12000"
+                                        placeholder="Please enter a number"
+                                        defaultValue={0}
+                                        decimalsLimit={2}
+                                        onValueChange={(value) => {
+                                            setData("price", value);
+                                        }}
                                     />
                                 </div>
 
@@ -180,7 +179,6 @@ export default function Create(props) {
                                         ))}
                                     </select>
                                 </div>
-
                                 <div className="row">
                                     <div className="mb-3 col-md-6">
                                         <label
@@ -194,11 +192,12 @@ export default function Create(props) {
                                             className="form-control"
                                             id=""
                                             aria-describedby=""
+                                            min={0}
                                             name={data.stock}
                                             onChange={(e) =>
                                                 setData("stock", e.target.value)
                                             }
-                                            placeholder="example: bolts..."
+                                            placeholder="0"
                                         />
                                     </div>
 
@@ -207,21 +206,23 @@ export default function Create(props) {
                                             htmlFor="exampleInputEmail1"
                                             className="form-label"
                                         >
-                                            Berat Barang
+                                            Berat Barang (KG)
                                         </label>
                                         <input
                                             type="number"
+                                            step={0.1}
                                             className="form-control"
                                             id=""
                                             aria-describedby=""
                                             name={data.unit_weight}
+                                            min={0}
                                             onChange={(e) =>
                                                 setData(
                                                     "unit_weight",
                                                     e.target.value
                                                 )
                                             }
-                                            placeholder="example: bolts..."
+                                            placeholder="0"
                                         />
                                     </div>
                                 </div>

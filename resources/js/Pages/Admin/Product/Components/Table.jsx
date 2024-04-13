@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { MantineReactTable, useMantineReactTable } from "mantine-react-table";
+import { Box } from "@mantine/core";
 
 import { Link, router } from "@inertiajs/react";
 
@@ -17,18 +18,54 @@ const Example = (props) => {
             {
                 accessorKey: "price",
                 header: "Harga",
+                Cell: ({ cell }) => (
+                    <Box
+                        sx={(theme) => ({
+                            fontSize: "1rem",
+                            fontWeight: "500",
+                        })}
+                    >
+                        {cell
+                            .getValue()
+                            ?.toLocaleString?.("en-US", {
+                                style: "currency",
+                                currency: "IDR",
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 0,
+                            })
+                            .replace("IDR", "Rp")}
+                    </Box>
+                ),
             },
-            {
-                accessorKey: "stock",
-                header: "Stok",
-            },
+
             {
                 accessorKey: "category.display_name",
                 header: "Kategori",
             },
             {
+                accessorKey: "stock",
+                header: "Stok",
+                Cell: ({ cell }) => (
+                    <Box
+                        sx={(theme) => ({
+                            color:
+                                cell.getValue() < 20
+                                    ? theme.colors.red[9]
+                                    : cell.getValue() >= 20 &&
+                                      cell.getValue() < 50
+                                    ? theme.colors.yellow[9]
+                                    : theme.colors.green[9],
+                            fontSize: "1rem",
+                            fontWeight: "600",
+                        })}
+                    >
+                        {cell.getValue()}
+                    </Box>
+                ),
+            },
+            {
                 accessorKey: "unit_weight",
-                header: "Unit Weight",
+                header: "Berat Barang (KG)",
             },
         ],
         []
