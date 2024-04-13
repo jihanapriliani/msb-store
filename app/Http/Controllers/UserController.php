@@ -51,7 +51,7 @@ class UserController extends Controller
 
         $user = User::create($validatedData);
 
-        $user->assignRole($request->role);
+        $user->assignRole($validatedData["roles"]);
 
         return to_route('user.index');
     }

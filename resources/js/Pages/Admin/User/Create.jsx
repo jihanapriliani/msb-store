@@ -1,8 +1,9 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout/Index";
-import React from "react";
+import React, { useState } from "react";
 
 import { useForm } from "@inertiajs/react";
 import { Link } from "@inertiajs/react";
+import Select from "react-select";
 
 export default function Create(props) {
     const { roles } = props;
@@ -12,7 +13,7 @@ export default function Create(props) {
         username: "",
         email: "",
         phone: "",
-        role: "",
+        roles: [],
     });
 
     const submit = (e) => {
@@ -30,17 +31,26 @@ export default function Create(props) {
                 onError: (e) => {
                     console.log(e);
                     if (e.errors) {
-                        form.errors(e.errors);
+                        errors(e.errors);
                     }
+                },
+                onSuccess: () => {
+                    reset();
                 },
             }
         );
     };
 
+    const [isClearable, setIsClearable] = useState(true);
+    const [isSearchable, setIsSearchable] = useState(true);
+    const [isDisabled, setIsDisabled] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isRtl, setIsRtl] = useState(false);
+
     return (
         <AuthenticatedLayout>
             <div className="mb-5 flex justify-between items-center">
-                <h1 className="text-3xl block">Manajemen Kategori User</h1>
+                <h1 className="text-3xl block">Manajemen User</h1>
             </div>
 
             <div class="row">
@@ -137,26 +147,20 @@ export default function Create(props) {
                                     >
                                         Role
                                     </label>
-
-                                    <select
+                                    <Select
                                         className="form-select"
-                                        id="exampleInputCategory"
-                                        aria-describedby=""
-                                        value={data.role}
-                                        onChange={(e) =>
-                                            setData("role", e.target.value)
-                                        }
-                                    >
-                                        <option value="">Pilih Kategori</option>
-                                        {roles.map((role) => (
-                                            <option
-                                                key={role.id}
-                                                value={role.name}
-                                            >
-                                                {role.name}
-                                            </option>
-                                        ))}
-                                    </select>
+                                        id="grid-first-name"
+                                        name="roles"
+                                        value={data.roles}
+                                        isMulti
+                                        onChange={(value) => {
+                                            console.log(value);
+                                            setData("roles", value.slice());
+                                        }}
+                                        options={roles}
+                                        getOptionLabel={(option) => option.name}
+                                        getOptionValue={(option) => option.id}
+                                    />
                                 </div>
 
                                 <div class="mb-3">
