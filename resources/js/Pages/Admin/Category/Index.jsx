@@ -1,5 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout/Index";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Link, router } from "@inertiajs/react";
 
@@ -12,6 +12,8 @@ import Swal from "sweetalert2";
 
 export default function Index(props) {
     const { categories } = props;
+
+    const [searchTerm, setSearchTerm] = useState("");
 
     const { flash } = usePage().props;
 
@@ -46,6 +48,10 @@ export default function Index(props) {
         });
     };
 
+    const filteredCategories = categories.filter((category) =>
+        category.display_name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     return (
         <AuthenticatedLayout>
             <ToastContainer />
@@ -53,13 +59,15 @@ export default function Index(props) {
                 <h1 className="text-3xl block">Manajemen Kategori Produk</h1>
 
                 <div>
-                    {/* <input
+                    <input
                         type="search"
                         name=""
                         id=""
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
                         className="outline-none p-3 mr-7 rounded-xl text-lg text-gray-700"
                         placeholder="search bolts..."
-                    /> */}
+                    />
 
                     <Link
                         href="/category/create"
@@ -70,7 +78,7 @@ export default function Index(props) {
                 </div>
             </div>
             <div className="flex flex-wrap justify-evenly">
-                {categories.map((category) => (
+                {filteredCategories.map((category) => (
                     <div
                         key={category.id}
                         className="card min-w-[350px] max-w-[450px]"
