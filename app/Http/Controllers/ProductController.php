@@ -7,6 +7,7 @@ use App\Models\ProductImage;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Str;
 
 
 class ProductController extends Controller
@@ -43,7 +44,6 @@ class ProductController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string',
-            'slug' => 'required|string',
             'description' => 'required|string',
             'category' => 'required',
             'stock' => 'required',
@@ -55,7 +55,7 @@ class ProductController extends Controller
      
         $product = Product::create([
             'name' => $validatedData['name'],
-            'slug' => $validatedData['slug'],
+            'slug' => Str::slug($validatedData['name'], '-'),
             'category_id' => $validatedData['category'],
             'description' => $validatedData['description'],
             'price' => $validatedData['price'],
@@ -112,7 +112,6 @@ class ProductController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string',
-            'slug' => 'required|string',
             'description' => 'required|string',
             'category' => 'required',
             'stock' => 'required',
@@ -128,7 +127,7 @@ class ProductController extends Controller
 
         $product->update([
             'name' => $validatedData['name'],
-            'slug' => $validatedData['slug'],
+            'slug' => Str::slug($validatedData['name'], '-'),
             'category_id' => $validatedData['category'],
             'description' => $validatedData['description'],
             'price' => $validatedData['price'],

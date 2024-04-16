@@ -7,7 +7,6 @@ import { Link } from "@inertiajs/react";
 export default function Create() {
     const { data, setData, post, processing, errors, reset } = useForm({
         display_name: "",
-        slug: "",
         image: null,
     });
 
@@ -61,30 +60,6 @@ export default function Create() {
                                         }
                                         placeholder="example: Bolts.."
                                     />
-                                </div>
-
-                                <div class="mb-3">
-                                    <label
-                                        for="exampleInputEmail1"
-                                        class="form-label"
-                                    >
-                                        Slug Name
-                                    </label>
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        id=""
-                                        aria-describedby=""
-                                        name={data.slug}
-                                        onChange={(e) =>
-                                            setData("slug", e.target.value)
-                                        }
-                                        placeholder="example: bolts..."
-                                    />
-                                    <div id="emailHelp" class="form-text">
-                                        Slug Name adalah nama yang muncul pada
-                                        url.
-                                    </div>
                                 </div>
 
                                 <div>

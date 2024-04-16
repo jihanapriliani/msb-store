@@ -12,7 +12,6 @@ export default function Create(props) {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: "",
         description: "",
-        slug: "",
         category: "",
         stock: 0,
         price: 0,
@@ -108,28 +107,7 @@ export default function Create(props) {
                                         placeholder="example: This is a new bolts made from.."
                                     ></textarea>
                                 </div>
-                                <div className="mb-3">
-                                    <label
-                                        htmlFor="exampleInputEmail1"
-                                        className="form-label"
-                                    >
-                                        Nama Slug
-                                    </label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        id=""
-                                        aria-describedby=""
-                                        name={data.slug}
-                                        onChange={(e) =>
-                                            setData("slug", e.target.value)
-                                        }
-                                        placeholder="example: bolts..."
-                                    />
-                                    <div id="emailHelp" className="form-text">
-                                        Slug adalah nama yang muncul pada url.
-                                    </div>
-                                </div>
+
                                 <div className="mb-3">
                                     <label
                                         htmlFor="exampleInputEmail1"

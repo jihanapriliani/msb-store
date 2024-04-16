@@ -20,6 +20,8 @@ export default function Index(props) {
             toast.success(flash.success, {
                 position: "top-right",
             });
+
+            flash.success = null;
         }
     }, [products]);
 

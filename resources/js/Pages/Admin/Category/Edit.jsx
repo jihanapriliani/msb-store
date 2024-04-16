@@ -9,7 +9,6 @@ export default function Edit(props) {
 
     const { data, setData, put, processing, errors, reset } = useForm({
         display_name: category.display_name,
-        slug: category.slug,
         image: category.image,
     });
 
@@ -87,55 +86,6 @@ export default function Edit(props) {
                                         pada halaman.
                                     </div>
                                 </div>
-
-                                <div className="mb-3">
-                                    <label
-                                        htmlFor="exampleInputEmail1"
-                                        className="form-label"
-                                    >
-                                        Slug Name
-                                    </label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        id=""
-                                        aria-describedby=""
-                                        name="slug"
-                                        value={data.slug}
-                                        onChange={(e) =>
-                                            setData("slug", e.target.value)
-                                        }
-                                        placeholder="example: bolts..."
-                                    />
-                                    <div id="emailHelp" className="form-text">
-                                        Slug Name adalah nama yang muncul pada
-                                        url.
-                                    </div>
-                                </div>
-
-                                {/* <div>
-                                    <label
-                                        htmlFor="formFileLg"
-                                        className="form-label"
-                                    >
-                                        Foto Kategori Produk
-                                    </label>
-                                    <input
-                                        className="form-control "
-                                        id="formFile"
-                                        type="file"
-                                        name="image"
-                                        onChange={(e) =>
-                                            setData("image", e.target.files[0])
-                                        }
-                                    />
-
-                                    <div id="emailHelp" className="form-text">
-                                        Pastikan gambar yang dimasukkan dengan
-                                        resolusi yang baik dan mewakili suatu
-                                        kategori.
-                                    </div>
-                                </div> */}
 
                                 <div>
                                     <label for="formFileLg" class="form-label">

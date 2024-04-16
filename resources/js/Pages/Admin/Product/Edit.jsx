@@ -14,7 +14,6 @@ export default function Edit(props) {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: product.name,
         description: product.description,
-        slug: product.slug,
         category: product.category_id,
         stock: product.stock,
         price: product.price,
@@ -125,30 +124,6 @@ export default function Edit(props) {
                                         }
                                         placeholder="example: Bolts.."
                                     ></textarea>
-                                </div>
-
-                                <div className="mb-3">
-                                    <label
-                                        htmlFor="exampleInputEmail1"
-                                        className="form-label"
-                                    >
-                                        Nama Slug
-                                    </label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        id=""
-                                        aria-describedby=""
-                                        name="slug"
-                                        value={data.slug}
-                                        onChange={(e) =>
-                                            setData("slug", e.target.value)
-                                        }
-                                        placeholder="example: bolts..."
-                                    />
-                                    <div id="emailHelp" className="form-text">
-                                        Slug adalah nama yang muncul pada url.
-                                    </div>
                                 </div>
 
                                 <div className="mb-3">

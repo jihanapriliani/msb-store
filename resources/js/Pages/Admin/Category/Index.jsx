@@ -20,6 +20,8 @@ export default function Index(props) {
             toast.success(flash.success, {
                 position: "top-right",
             });
+
+            flash.success = null;
         }
     }, [categories]);
 
@@ -81,9 +83,12 @@ export default function Index(props) {
                             />
 
                             <div className="flex-2">
-                                <h5 className="card-title text-2xl mb-2 text-gray-700">
+                                <h5 className="card-title text-2xl mb-1 text-gray-700">
                                     {category.display_name}
                                 </h5>
+                                <p className="mb-2 text-gray-400 mt-[-0.5rem]">
+                                    {category.slug}
+                                </p>
 
                                 <h6 className="card-subtitle text-muted">
                                     Jumlah Produk :{" "}

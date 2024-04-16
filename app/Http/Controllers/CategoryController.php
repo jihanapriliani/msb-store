@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Str;
+
 
 class CategoryController extends Controller
 {
@@ -35,7 +37,6 @@ class CategoryController extends Controller
     {
          $validatedData = $request->validate([
             'display_name' => 'required|string',
-            'slug' => 'required|string',
             'image' => 'required|image|mimes:jpeg,png,jpg', 
         ]);
         
@@ -45,6 +46,8 @@ class CategoryController extends Controller
             $image->move(public_path('storage/images/category/'), $imageName);
             $validatedData['image'] = 'storage/images/category/' . $imageName;
         }
+
+        $validatedData['slug'] = Str::slug($validatedData['display_name'], '-');
         
         Category::create($validatedData);
 
@@ -78,9 +81,10 @@ class CategoryController extends Controller
     {
         $validatedData = $request->validate([
             'display_name' => 'required|string',
-            'slug' => 'required|string',
             'image' => 'required', 
         ]);
+
+        $validatedData['slug'] = Str::slug($validatedData['display_name'], '-');
 
         $category = Category::findOrFail($id);
 
