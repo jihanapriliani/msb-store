@@ -3,8 +3,31 @@ import { MantineReactTable, useMantineReactTable } from "mantine-react-table";
 
 import { Link, router } from "@inertiajs/react";
 
+import Swal from "sweetalert2";
+
 const Example = (props) => {
     const { data } = props;
+
+    const handleDelete = (row) => {
+        Swal.fire({
+            title: "Yakin ingin menghapus?",
+            text: "Aksi berikut tidak bisa mengembalikan data!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "gray",
+            confirmButtonText: "Hapus!",
+            cancelButtonText: "Batal",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                router.delete(
+                    route("user.destroy", {
+                        id: row.original.id,
+                    })
+                );
+            }
+        });
+    };
 
     console.log(data);
 
@@ -29,8 +52,19 @@ const Example = (props) => {
             },
 
             {
-                accessorKey: "roles.0.name",
-                header: "Role",
+                accessorFn: (row) => {
+                    const verifiedDate = new Date(row.email_verified_at);
+                    if (verifiedDate.getTime() === 0) {
+                        return "Belum verifikasi";
+                    } else {
+                        return verifiedDate.toLocaleDateString("id-ID", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                        });
+                    }
+                },
+                header: "Verifikasi Email",
             },
         ],
 
@@ -57,14 +91,15 @@ const Example = (props) => {
                     Edit
                 </Link>
 
+                <Link
+                    className="text-white bg-gray-500 p-1 px-2 rounded-lg"
+                    href={route("user.show", row.original.id)}
+                >
+                    Detail
+                </Link>
+
                 <button
-                    onClick={() => {
-                        router.delete(
-                            route("user.destroy", {
-                                id: row.original.id,
-                            })
-                        );
-                    }}
+                    onClick={() => handleDelete(row)}
                     className="text-white bg-red-500 p-1 px-2 rounded-lg"
                 >
                     Delete

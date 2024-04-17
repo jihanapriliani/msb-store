@@ -79,7 +79,7 @@ class TransactionController extends Controller
                 'status' => 'required|string',
                 'delivery_code' => [
                     'required',
-                    'unique:transactions,delivery_code',
+                    Rule::unique('transactions')->ignore($transaction->id),
                 ],
             ]);
     

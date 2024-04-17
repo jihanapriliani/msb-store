@@ -20,11 +20,6 @@ export default function Header() {
                                 Home
                             </a>
                         </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="#">
-                                Settings
-                            </a>
-                        </li>
                     </ul>
                 </div>
                 <div className="logo">
@@ -199,25 +194,12 @@ export default function Header() {
                                 <a className="dropdown-item" href="#">
                                     <i data-feather="user"></i>Profile
                                 </a>
-                                <a className="dropdown-item" href="#">
-                                    <i data-feather="inbox"></i>Messages
-                                </a>
-                                <a className="dropdown-item" href="#">
-                                    <i data-feather="edit"></i>Activities
-                                    <span className="badge rounded-pill bg-success">
-                                        12
-                                    </span>
-                                </a>
+
                                 <a className="dropdown-item" href="#">
                                     <i data-feather="check-circle"></i>Tasks
                                 </a>
                                 <div className="dropdown-divider"></div>
-                                <a className="dropdown-item" href="#">
-                                    <i data-feather="settings"></i>Settings
-                                </a>
-                                <a className="dropdown-item" href="#">
-                                    <i data-feather="unlock"></i>Lock
-                                </a>
+
                                 <a className="dropdown-item" href="#">
                                     <i data-feather="log-out"></i>Logout
                                 </a>

@@ -6,14 +6,11 @@ import { Link } from "@inertiajs/react";
 import Select from "react-select";
 
 export default function Create(props) {
-    const { roles } = props;
-
     const { data, setData, post, processing, errors, reset } = useForm({
         fullname: "",
         username: "",
         email: "",
         phone: "",
-        roles: [],
     });
 
     const submit = (e) => {
@@ -76,7 +73,7 @@ export default function Create(props) {
                                         onChange={(e) =>
                                             setData("fullname", e.target.value)
                                         }
-                                        placeholder="example: Bolts.."
+                                        placeholder="Example: John Doe"
                                     />
                                 </div>
 
@@ -96,7 +93,7 @@ export default function Create(props) {
                                         onChange={(e) =>
                                             setData("username", e.target.value)
                                         }
-                                        placeholder="example: Bolts.."
+                                        placeholder="example: johndoe"
                                     />
                                 </div>
 
@@ -116,7 +113,7 @@ export default function Create(props) {
                                         onChange={(e) =>
                                             setData("email", e.target.value)
                                         }
-                                        placeholder="example: bolts..."
+                                        placeholder="johndoe@gmail.com"
                                     />
                                 </div>
 
@@ -136,30 +133,7 @@ export default function Create(props) {
                                         onChange={(e) =>
                                             setData("phone", e.target.value)
                                         }
-                                        placeholder="example: bolts..."
-                                    />
-                                </div>
-
-                                <div class="mb-3">
-                                    <label
-                                        for="exampleInputEmail1"
-                                        class="form-label"
-                                    >
-                                        Role
-                                    </label>
-                                    <Select
-                                        className="form-select"
-                                        id="grid-first-name"
-                                        name="roles"
-                                        value={data.roles}
-                                        isMulti
-                                        onChange={(value) => {
-                                            console.log(value);
-                                            setData("roles", value.slice());
-                                        }}
-                                        options={roles}
-                                        getOptionLabel={(option) => option.name}
-                                        getOptionValue={(option) => option.id}
+                                        placeholder="08*******"
                                     />
                                 </div>
 

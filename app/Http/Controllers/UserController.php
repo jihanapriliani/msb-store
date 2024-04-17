@@ -14,8 +14,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
-        $users = User::with('roles')->get();
+        $users = User::whereHas('roles', function ($query) {
+            $query->where('name', 'user');
+        })->get();
 
         return Inertia::render('Admin/User/Index', [
             'users' => $users
@@ -46,14 +47,13 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string',
             'phone' => 'required|string',
-            'roles.*.name' => 'required|exists:roles',
         ]);
 
         $user = User::create($validatedData);
 
-        $user->assignRole($validatedData["roles"]);
+        $user->assignRole('user');
 
-        return to_route('user.index');
+        return redirect()->route('user.index')->with('success', 'User berhasil ditambahkan!');
     }
 
     /**
@@ -61,12 +61,10 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
-
-        $user = User::findOrFail($id);
+        $user = User::with('addresses', 'transactions', 'cart')->findOrFail($id);
 
         return Inertia::render('Admin/User/Show', [
-            'userData' => $user
+            'user' => $user
         ]);
     }
 
@@ -79,7 +77,7 @@ class UserController extends Controller
         $roles = Role::all();
 
         return Inertia::render('Admin/User/Edit', [
-            'userData' => $user,
+            'user' => $user,
             'roles' => $roles
         ]);
     }
@@ -94,7 +92,6 @@ class UserController extends Controller
             'username' => 'required|string|unique:users,username,' . $id,
             'fullname' => 'required|string',
             'email' => 'required|email|unique:users,email,' . $id,
-            'roles.*.name' => 'required|exists:roles',
             'password' => 'nullable|string',
         ]);
 
@@ -111,9 +108,8 @@ class UserController extends Controller
 
         $user->update($validatedData);
 
-        $user->syncRoles($validatedData["roles"]);
 
-        return to_route('user.index');
+        return redirect()->route('user.index')->with('success', 'User berhasil diperbarui!');
     }
 
     /**
@@ -122,11 +118,20 @@ class UserController extends Controller
     public function destroy(string $id)
     {
 
-        $user = User::findOrFail($id);
-
+        try {
+            $user = User::findOrFail($id);
+            $hasUnpaidTransactions = $user->transactions()->whereIn('status', ['unpaid', 'processed', 'shipped'])->exists();
+            
+            if($hasUnpaidTransactions) {
+                return redirect()->route('user.index')->with('error', 'User memiliki transaksi aktif!');
+            }
     
-        $user->delete();
+            $user->delete();
+            return redirect()->route('user.index')->with('success', 'User berhasil dihapus!');
 
-        return to_route('user.index');
+        } catch(e) {
+
+        }
+
     }
 }

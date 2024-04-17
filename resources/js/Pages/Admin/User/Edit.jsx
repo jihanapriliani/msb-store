@@ -7,23 +7,20 @@ import { Link, router } from "@inertiajs/react";
 import Select from "react-select";
 
 export default function Edit(props) {
-    const { userData, roles } = props;
-
-    console.log(userData, roles);
+    const { user } = props;
 
     const { data, setData, post, processing, errors, reset } = useForm({
-        fullname: userData.fullname,
-        username: userData.username,
-        email: userData.email,
-        phone: userData.phone,
-        roles: userData.roles,
+        fullname: user.fullname,
+        username: user.username,
+        email: user.email,
+        phone: user.phone,
     });
 
     const submit = (e) => {
         e.preventDefault();
 
         router.post(
-            route("user.update", userData.id, {
+            route("user.update", user.id, {
                 headers: { "Content-Type": "multipart/form-data" },
             }),
             {
@@ -55,7 +52,7 @@ export default function Edit(props) {
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Tambah User</h5>
+                            <h5 class="card-title">Edit User</h5>
 
                             <form onSubmit={submit}>
                                 <div class="mb-3">
@@ -139,29 +136,6 @@ export default function Edit(props) {
                                             setData("phone", e.target.value)
                                         }
                                         placeholder="example: bolts..."
-                                    />
-                                </div>
-
-                                <div class="mb-3">
-                                    <label
-                                        for="exampleInputEmail1"
-                                        class="form-label"
-                                    >
-                                        Role
-                                    </label>
-                                    <Select
-                                        className="form-select"
-                                        id="grid-first-name"
-                                        name="roles"
-                                        value={data.roles}
-                                        isMulti
-                                        onChange={(value) => {
-                                            console.log(value);
-                                            setData("roles", value.slice());
-                                        }}
-                                        options={roles}
-                                        getOptionLabel={(option) => option.name}
-                                        getOptionValue={(option) => option.id}
                                     />
                                 </div>
 

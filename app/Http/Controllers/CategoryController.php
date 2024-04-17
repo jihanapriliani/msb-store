@@ -36,8 +36,8 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
          $validatedData = $request->validate([
-            'display_name' => 'required|string',
-            'image' => 'required|image|mimes:jpeg,png,jpg', 
+            'display_name' => 'required|string', 
+            'image' => 'nullable|image|mimes:jpeg,png,jpg', 
         ]);
         
         if ($request->hasFile('image')) {
@@ -45,6 +45,8 @@ class CategoryController extends Controller
             $imageName = time() . '_' . $image->getClientOriginalName();
             $image->move(public_path('storage/images/category/'), $imageName);
             $validatedData['image'] = 'storage/images/category/' . $imageName;
+        } else {
+            $validatedData['image'] = 'storage/images/category/bolt.jpg';
         }
 
         $validatedData['slug'] = Str::slug($validatedData['display_name'], '-');
@@ -81,7 +83,7 @@ class CategoryController extends Controller
     {
         $validatedData = $request->validate([
             'display_name' => 'required|string',
-            'image' => 'required', 
+            'image' => 'nullable|image|mimes:jpeg,png,jpg', 
         ]);
 
         $validatedData['slug'] = Str::slug($validatedData['display_name'], '-');
@@ -93,6 +95,8 @@ class CategoryController extends Controller
             $imageName = time() . '_' . $image->getClientOriginalName();
             $image->move(public_path('storage/images/category/'), $imageName);
             $validatedData['image'] = 'storage/images/category/' . $imageName;
+        } else {
+            $validatedData['image'] = 'storage/images/category/bolt.jpg';
         }
 
         $category->update($validatedData);

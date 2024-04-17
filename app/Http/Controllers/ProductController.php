@@ -49,7 +49,7 @@ class ProductController extends Controller
             'stock' => 'required',
             'price' => 'required',
             'unit_weight' => 'required',
-            'product_images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:5048', 
+            'product_images.*' => 'nullable|image|mimes:jpeg,png,jpg', 
         ]);
         
      
@@ -75,6 +75,12 @@ class ProductController extends Controller
                     'image' => 'storage/images/product/' . $imageName,
                 ]);
             }
+        } else {
+            ProductImage::create([
+                'product_id' => $product->id,
+                'is_thumbnail' => "0",
+                'image' =>  'storage/images/category/bolt.jpg'
+            ]);
         }
 
         
@@ -117,8 +123,8 @@ class ProductController extends Controller
             'stock' => 'required',
             'price' => 'required',
             'unit_weight' => 'required',
-            'old_product_images.*' => 'required', 
-            'new_product_images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:5048'
+            'old_product_images.*' => 'nullable', 
+            'new_product_images.*' => 'nullable|image|mimes:jpeg,png,jpg'
         ]);
 
 
@@ -148,7 +154,7 @@ class ProductController extends Controller
                     'is_thumbnail' => $image['is_thumbnail'], 
                 ]);
             }
-        }
+        } 
 
         if ($request->hasFile('new_product_images')) {
             foreach ($request->file('new_product_images') as $imageFile) {
@@ -162,6 +168,15 @@ class ProductController extends Controller
                     'image' => 'storage/images/product/' . $imageName,
                 ]);
             }
+        }
+
+
+        if(empty(($validatedData['old_product_images'])) && !($request->hasFile('new_product_images'))) {
+            ProductImage::create([
+                'product_id' => $product->id,
+                'is_thumbnail' => "0",
+                'image' =>  'storage/images/category/bolt.jpg'
+            ]);
         }
 
         
