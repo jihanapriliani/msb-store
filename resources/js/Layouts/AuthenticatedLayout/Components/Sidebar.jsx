@@ -11,30 +11,30 @@ export default function Sidebar() {
             <ul className="list-unstyled accordion-menu">
                 <li className="sidebar-title">Main</li>
                 <li className={isUrlActive("/dashboard") ? "active-page" : ""}>
-                    <Link href="/dashboard">
+                    <Link href="/dashboard/admin">
                         <i data-feather="home"></i>Dashboard
                     </Link>
                 </li>
                 <li className="sidebar-title">Data Masters</li>
                 <li className={isUrlActive("/category") ? "active-page" : ""}>
-                    <Link href="/category">
+                    <Link href="/dashboard/admin/category">
                         <i data-feather="inbox"></i>Categories
                     </Link>
                 </li>
                 <li className={isUrlActive("/product") ? "active-page" : ""}>
-                    <Link href="/product">
+                    <Link href="/dashboard/admin/product">
                         <i data-feather="inbox"></i>Products
                     </Link>
                 </li>
                 <li
                     className={isUrlActive("/transaction") ? "active-page" : ""}
                 >
-                    <Link href="/transaction">
+                    <Link href="/dashboard/admin/transaction">
                         <i data-feather="calendar"></i>Transactions
                     </Link>
                 </li>
                 <li className={isUrlActive("/user") ? "active-page" : ""}>
-                    <Link href="/user">
+                    <Link href="/dashboard/admin/user">
                         <i data-feather="user"></i>Users
                     </Link>
                 </li>

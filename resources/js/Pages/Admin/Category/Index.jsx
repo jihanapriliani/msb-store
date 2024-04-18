@@ -70,7 +70,7 @@ export default function Index(props) {
                     />
 
                     <Link
-                        href="/category/create"
+                        href="/dashboard/admin/category/create"
                         className="bg-blue-600 text-white p-3 rounded-xl"
                     >
                         Tambah Data
@@ -85,7 +85,11 @@ export default function Index(props) {
                     >
                         <div className="card-body flex gap-3">
                             <img
-                                src={category.image}
+                                src={
+                                    window.location.origin +
+                                    "/" +
+                                    category.image
+                                }
                                 alt={category.name}
                                 className="w-[150px] h-[100px] object-cover"
                             />
@@ -107,7 +111,7 @@ export default function Index(props) {
 
                                 <div className="mt-4">
                                     <Link
-                                        href={`/category/${category.id}/edit`}
+                                        href={`/dashboard/admin/category/${category.id}/edit`}
                                         className="card-link text-yellow-500"
                                     >
                                         Edit

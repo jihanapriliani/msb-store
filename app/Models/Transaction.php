@@ -33,7 +33,7 @@ class Transaction extends Model
 
     public function transaction_details(): HasMany
     {
-        return $this->hasMany(TransactionDetails::class);
+        return $this->hasMany(TransactionDetail::class);
     }
 
     public function user_address(): BelongsTo
