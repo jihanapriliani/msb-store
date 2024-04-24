@@ -19,7 +19,7 @@ class UserProfileController extends Controller
     {
 
         $user = Auth::user();
-        $user->load('addresses', 'transactions', 'cart');
+        $user->load('addresses', 'transactions', 'carts');
     
         return Inertia::render('User/Profile/Index', [
             'user' => $user,

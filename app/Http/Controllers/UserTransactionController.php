@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\User;
+use App\Models\Transaction;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 
@@ -47,7 +48,13 @@ class UserTransactionController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $user = Auth::user();
+        $transaction = $user->transactions()->findOrFail($id);
+        $transaction->load('transaction_details.product.images', 'user_address');
+
+        return Inertia::render('User/Transactions/Show', [
+            'transaction' => $transaction,
+        ]);
     }
 
     /**

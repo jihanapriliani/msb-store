@@ -11,6 +11,7 @@ use App\Http\Controllers\TransactionDetailController;
 use App\Http\Controllers\UserTransactionController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\UserCartController;
+use App\Http\Controllers\CheckoutController;
 
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,8 @@ use Inertia\Inertia;
 
 use App\Models\Product;
 use App\Models\Category;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -60,7 +63,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 
-    Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::group(['middleware' => ['role:admin']], function() {
         Route::prefix('dashboard')->group(function () {
@@ -87,7 +90,8 @@ Route::middleware('auth')->group(function () {
                 })->name('dashboard.user');  
 
                 Route::resource('transactions', UserTransactionController::class);
-                
+            
+             
                 Route::resource('profile', UserProfileController::class);
                 Route::get('/profile/create-address',[UserProfileController::class,'createAddress'])->name('profile.address.create');
                 Route::post('/profile/store-address', [UserProfileController::class, 'storeAddress'])->name('profile.address.store');
@@ -108,6 +112,7 @@ Route::middleware('auth')->group(function () {
 
 
 
+    Route::post('/checkout', [CheckoutController::class, 'processPayment'])->name('checkout');
 });
 
 

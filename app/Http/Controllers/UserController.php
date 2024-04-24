@@ -61,7 +61,7 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        $user = User::with('addresses', 'transactions', 'cart')->findOrFail($id);
+        $user = User::with('addresses', 'transactions', 'carts')->findOrFail($id);
 
         return Inertia::render('Admin/User/Show', [
             'user' => $user
