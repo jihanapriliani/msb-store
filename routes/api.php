@@ -7,6 +7,10 @@ use App\Http\Controllers\UserCartController;
 
 use App\Models\Cart;
 
+use Kavist\RajaOngkir\Facades\RajaOngkir;
+use Illuminate\Support\Facades\Http;
+
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -45,20 +49,42 @@ Route::delete('/user/cart/{id}', function(string $id) {
 })->name('api.user.cart.delete');
 
 
-Route::get('/get-shipping-cost', function(Request $request) {
-    $origin = $request->input('origin');
-    $destination = $request->input('destination');
-    $weight = $request->input('weight');
-    $courier = $request->input('courier');
+// Route::post('/get-shipping-cost', function(Request $request) {
+//     $origin = $request->input('origin');
+//     $destination = $request->input('destination');
+//     $weight = $request->input('weight');
+//     $courier = $request->input('courier');
     
-    $shippingCost = RajaOngkir::ongkosKirim([
-        'origin' => $origin,
-        'destination' => $destination,
-        'weight' => $weight,
-        'courier' => $courier
-    ]);
+//     $daftarProvinsi = RajaOngkir::ongkosKirim([
+//         'origin'        => 155,     // ID kota/kabupaten asal
+//         'destination'   => 80,      // ID kota/kabupaten tujuan
+//         'weight'        => 1300,    // berat barang dalam gram
+//         'courier'       => 'jne'    // kode kurir pengiriman: ['jne', 'tiki', 'pos'] untuk starter
+//     ]);
     
-    return response()->json($shippingCost);
-})->name('get_shipping_cost');
+//     return response()->json($daftarProvinsi);
+// })->name('get_shipping_cost');
 
+
+Route::post('/get-shipping-cost', function(Request $request) {
+    try {
+        $response = Http::withOptions(['verify' => false,])->withHeaders([
+            'key' => env('RAJAONGKIR_API_KEY')
+        ])->post('https://api.rajaongkir.com/starter/cost',[
+            'origin'        => $request->params['origin'],
+            'destination'   => $request->params['destination'],
+            'weight'        => $request->params['weight'],
+            'courier'       => $request->params['courier']
+        ])
+        ->json()['rajaongkir']['results'];
+
+        return response()->json($response);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'success' => false,
+            'message' => $th->getMessage(),
+            'data'    => []
+        ]);
+    }
+})->name('get_shipping_cost');
 

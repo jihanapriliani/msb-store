@@ -7,15 +7,16 @@ import Swal from "sweetalert2";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import axios from "axios";
+
 export default function Checkout(props) {
     const { flash } = usePage().props;
     const { carts, addresses } = props;
-
     const [subTotal, setSubTotal] = useState(0);
+    const [shippingCost, setShippingCost] = useState(0);
+    const [weight, setWeight] = useState(0);
+    const [selectedAddress, setSelectedAddress] = useState(addresses[0]);
 
-    const [shippingCost, setShippingCost] = useState();
-
-    const [selectedAddress, setSelectedAddress] = useState([]);
     const toggleSelect = (address) => {
         setSelectedAddress(address);
     };
@@ -27,6 +28,12 @@ export default function Checkout(props) {
         }, 0);
 
         setSubTotal(currTotalItems);
+
+        const totalWeight = carts.reduce((acc, curr) => {
+            const currTotal = curr.amount * curr.product.unit_weight;
+            return acc + currTotal;
+        }, 0);
+        setWeight(totalWeight * 1000);
 
         if (flash.success) {
             toast.success(flash.success, {
@@ -40,20 +47,20 @@ export default function Checkout(props) {
     useEffect(() => {
         const requestData = {
             origin: 19,
-            destination: 15,
-            weight: 1300,
+            destination: selectedAddress.city_id,
+            weight: weight,
             courier: "jne",
         };
 
         axios
-            .get("/api/get-shipping-cost", { params: requestData })
+            .post("/api/get-shipping-cost", { params: requestData })
             .then((response) => {
-                setShippingCost(response.data);
+                setShippingCost(response.data[0].costs[0].cost[0].value);
             })
             .catch((error) => {
-                setError(error.message);
+                console.error(error.message);
             });
-    }, []);
+    }, [selectedAddress]);
 
     console.log("INI SHIPPING COST NYA EHEHEHE", shippingCost);
 
@@ -253,7 +260,8 @@ export default function Checkout(props) {
                                                         Shipping
                                                     </td>
                                                     <td class="checkout__total--calculated__text text-right">
-                                                        Rp 40.000
+                                                        Rp{" "}
+                                                        {shippingCost.toLocaleString()}
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -263,7 +271,11 @@ export default function Checkout(props) {
                                                         Total{" "}
                                                     </td>
                                                     <td class="checkout__total--footer__amount checkout__total--footer__list text-right">
-                                                        $860.00
+                                                        Rp{" "}
+                                                        {(
+                                                            shippingCost +
+                                                            subTotal
+                                                        ).toLocaleString()}
                                                     </td>
                                                 </tr>
                                             </tfoot>
