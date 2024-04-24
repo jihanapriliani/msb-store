@@ -11,6 +11,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -61,10 +62,9 @@ class User extends Authenticatable
         return $this->hasMany(UserAddress::class);
     }
 
-
-    public function cart(): HasOne
+    public function carts(): HasMany
     {
-        return $this->hasOne(Cart::class);
+        return $this->hasMany(Cart::class);
     }
 
 

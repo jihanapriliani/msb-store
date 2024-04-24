@@ -10,11 +10,14 @@ use App\Http\Controllers\TransactionDetailController;
 
 use App\Http\Controllers\UserTransactionController;
 use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\UserCartController;
 
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+use App\Models\Product;
+use App\Models\Category;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,13 +31,24 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
+    $products = Product::with('images')->get();
+    $categories = Category::take(10)->get();
+    return Inertia::render('LandingPage', [
+        'products' => $products,
+        'categories' => $categories
     ]);
 });
+
+Route::get('/shop', function () {
+    $products = Product::with('images')->get();
+    $categories = Category::all();
+    return Inertia::render('Shop', [
+        'products' => $products,
+        'categories' => $categories
+    ]);
+})->name("shop");
+
+
 
 Route::get('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
@@ -82,10 +96,19 @@ Route::middleware('auth')->group(function () {
             });
         });
 
+        Route::get('/cart', [UserCartController::class, 'index'])->name('user.cart');
+        Route::delete('/cart/{id}', [UserCartController::class, 'destroy'])->name('user.cart.destroy');
+
+        Route::get('/checkout', [UserCartController::class, 'checkout'])->name('user.cart.checkout');
+
+
+      
+
     });
 
 
 
 });
+
 
 require __DIR__.'/auth.php';
