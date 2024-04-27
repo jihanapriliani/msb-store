@@ -8,6 +8,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import axios from "axios";
+import { route } from "ziggy-js";
 
 export default function Checkout(props) {
     const { flash } = usePage().props;
@@ -60,9 +61,7 @@ export default function Checkout(props) {
             .catch((error) => {
                 console.error(error.message);
             });
-    }, [selectedAddress]);
-
-    console.log("INI SHIPPING COST NYA EHEHEHE", shippingCost);
+    }, [shippingCost, selectedAddress]);
 
     return (
         <GuestLayout>
@@ -114,21 +113,16 @@ export default function Checkout(props) {
                                                 )}
                                             </div>
                                         </div>
-                                        <div class="order-notes mb-20">
-                                            <label
-                                                class="checkout__input--label mb-5"
-                                                for="order"
-                                            >
-                                                Order Notes{" "}
-                                                <span class="checkout__input--label__star">
-                                                    *
-                                                </span>
-                                            </label>
+                                        <div class="mb-3">
+                                            <div class="section__header">
+                                                <h2 class="section__header--title h3">
+                                                    Catatan Pesanan
+                                                </h2>
+                                            </div>
                                             <textarea
-                                                class="checkout__notes--textarea__field border-radius-5"
-                                                id="order"
-                                                placeholder="Notes about your order, e.g. special notes for delivery."
-                                                spellcheck="false"
+                                                class="form-control"
+                                                id="exampleFormControlTextarea1"
+                                                rows="5"
                                             ></textarea>
                                         </div>
                                         <div class="checkout__content--step__footer d-flex align-items-center">
@@ -136,14 +130,21 @@ export default function Checkout(props) {
                                                 class="continue__shipping--btn primary__btn border-radius-5"
                                                 href="index.html"
                                             >
-                                                Continue To Shipping
+                                                <p
+                                                    style={{
+                                                        color: "white",
+                                                        fontWeight: "300",
+                                                    }}
+                                                >
+                                                    Continue To Shipping
+                                                </p>
                                             </a>
-                                            <a
+                                            <Link
                                                 class="previous__link--content"
-                                                href="cart.html"
+                                                href="/cart"
                                             >
                                                 Return to cart
-                                            </a>
+                                            </Link>
                                         </div>
                                     </form>
                                 </div>
@@ -151,7 +152,7 @@ export default function Checkout(props) {
                             <div class="col-lg-5 col-md-6">
                                 <aside class="checkout__sidebar sidebar border-radius-10">
                                     <h2 class="checkout__order--summary__title text-center mb-15">
-                                        Your Order Summary
+                                        Ringkasan Pesanan
                                     </h2>
                                     <div class="cart__table checkout__product--table">
                                         <table class="cart__table--inner">
@@ -226,23 +227,7 @@ export default function Checkout(props) {
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="checkout__discount--code">
-                                        <form class="d-flex" action="#">
-                                            <label>
-                                                <input
-                                                    class="checkout__discount--code__input--field border-radius-5"
-                                                    placeholder="Gift card or discount code"
-                                                    type="text"
-                                                />
-                                            </label>
-                                            <button
-                                                class="checkout__discount--code__btn primary__btn border-radius-5"
-                                                type="submit"
-                                            >
-                                                Apply
-                                            </button>
-                                        </form>
-                                    </div>
+
                                     <div class="checkout__total">
                                         <table class="checkout__total--table">
                                             <tbody class="checkout__total--body">
@@ -282,12 +267,25 @@ export default function Checkout(props) {
                                         </table>
                                     </div>
 
-                                    <button
+                                    <Link
                                         class="checkout__now--btn primary__btn"
                                         type="submit"
+                                        style={{
+                                            marginTop: "3rem",
+                                        }}
+                                        href={route("checkout")}
+                                        method="post"
+                                        data={{
+                                            user_address_id: selectedAddress.id,
+                                            total_weight: weight,
+                                            total_price: subTotal,
+                                            shipping_cost: shippingCost,
+                                        }}
                                     >
-                                        Checkout Now
-                                    </button>
+                                        <p style={{ color: "white" }}>
+                                            Checkout Now
+                                        </p>
+                                    </Link>
                                 </aside>
                             </div>
                         </div>

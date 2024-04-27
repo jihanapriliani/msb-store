@@ -19,10 +19,15 @@ class Transaction extends Model
         'user_id',
         'user_address_id',
         'total_weight',
+        'total_price',
         'shipping_cost',
         'delivery_code',
         'code',
-        'status'
+        'status',
+        'processed_at',
+        'shipped_at',
+        'accepted_at',
+        'rejected_at'
     ];
 
 

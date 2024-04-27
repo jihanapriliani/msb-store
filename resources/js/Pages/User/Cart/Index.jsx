@@ -92,14 +92,20 @@ export default function Index(props) {
     return (
         <GuestLayout>
             <ToastContainer />
-            <main class="main__content_wrapper">
-                <section class="cart__section section--padding">
+            <main
+                class="main__content_wrapper "
+                style={{
+                    display: "flex",
+                    justifyContent: "center",
+                }}
+            >
+                <section class="cart__section section--padding min-w-[60vw]">
                     <div class="container-fluid">
                         <div class="cart__section--inner">
                             <form action="#">
                                 <h2 class="cart__title mb-30">Shopping Cart</h2>
                                 <div class="row">
-                                    <div class="col-lg-8">
+                                    <div class="">
                                         <div class="cart__table">
                                             <table class="cart__table--inner">
                                                 <thead class="cart__table--header">
@@ -129,7 +135,7 @@ export default function Index(props) {
                                                                     <td class="cart__table--body__list">
                                                                         <div class="cart__product d-flex align-items-center">
                                                                             <button
-                                                                                class="cart__remove--btn"
+                                                                                className="cart__remove--btn flex justify-center items-center"
                                                                                 aria-label="search button"
                                                                                 type="button"
                                                                                 onClick={() =>
@@ -270,82 +276,33 @@ export default function Index(props) {
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-4">
-                                        <div class="cart__summary border-radius-10">
-                                            <div class="coupon__code mb-30">
-                                                <h3 class="coupon__code--title">
-                                                    Coupon
-                                                </h3>
-                                                <p class="coupon__code--desc">
-                                                    Enter your coupon code if
-                                                    you have one.
-                                                </p>
-                                                <div class="coupon__code--field d-flex">
-                                                    <label>
-                                                        <input
-                                                            class="coupon__code--field__input border-radius-5"
-                                                            placeholder="Coupon code"
-                                                            type="text"
-                                                        />
-                                                    </label>
-                                                    <button
-                                                        class="coupon__code--field__btn primary__btn"
-                                                        type="submit"
-                                                    >
-                                                        Apply Coupon
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="cart__note mb-20">
-                                                <h3 class="cart__note--title">
-                                                    Note
-                                                </h3>
-                                                <p class="cart__note--desc">
-                                                    Add special instructions for
-                                                    your seller...
-                                                </p>
-                                                <textarea class="cart__note--textarea border-radius-5"></textarea>
-                                            </div>
-                                            <div class="cart__summary--total mb-20">
-                                                <table class="cart__summary--total__table">
-                                                    <tbody>
-                                                        <tr class="cart__summary--total__list">
-                                                            <td class="cart__summary--total__title text-left">
-                                                                SUBTOTAL
-                                                            </td>
-                                                            <td class="cart__summary--amount text-right">
-                                                                Rp{" "}
-                                                                {subTotal.toLocaleString()}
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div class="cart__summary--footer">
-                                                <p class="cart__summary--footer__desc">
-                                                    Shipping & taxes calculated
-                                                    at checkout
-                                                </p>
-                                                <ul class="d-flex justify-content-between">
-                                                    <li>
-                                                        <button
-                                                            class="cart__summary--footer__btn primary__btn cart"
-                                                            type="submit"
-                                                        >
-                                                            Update Cart
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <Link
-                                                            class="cart__summary--footer__btn primary__btn checkout"
-                                                            href="/checkout"
-                                                        >
-                                                            Check Out
-                                                        </Link>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
+
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            alignItems: "end",
+                                            marginTop: "3rem",
+                                        }}
+                                    >
+                                        <h3 style={{ fontSize: "3rem" }}>
+                                            Subtotal : Rp{" "}
+                                            {subTotal.toLocaleString()}
+                                        </h3>
+
+                                        <Link
+                                            className="cart__summary--footer__btn primary__btn checkout "
+                                            style={{
+                                                maxWidth: "30rem",
+                                                textAlign: "center",
+                                                marginTop: "2rem",
+                                            }}
+                                            href="/checkout"
+                                        >
+                                            <p style={{ color: "white" }}>
+                                                Check Out
+                                            </p>
+                                        </Link>
                                     </div>
                                 </div>
                             </form>

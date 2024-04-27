@@ -11,11 +11,7 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,700,800&display=swap" rel="stylesheet">
 
-        <style>
-            a {
-                color: black;
-            }
-        </style>
+       
 
         <!-- Scripts -->
         @routes

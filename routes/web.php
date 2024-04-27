@@ -51,6 +51,15 @@ Route::get('/shop', function () {
     ]);
 })->name("shop");
 
+Route::get('/detail-product', function () {
+    
+    $product = Product::with('images')->first();
+
+    return Inertia::render('DetailProduct', [
+        'product' => $product
+    ]);
+})->name("detail.product");
+
 
 
 Route::get('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');

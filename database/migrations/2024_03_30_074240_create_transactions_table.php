@@ -16,13 +16,14 @@ return new class extends Migration
             $table->bigInteger('user_id')->constrained('users');
             $table->bigInteger('user_address_id')->constrained('user_addresses');
             $table->float('total_weight');
+            $table->float('total_price');
             $table->integer("shipping_cost");
             $table->string("delivery_code");
             $table->string('code');
-            $table->date("processed_at");
-            $table->date("shipped_at");
-            $table->date("accepted_at");
-            $table->date("rejected_at");
+            $table->date("processed_at")->nullable();
+            $table->date("shipped_at")->nullable();
+            $table->date("accepted_at")->nullable();
+            $table->date("rejected_at")->nullable();
             $table->enum('status', ['unpaid', 'processed', 'shipped', 'accepted', 'rejected', 'canceled'])->default('unpaid');
             $table->softDeletes();
             $table->timestamps();

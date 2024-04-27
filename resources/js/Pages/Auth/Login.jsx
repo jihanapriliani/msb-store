@@ -36,7 +36,7 @@ export default function Login({ status, canResetPassword }) {
                 </div>
             )}
 
-            <form onSubmit={submit}>
+            {/* <form className="" onSubmit={submit}>
                 <div>
                     <InputLabel htmlFor="email" value="Email" />
 
@@ -99,6 +99,59 @@ export default function Login({ status, canResetPassword }) {
                         Log in
                     </PrimaryButton>
                 </div>
+            </form> */}
+
+            <form class="max-w-5xl mx-auto my-20" onSubmit={submit}>
+                <div class="my-5">
+                    <label
+                        for="email"
+                        class="block mb-2 font-medium text-gray-700 dark:text-white text-3xl"
+                    >
+                        Email
+                    </label>
+                    <TextInput
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={data.email}
+                        autoComplete="username"
+                        className="h-[50px] text-[2rem] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="name@gmail.com"
+                        isFocused={true}
+                        onChange={(e) => setData("email", e.target.value)}
+                        required
+                    />
+
+                    <InputError message={errors.email} className="mt-2" />
+                </div>
+
+                <div class="mb-5">
+                    <label
+                        for="password"
+                        class="block mb-2 font-medium text-gray-700 dark:text-white text-3xl"
+                    >
+                        Password
+                    </label>
+                    <TextInput
+                        id="password"
+                        type="password"
+                        name="password"
+                        className="h-[50px] text-[2em] bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="*****"
+                        autoComplete="current-password"
+                        onChange={(e) => setData("password", e.target.value)}
+                        required
+                    />
+
+                    <InputError message={errors.password} className="mt-2" />
+                </div>
+
+                <button
+                    type="submit"
+                    className="px-12 py-4 rounded-lg bg-black text-white text-3xl"
+                >
+                    Log In
+                </button>
             </form>
         </GuestLayout>
     );
