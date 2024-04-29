@@ -100,12 +100,18 @@ Route::middleware('auth')->group(function () {
 
                 Route::resource('transactions', UserTransactionController::class);
             
-             
-                Route::resource('profile', UserProfileController::class);
-                Route::get('/profile/create-address',[UserProfileController::class,'createAddress'])->name('profile.address.create');
-                Route::post('/profile/store-address', [UserProfileController::class, 'storeAddress'])->name('profile.address.store');
 
-            
+                Route::prefix('profile')->name('profile.')->group(function() {
+                    Route::get('/', [UserProfileController::class, 'index'])->name('index');
+                    Route::get('/create-address', [UserProfileController::class,'createAddress'])->name('address.create');
+                    Route::post('/store-address', [UserProfileController::class,'storeAddress'])->name('address.store');
+                    Route::get('/edit-address/{id}', [UserProfileController::class,'editAddress'])->name('address.edit');
+                    Route::put('/update-address/{id}', [UserProfileController::class,'updateAddress'])->name('address.update');
+                    Route::delete('/delete-address/{id}', [UserProfileController::class,'deleteAddress'])->name('address.delete');
+
+                    Route::get('/edit-profile', [UserProfileController::class,'edit'])->name('edit');
+                    Route::put('/update-profile', [UserProfileController::class,'update'])->name('update');
+                });    
             });
         });
 

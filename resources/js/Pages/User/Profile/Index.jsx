@@ -1,15 +1,30 @@
 import AuthenticatedUserLayout from "@/Layouts/AutheticatedUserLayout/Index";
-import React from "react";
+import React, { useEffect } from "react";
 
 import { useForm } from "@inertiajs/react";
+import { usePage } from "@inertiajs/react";
 import { Link, router } from "@inertiajs/react";
 
-import Select from "react-select";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Swal from "sweetalert2";
+
+import axios from "axios";
 
 export default function Edit(props) {
     const { user } = props;
 
-    console.log("isi user", user);
+    const { flash } = usePage().props;
+
+    useEffect(() => {
+        if (flash.success) {
+            toast.success(flash.success, {
+                position: "top-right",
+            });
+
+            flash.success = null;
+        }
+    }, [user]);
 
     const { data, setData, post, processing, errors, reset } = useForm({
         fullname: user.fullname,
@@ -25,34 +40,102 @@ export default function Edit(props) {
         day: "numeric",
     };
 
-    const submit = (e) => {
-        e.preventDefault();
+    // const handlePasswordUpdate = () => {
+    // Swal.fire({
+    //     title: "Masukkan Password Sebelumnya",
+    //     input: "text",
+    //     inputAttributes: {
+    //         autocapitalize: "off",
+    //     },
+    //     showCancelButton: true,
+    //     confirmButtonText: "Lanjut",
+    //     cancelButtonText: "Batal",
+    //     showLoaderOnConfirm: true,
+    //     preConfirm: async (login) => {
+    //         try {
+    //             const githubUrl = `
+    //           https://api.github.com/users/${login}
+    //         `;
+    //             const response = await fetch(githubUrl);
+    //             if (!response.ok) {
+    //                 return Swal.showValidationMessage(`
+    //             ${JSON.stringify(await response.json())}
+    //           `);
+    //             }
+    //             return response.json();
+    //         } catch (error) {
+    //             Swal.showValidationMessage(`
+    //           Request failed: ${error}
+    //         `);
+    //         }
+    //     },
+    //     allowOutsideClick: () => !Swal.isLoading(),
+    // }).then((result) => {
+    //     if (result.isConfirmed) {
+    //         Swal.fire({
+    //             title: `${result.value.login}'s avatar`,
+    //             imageUrl: result.value.avatar_url,
+    //         });
+    //     }
+    // });
+    // };
 
-        router.post(
-            route("user.update", user.id, {
-                headers: { "Content-Type": "multipart/form-data" },
-            }),
-            {
-                _method: "put",
-                ...data,
+    const handlePasswordUpdate = () => {
+        Swal.fire({
+            title: "Masukkan Password Sebelumnya",
+            input: "password",
+            inputAttributes: {
+                autocapitalize: "off",
             },
-            {
-                forceFormData: true,
-                onError: (e) => {
-                    console.log(e);
-                    if (e.errors) {
-                        errors(e.errors);
-                    }
-                },
-                onSuccess: () => {
-                    reset();
-                },
+            showCancelButton: true,
+            confirmButtonText: "Lanjut",
+            cancelButtonText: "Batal",
+            showLoaderOnConfirm: true,
+            preConfirm: async (password) => {
+                console.log("ISI PASSWORD", password);
+
+                axios
+                    .post("/api/compare-password", {
+                        params: {
+                            user_id: user.id,
+                            password: password,
+                        },
+                    })
+                    .then((res) => console.log(res))
+                    .catch((err) => console.log(err));
+            },
+            allowOutsideClick: () => !Swal.isLoading(),
+        }).then((result) => {
+            if (result.isConfirmed) {
+                console.log("Berhasil datanya");
             }
-        );
+        });
+    };
+
+    const handleDelete = (e, id) => {
+        Swal.fire({
+            title: "Yakin ingin menghapus alamat ini?",
+            text: "Aksi berikut tidak bisa mengembalikan data alamat tersebut!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "gray",
+            confirmButtonText: "Hapus!",
+            cancelButtonText: "Batal",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                router.delete(
+                    route("profile.address.delete", {
+                        id: id,
+                    })
+                );
+            }
+        });
     };
 
     return (
         <AuthenticatedUserLayout>
+            <ToastContainer />
             <div class="page-content m-0">
                 <div class="main-wrapper">
                     <div class="row">
@@ -118,12 +201,21 @@ export default function Edit(props) {
                                         </li>
                                     </ul>
 
-                                    <Link
-                                        href="/dashboard/user/profile/edit"
-                                        className="btn btn-primary"
-                                    >
-                                        Ubah Profil
-                                    </Link>
+                                    <div className="flex gap-4 mt-6">
+                                        <Link
+                                            href={route("profile.edit")}
+                                            className="btn btn-primary flex-1"
+                                        >
+                                            Ubah Profil
+                                        </Link>
+
+                                        <button
+                                            className="btn btn-danger flex-1"
+                                            onClick={handlePasswordUpdate}
+                                        >
+                                            Ubah Password
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -162,18 +254,28 @@ export default function Edit(props) {
 
                                                         <div className="flex justify-end gap-2">
                                                             <Link
-                                                                href="/dashboard/user/profile/edit"
+                                                                href={route(
+                                                                    "profile.address.edit",
+                                                                    {
+                                                                        id: address.id,
+                                                                    }
+                                                                )}
                                                                 className="btn btn-sm btn-warning"
                                                             >
-                                                                Ubah
+                                                                Edit
                                                             </Link>
 
-                                                            <Link
-                                                                href="/dashboard/user/profile/edit"
+                                                            <button
+                                                                onClick={(e) =>
+                                                                    handleDelete(
+                                                                        e,
+                                                                        address.id
+                                                                    )
+                                                                }
                                                                 className="btn btn-sm btn-danger"
                                                             >
                                                                 Hapus
-                                                            </Link>
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 )

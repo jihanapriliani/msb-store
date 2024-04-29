@@ -9,6 +9,8 @@ use Inertia\Inertia;
 
 use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class UserProfileController extends Controller
 {
@@ -29,9 +31,90 @@ class UserProfileController extends Controller
 
 
     public function createAddress(Request $request) {
-        \Log::info('This is some useful information.');
         return Inertia::render('User/Profile/CreateAddress');
     }
+
+    public function storeAddress(Request $request)
+    {
+        $validatedData = $request->validate([
+            'alias' => 'required|string',
+            'province_id' => 'required|integer',
+            'city_id' => 'required|integer',
+            'district_id' => 'required|integer',
+            'village_id' => 'required|integer',
+            'phone' => 'required|string',
+            'zipcode' => 'required|integer',
+            'country' => 'required|string',
+            'address' => 'required|string',
+            'lat' => 'required|integer',
+            'long' => 'required|integer',
+        ]);
+
+
+        $user = Auth::user();
+
+    
+        $address = UserAddress::create([
+            'user_id' => $user->id,
+            'alias' =>  $validatedData['alias'],
+            'province_id' => $validatedData['province_id'],
+            'city_id' => $validatedData['city_id'],
+            'district_id' =>  $validatedData['district_id'],
+            'village_id' => $validatedData['village_id'],
+            'phone' => $validatedData['phone'],
+            'zipcode' => $validatedData['zipcode'],
+            'country' => $validatedData['country'],
+            'address' => $validatedData['address'],
+            'lat' => $validatedData['lat'],
+            'long' => $validatedData['long'],
+        ]);
+
+     
+        return redirect()->route('profile.index')->with('success', 'Alamat berhasil ditambahkan!');
+    }
+
+    public function deleteAddress(string $id) {
+        $address = UserAddress::findOrFail($id);
+
+        $address->delete();
+        return redirect()->route('profile.index')->with('success', 'Alamat berhasil dihapus!');
+    }
+
+    public function editAddress(string $id) {
+
+        $address =  UserAddress::findOrFail($id);
+
+        return Inertia::render('User/Profile/EditAddress', [
+            'address' => $address
+        ]);
+    }
+
+
+    public function updateAddress(Request $request, string $id) {
+       
+        $validatedData = $request->validate([
+            'alias' => 'required|string',
+            'province_id' => 'required|integer',
+            'city_id' => 'required|integer',
+            'district_id' => 'required|integer',
+            'village_id' => 'required|integer',
+            'phone' => 'required|string',
+            'zipcode' => 'required|integer',
+            'country' => 'required|string',
+            'address' => 'required|string',
+            'lat' => 'required|integer',
+            'long' => 'required|integer',
+        ]);
+
+        $address =  UserAddress::findOrFail($id);
+
+
+        $address->update($validatedData);
+
+        return redirect()->route('profile.index')->with('success', 'Alamat berhasil diperbarui!');
+    }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -46,7 +129,7 @@ class UserProfileController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
@@ -60,17 +143,49 @@ class UserProfileController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit()
     {
-        //
+        $user = Auth::user();
+
+        return Inertia::render('User/Profile/EditProfile', [
+            'user' => $user,
+        ]);
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        $user = Auth::user();
+
+        
+        try {
+            $validatedData = $request->validate([
+                'username' => 'required|string',
+                'fullname' => 'required|string',
+                'phone' => 'required|string',
+                'email' => [
+                    'required',
+                    Rule::unique('users')->ignore($user->id),
+                ],
+                
+            ]);
+
+           
+            $user->update($validatedData);
+    
+            return redirect()->route('profile.index')->with('success', 'Profil berhasil diperbarui!');
+
+        } catch (ValidationException $e) { 
+            if ($e->validator->errors()->has('email')) {
+                return redirect()->back()->withInput()->with('error', 'Email tidak tersedia.');
+            } else {
+                throw $e;
+            }
+        }
+        
     }
 
     /**

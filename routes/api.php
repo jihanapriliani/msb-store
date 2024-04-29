@@ -6,10 +6,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserCartController;
 
 use App\Models\Cart;
+use App\Models\Province;
+use App\Models\City;
+use App\Models\User;
 
 use Kavist\RajaOngkir\Facades\RajaOngkir;
 use Illuminate\Support\Facades\Http;
 
+use Illuminate\Support\Facades\Hash;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,9 +29,6 @@ use Illuminate\Support\Facades\Http;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-
-// Route::put('/user/cart/{cart}',[UserCartController::class,'update'])->name('api.user.cart.update');
 
 Route::put('/user/cart/{id}', function(Request $request, string $id) {
     
@@ -49,22 +50,21 @@ Route::delete('/user/cart/{id}', function(string $id) {
 })->name('api.user.cart.delete');
 
 
-// Route::post('/get-shipping-cost', function(Request $request) {
-//     $origin = $request->input('origin');
-//     $destination = $request->input('destination');
-//     $weight = $request->input('weight');
-//     $courier = $request->input('courier');
-    
-//     $daftarProvinsi = RajaOngkir::ongkosKirim([
-//         'origin'        => 155,     // ID kota/kabupaten asal
-//         'destination'   => 80,      // ID kota/kabupaten tujuan
-//         'weight'        => 1300,    // berat barang dalam gram
-//         'courier'       => 'jne'    // kode kurir pengiriman: ['jne', 'tiki', 'pos'] untuk starter
-//     ]);
-    
-//     return response()->json($daftarProvinsi);
-// })->name('get_shipping_cost');
+Route::get('/get-provinces', function(Request $request) {
+    $provinces = Province::all();
+    return response()->json($provinces);
+});
 
+
+Route::get('/get-cities', function(Request $request) {
+    $province_id = $request->input('province_id');
+    $province = Province::find($province_id); 
+    if (!$province) {
+        return response()->json(['error' => 'Province not found'], 404); 
+    }
+    $cities = $province->cities; 
+    return response()->json($cities);
+});
 
 Route::post('/get-shipping-cost', function(Request $request) {
     try {
@@ -87,4 +87,42 @@ Route::post('/get-shipping-cost', function(Request $request) {
         ]);
     }
 })->name('get_shipping_cost');
+
+
+Route::post('/compare-password', function(Request $request) {
+    try {
+        $user = User::findOrFail($request->params['user_id']);
+    
+        $savedPassword = $user->password;
+        $password = $request->input('password');
+        $hash = Hash::make($password);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Password match',
+            'data' => [
+                'passLama' => $savedPassword,
+                'passInput' => bcrypt($password),
+                'isSame' => Hash::check($hash, $savedPassword)
+            ]
+        ]);
+        
+        if(Hash::check($password, $savedPassword)) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Password match',
+                'data' => []
+            ]);
+        } else {
+            throw new Exception('Passwords do not match');
+        }
+
+    } catch(\Throwable $th) {
+        return response()->json([
+            'success' => false,
+            'message' => $th->getMessage(),
+            'data'    => []
+        ]);
+    }
+});
 

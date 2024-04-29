@@ -12,9 +12,12 @@ class UserAddress extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'users_id',
-        'provinces_id',
-        'regencies_id',
+        'user_id',
+        'alias',
+        'province_id',
+        'city_id',
+        'district_id',
+        'village_id',
         'zipcode',
         'country',
         'address',

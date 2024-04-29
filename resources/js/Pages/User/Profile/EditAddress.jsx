@@ -2,23 +2,27 @@ import AuthenticatedUserLayout from "@/Layouts/AutheticatedUserLayout/Index";
 import React, { useState } from "react";
 
 import { useForm } from "@inertiajs/react";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 
 import Select from "react-select";
 import { useEffect } from "react";
 import axios from "axios";
 
-export default function Create(props) {
+export default function Edit(props) {
+    const { address } = props;
+
+    console.log("ISI ADDRESS", address);
+
     const { data, setData, post, processing, errors, reset } = useForm({
-        alias: "",
-        province_id: "",
-        city_id: "",
-        district_id: "",
-        village_id: "",
-        phone: "",
-        zipcode: "",
+        alias: address.alias,
+        province_id: address.province_id,
+        city_id: address.city_id,
+        district_id: address.district_id,
+        village_id: address.village_id,
+        phone: address.phone,
+        zipcode: address.zipcode,
         country: "Indonesia",
-        address: "",
+        address: address.address,
         lat: "0",
         long: "0",
     });
@@ -26,18 +30,22 @@ export default function Create(props) {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route("profile.address.store", data), {
-            forceFormData: true,
-            onError: (e) => {
-                console.log(e);
-                if (e.errors) {
-                    errors(e.errors);
-                }
+        router.post(
+            route("profile.address.update", address.id),
+            {
+                _method: "put",
+                ...data,
             },
-            onSuccess: () => {
-                reset();
-            },
-        });
+            {
+                forceFormData: true,
+                onError: (e) => {
+                    console.log(e);
+                    if (e.errors) {
+                        form.errors(e.errors);
+                    }
+                },
+            }
+        );
     };
 
     const [isClearable, setIsClearable] = useState(true);
@@ -100,6 +108,7 @@ export default function Create(props) {
                                         id=""
                                         aria-describedby=""
                                         name="fullname"
+                                        value={data.alias}
                                         onChange={(e) =>
                                             setData("alias", e.target.value)
                                         }
@@ -188,6 +197,7 @@ export default function Create(props) {
                                             className="form-control"
                                             id=""
                                             aria-describedby=""
+                                            value={data.district_id}
                                             name="username"
                                             onChange={(e) =>
                                                 setData(
@@ -213,6 +223,7 @@ export default function Create(props) {
                                             id=""
                                             aria-describedby=""
                                             name="username"
+                                            value={data.village_id}
                                             onChange={(e) =>
                                                 setData(
                                                     "village_id",
@@ -239,6 +250,7 @@ export default function Create(props) {
                                             id=""
                                             aria-describedby=""
                                             name="username"
+                                            value={data.phone}
                                             onChange={(e) =>
                                                 setData("phone", e.target.value)
                                             }
@@ -260,6 +272,7 @@ export default function Create(props) {
                                             id=""
                                             aria-describedby=""
                                             name="username"
+                                            value={data.zipcode}
                                             onChange={(e) =>
                                                 setData(
                                                     "zipcode",
@@ -283,6 +296,7 @@ export default function Create(props) {
                                         class="form-control"
                                         id="exampleFormControlTextarea1"
                                         rows="3"
+                                        value={data.address}
                                         onChange={(e) =>
                                             setData("address", e.target.value)
                                         }

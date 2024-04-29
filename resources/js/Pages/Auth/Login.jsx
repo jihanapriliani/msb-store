@@ -115,8 +115,9 @@ export default function Login({ status, canResetPassword }) {
                         name="email"
                         value={data.email}
                         autoComplete="username"
-                        className="h-[50px] text-[2rem] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className="h-[50px]  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="name@gmail.com"
+                        style={{ fontSize: "2rem" }}
                         isFocused={true}
                         onChange={(e) => setData("email", e.target.value)}
                         required
@@ -136,8 +137,9 @@ export default function Login({ status, canResetPassword }) {
                         id="password"
                         type="password"
                         name="password"
-                        className="h-[50px] text-[2em] bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className="h-[50px]  bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="*****"
+                        style={{ fontSize: "2rem" }}
                         autoComplete="current-password"
                         onChange={(e) => setData("password", e.target.value)}
                         required
