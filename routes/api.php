@@ -92,21 +92,12 @@ Route::post('/get-shipping-cost', function(Request $request) {
 Route::post('/compare-password', function(Request $request) {
     try {
         $user = User::findOrFail($request->params['user_id']);
-    
-        $savedPassword = $user->password;
-        $password = $request->input('password');
-        $hash = Hash::make($password);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Password match',
-            'data' => [
-                'passLama' => $savedPassword,
-                'passInput' => bcrypt($password),
-                'isSame' => Hash::check($hash, $savedPassword)
-            ]
-        ]);
         
+        $user->refresh();
+
+        $savedPassword = $user->password;
+        $password = $request->params['password'];
+
         if(Hash::check($password, $savedPassword)) {
             return response()->json([
                 'success' => true,
@@ -116,6 +107,35 @@ Route::post('/compare-password', function(Request $request) {
         } else {
             throw new Exception('Passwords do not match');
         }
+
+    } catch(\Throwable $th) {
+        return response()->json([
+            'success' => false,
+            'message' => $th->getMessage(),
+            'data'    => []
+        ]);
+    }
+});
+
+Route::post('/change-password', function(Request $request) {
+    try {
+        $user = User::findOrFail($request->params['user_id']);
+        
+        $user->refresh();
+
+        $password = $request->params['password'];
+
+
+        $user->update([
+            'password' => Hash::make($password),
+        ]);
+
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Password successfully changed',
+            'data'    => []
+        ]);
 
     } catch(\Throwable $th) {
         return response()->json([

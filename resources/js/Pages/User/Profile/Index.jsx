@@ -40,45 +40,7 @@ export default function Edit(props) {
         day: "numeric",
     };
 
-    // const handlePasswordUpdate = () => {
-    // Swal.fire({
-    //     title: "Masukkan Password Sebelumnya",
-    //     input: "text",
-    //     inputAttributes: {
-    //         autocapitalize: "off",
-    //     },
-    //     showCancelButton: true,
-    //     confirmButtonText: "Lanjut",
-    //     cancelButtonText: "Batal",
-    //     showLoaderOnConfirm: true,
-    //     preConfirm: async (login) => {
-    //         try {
-    //             const githubUrl = `
-    //           https://api.github.com/users/${login}
-    //         `;
-    //             const response = await fetch(githubUrl);
-    //             if (!response.ok) {
-    //                 return Swal.showValidationMessage(`
-    //             ${JSON.stringify(await response.json())}
-    //           `);
-    //             }
-    //             return response.json();
-    //         } catch (error) {
-    //             Swal.showValidationMessage(`
-    //           Request failed: ${error}
-    //         `);
-    //         }
-    //     },
-    //     allowOutsideClick: () => !Swal.isLoading(),
-    // }).then((result) => {
-    //     if (result.isConfirmed) {
-    //         Swal.fire({
-    //             title: `${result.value.login}'s avatar`,
-    //             imageUrl: result.value.avatar_url,
-    //         });
-    //     }
-    // });
-    // };
+    const updatePassword = () => {};
 
     const handlePasswordUpdate = () => {
         Swal.fire({
@@ -92,8 +54,6 @@ export default function Edit(props) {
             cancelButtonText: "Batal",
             showLoaderOnConfirm: true,
             preConfirm: async (password) => {
-                console.log("ISI PASSWORD", password);
-
                 axios
                     .post("/api/compare-password", {
                         params: {
@@ -101,14 +61,53 @@ export default function Edit(props) {
                             password: password,
                         },
                     })
-                    .then((res) => console.log(res))
-                    .catch((err) => console.log(err));
+                    .then((res) => {
+                        if (res.data.success) {
+                            Swal.fire({
+                                title: "Enter your password",
+                                input: "password",
+                                inputPlaceholder: "Masukkan Password Baru",
+                                showCancelButton: true,
+                                cancelButtonText: "Batal",
+                                inputAttributes: {
+                                    maxlength: "10",
+                                    autocapitalize: "off",
+                                    autocorrect: "off",
+                                },
+                                preConfirm: async (password) => {
+                                    console.log("ISI PASSWORD", password);
+                                    axios
+                                        .post("/api/change-password", {
+                                            params: {
+                                                user_id: user.id,
+                                                password: password,
+                                            },
+                                        })
+                                        .then((res) => {
+                                            if (res.data.success) {
+                                                Swal.fire({
+                                                    icon: "success",
+                                                    title: "Password berhasil diubah!",
+                                                });
+                                            } else {
+                                                Swal.fire({
+                                                    icon: "error",
+                                                    title: "Password gagal diubah!",
+                                                });
+                                            }
+                                        });
+                                },
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Password Salah",
+                                text: "Masukkan Password sebelumnya",
+                            });
+                        }
+                    });
             },
             allowOutsideClick: () => !Swal.isLoading(),
-        }).then((result) => {
-            if (result.isConfirmed) {
-                console.log("Berhasil datanya");
-            }
         });
     };
 
