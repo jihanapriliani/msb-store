@@ -168,3 +168,30 @@ Route::post('/get-products-by-category', function(Request $request) {
 
 });
 
+
+Route::post('/get-products-with-price-range', function (Request $request) {
+   
+    $startPrice = $request->start_price;
+    $endPrice = $request->end_price;
+
+    
+    if(empty($request->selected_categories)) {
+        $products = Product::whereBetween('price', [$startPrice, $endPrice])->with('images')->get();
+    } else {
+        $selectedCategoryIds = array_map(function($category) {
+            return $category['id'];
+        }, $request->selected_categories);
+
+        $products = Product::whereIn('category_id', $selectedCategoryIds)->whereBetween('price', [$startPrice, $endPrice])->with('images')->get();
+    } 
+
+    return response()->json([
+        'success' => true,
+        'message' => "success load data",
+        'data'    => [
+            'products' => $products
+        ]
+    ]);
+
+});
+
