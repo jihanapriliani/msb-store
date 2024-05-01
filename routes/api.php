@@ -9,6 +9,8 @@ use App\Models\Cart;
 use App\Models\Province;
 use App\Models\City;
 use App\Models\User;
+use App\Models\Category;
+use App\Models\Product;
 
 use Kavist\RajaOngkir\Facades\RajaOngkir;
 use Illuminate\Support\Facades\Http;
@@ -144,5 +146,25 @@ Route::post('/change-password', function(Request $request) {
             'data'    => []
         ]);
     }
+});
+
+Route::post('/get-products-by-category', function(Request $request) {
+    $selectedCategoryIds = array_map(function($category) {
+        return $category['id'];
+    }, $request->selected_categories);
+
+
+    $products = Product::whereIn('category_id', $selectedCategoryIds)->with('images')->get();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'success load data',
+        'data'    => [
+            'products' => $products
+        ]
+    ]);
+
+    
+
 });
 
