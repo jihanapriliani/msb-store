@@ -9,8 +9,8 @@
 
         <!-- Fonts -->
         <link rel="preconnect" href="//fonts.bunny.net">
-        <link href="//fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-        <link href="//fonts.googleapis.com/css?family=Poppins:400,500,700,800&display=swap" rel="stylesheet">
+        {{-- <link href="//fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <link href="//fonts.googleapis.com/css?family=Poppins:400,500,700,800&display=swap" rel="stylesheet"> --}}
 
        
 
