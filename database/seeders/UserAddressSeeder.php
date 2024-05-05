@@ -19,99 +19,106 @@ class UserAddressSeeder extends Seeder
           // Superadmin Address
           UserAddress::create([
             'user_id' => User::where('username', 'Superadmin')->first()->id,
-            'province_id' => 1, // Ganti dengan ID provinsi yang sesuai
-            'city_id' => 1, // Ganti dengan ID kota yang sesuai
-            'regency_id' => 1, // Ganti dengan ID kabupaten/kota yang sesuai
+            'province_id' => 1, 
+            'city_id' => 1, 
+            'district_id' => 1, 
+            'village_id' => 1, 
             'alias' => 'Rumah Superadmin',
             'zipcode' => 12345,
             'country' => 'Indonesia',
             'address' => 'Jalan Contoh No. 123',
-            'lat' => -6.123456, // Ganti dengan koordinat latitude yang sesuai
-            'long' => 106.123456, // Ganti dengan koordinat longitude yang sesuai
+            'lat' => -6.123456, 
+            'long' => 106.123456,
         ]);
 
         // Admin Address
         UserAddress::create([
             'user_id' => User::where('username', 'admin')->first()->id,
-            'province_id' => 1, // Ganti dengan ID provinsi yang sesuai
-            'city_id' => 1, // Ganti dengan ID kota yang sesuai
-            'regency_id' => 1, // Ganti dengan ID kabupaten/kota yang sesuai
+            'province_id' => 1, 
+            'city_id' => 1, 
+            'district_id' => 1, 
+            'village_id' => 1, 
             'alias' => 'Rumah Admin',
             'zipcode' => 12345,
             'country' => 'Indonesia',
             'address' => 'Jalan Contoh No. 123',
-            'lat' => -6.123456, // Ganti dengan koordinat latitude yang sesuai
-            'long' => 106.123456, // Ganti dengan koordinat longitude yang sesuai
+            'lat' => -6.123456, 
+            'long' => 106.123456,
         ]);
 
         // Jihan Address
         UserAddress::create([
             'user_id' => User::where('username', 'jihan')->first()->id,
-            'province_id' => 1, // Ganti dengan ID provinsi yang sesuai
-            'city_id' => 1, // Ganti dengan ID kota yang sesuai
-            'regency_id' => 1, // Ganti dengan ID kabupaten/kota yang sesuai
+            'province_id' => 1, 
+            'city_id' => 1, 
+            'district_id' => 1, 
+            'village_id' => 1, 
             'alias' => 'Rumah Jihan',
             'zipcode' => 12345,
             'country' => 'Indonesia',
             'address' => 'Jalan Contoh No. 123',
-            'lat' => -6.123456, // Ganti dengan koordinat latitude yang sesuai
-            'long' => 106.123456, // Ganti dengan koordinat longitude yang sesuai
+            'lat' => -6.123456, 
+            'long' => 106.123456,
         ]);
 
         // Nisa Address
         UserAddress::create([
             'user_id' => User::where('username', 'nisa')->first()->id,
-            'province_id' => 1, // Ganti dengan ID provinsi yang sesuai
-            'city_id' => 1, // Ganti dengan ID kota yang sesuai
-            'regency_id' => 1, // Ganti dengan ID kabupaten/kota yang sesuai
+            'province_id' => 1, 
+            'city_id' => 1, 
+            'district_id' => 1, 
+            'village_id' => 1, 
             'alias' => 'Rumah Nisa',
             'zipcode' => 12345,
             'country' => 'Indonesia',
             'address' => 'Jalan Contoh No. 123',
-            'lat' => -6.123456, // Ganti dengan koordinat latitude yang sesuai
-            'long' => 106.123456, // Ganti dengan koordinat longitude yang sesuai
+            'lat' => -6.123456, 
+            'long' => 106.123456,
         ]);
 
         // Diba Address
         UserAddress::create([
             'user_id' => User::where('username', 'diba')->first()->id,
-            'province_id' => 1, // Ganti dengan ID provinsi yang sesuai
-            'city_id' => 1, // Ganti dengan ID kota yang sesuai
-            'regency_id' => 1, // Ganti dengan ID kabupaten/kota yang sesuai
+            'province_id' => 1, 
+            'city_id' => 1, 
+            'district_id' => 1, 
+            'village_id' => 1, 
             'alias' => 'Rumah Diba',
             'zipcode' => 12345,
             'country' => 'Indonesia',
             'address' => 'Jalan Contoh No. 123',
-            'lat' => -6.123456, // Ganti dengan koordinat latitude yang sesuai
-            'long' => 106.123456, // Ganti dengan koordinat longitude yang sesuai
+            'lat' => -6.123456, 
+            'long' => 106.123456,
         ]);
 
         // Bijar Address
         UserAddress::create([
             'user_id' => User::where('username', 'bijar')->first()->id,
-            'province_id' => 1, // Ganti dengan ID provinsi yang sesuai
-            'city_id' => 1, // Ganti dengan ID kota yang sesuai
-            'regency_id' => 1, // Ganti dengan ID kabupaten/kota yang sesuai
+            'province_id' => 1, 
+            'city_id' => 1, 
+            'district_id' => 1, 
+            'village_id' => 1, 
             'alias' => 'Rumah Bijar',
             'zipcode' => 12345,
             'country' => 'Indonesia',
             'address' => 'Jalan Contoh No. 123',
-            'lat' => -6.123456, // Ganti dengan koordinat latitude yang sesuai
-            'long' => 106.123456, // Ganti dengan koordinat longitude yang sesuai
+            'lat' => -6.123456, 
+            'long' => 106.123456,
         ]);
 
         // Ikhsan Address
         UserAddress::create([
             'user_id' => User::where('username', 'ikhsan')->first()->id,
-            'province_id' => 1, // Ganti dengan ID provinsi yang sesuai
-            'city_id' => 1, // Ganti dengan ID kota yang sesuai
-            'regency_id' => 1, // Ganti dengan ID kabupaten/kota yang sesuai
+            'province_id' => 1, 
+            'city_id' => 1, 
+            'district_id' => 1, 
+            'village_id' => 1, 
             'alias' => 'Rumah Ikhsan',
             'zipcode' => 12345,
             'country' => 'Indonesia',
             'address' => 'Jalan Contoh No. 123',
-            'lat' => -6.123456, // Ganti dengan koordinat latitude yang sesuai
-            'long' => 106.123456, // Ganti dengan koordinat longitude yang sesuai
+            'lat' => -6.123456, 
+            'long' => 106.123456,
         ]);
     }
 }

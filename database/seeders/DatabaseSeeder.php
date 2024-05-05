@@ -5,6 +5,7 @@ use Database\Seeders\CategorySeeder;
 use Database\Seeders\UserSeeder;
 use Database\Seeders\RoleSeeder;
 use Database\Seeders\ProductSeeder;
+use Database\Seeders\ProductImageSeeder;
 use Database\Seeders\TransactionSeeder;
 use Database\Seeders\UserAddressSeeder;
 use Database\Seeders\TransactionSDetailSeeder;
@@ -24,6 +25,7 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(ProductSeeder::class);
+        $this->call(ProductImageSeeder::class);
         $this->call(UserAddressSeeder::class);
         $this->call(LocationSeeder::class);
 
