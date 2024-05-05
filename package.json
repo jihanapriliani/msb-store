@@ -27,7 +27,6 @@
         "@mantine/core": "^6.0.21",
         "@mantine/dates": "^6.0.21",
         "@mantine/hooks": "^6.0.21",
-        "@mantine/modals": "^7.7.1",
         "@mui/icons-material": "^5.15.15",
         "@mui/material": "^5.15.15",
         "@tabler/icons-react": "^3.1.0",
