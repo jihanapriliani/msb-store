@@ -43,5 +43,8 @@
         "react-toastify": "^10.0.5",
         "sweetalert2": "^11.10.7",
         "ziggy-js": "^2.1.0"
+    },
+    "optionalDependencies": {
+        "@rollup/rollup-linux-x64-gnu": "4.9.5"
     }
 }
