@@ -105,7 +105,7 @@ class CheckoutController extends Controller
         $serverKey = config('services.midtrans.serverKey');
         $hashed = hash("sha512", $request->order_id.$request->status_code.$request->gross_amount.$serverKey);
         
-        $transaction = Transaction::findOrFail($request->order_id);
+        $transaction = Transaction::where('code', $request->order_id)->firstOrFail();
 
         if($hashed == $request->signature_key) {
             if($status == 'capture') {
