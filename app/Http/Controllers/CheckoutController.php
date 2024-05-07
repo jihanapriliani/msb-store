@@ -102,7 +102,7 @@ class CheckoutController extends Controller
 
     public function callback(Request $request) {
         
-        Config::$serverKey = config('services.midtrans.serverKey');
+        $serverKey = config('services.midtrans.serverKey');
         $hashed = hash("sha512", $request->order_id.$request->status_code.$request->gross_amount.$serverKey);
         
         $transaction = Transaction::findOrFail($request->order_id);
