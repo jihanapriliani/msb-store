@@ -101,59 +101,43 @@ class CheckoutController extends Controller
     }
 
     public function callback(Request $request) {
-        // set konfigurasi midtrans
+        
         Config::$serverKey = config('services.midtrans.serverKey');
-        Config::$isProduction = config('services.midtrans.isProduction');
-        Config::$isSanitized = config('services.midtrans.isSanitized');
-        Config::$is3ds = config('services.midtrans.is3ds');
+        $hashed = hash("sha512", $request->order_id.$request->status_code.$request->gross_amount.$serverKey);
+        
+        $transaction = Transaction::findOrFail($request->order_id);
 
-        // instance midtrans notification
-        $notification = new Notification();
-
-        // assign ke variabel untuk memudahkan  koding
-        $status = $notification->transaction_status;
-        $type = $notification->payment_type;
-        $fraud = $notification->fraud_status;
-        $order_id = $notification->order_id;
-
-        // cari transaksi berdasarkan id
-        $transaction = Transaction::findOrFail($order_id);
-
-        // handle notification status
-        if($status == 'capture') {
-            if($type == 'credit_card') {
-                if($fraud == 'challenge') {
-                    $transaction->status = 'UNPAID';
-                } else {
-                    $transaction->status = 'PROCESSED';
-                }
+        if($hashed == $request->signature_key) {
+            if($status == 'capture') {
+                $transaction->update(['status' => 'processed']);
+            }
+    
+            else if($status == 'settlement') {
+                $transaction->update(['status' => 'processed']);
+            }
+    
+            else if($status == 'pending') {
+                $transaction->update(['status' => 'unpaid']);
+            }
+    
+            else if($status == 'deny') {
+                $transaction->update(['status' => 'canceled']);
+            }
+    
+            else if($status == 'expire') {
+                $transaction->update(['status' => 'canceled']);
+            }
+    
+            else if($status == 'cancel') {
+                 $transaction->update(['status' => 'canceled']);
             }
         }
+       
+ 
+    }
 
-        else if($status == 'settlement') {
-            $transaction->status = 'PROCESSED';
-        }
 
-        else if($status == 'pending') {
-            $transaction->status = 'UNPAID';
-        }
+    public function invoice() {
 
-        else if($status == 'deny') {
-            $transaction->status = 'CANCELED';
-        }
-
-        else if($status == 'expire') {
-            $transaction->status = 'CANCELED';
-        }
-
-        else if($status == 'cancel') {
-            $transaction->status = 'CANCELED';
-        }
-
-        // simpan transaksi
-        $transaction->save();
-    
-        // kirim ke email
-    
     }
 }
