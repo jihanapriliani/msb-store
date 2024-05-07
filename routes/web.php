@@ -120,6 +120,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/cart', [UserCartController::class, 'index'])->name('user.cart');
         Route::delete('/cart/{id}', [UserCartController::class, 'destroy'])->name('user.cart.destroy');
+        Route::delete('/cart', [UserCartController::class, 'clear'])->name('user.cart.clear');
 
         Route::get('/checkout', [UserCartController::class, 'checkout'])->name('user.cart.checkout');
     });
