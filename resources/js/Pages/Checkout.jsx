@@ -16,7 +16,7 @@ export default function Checkout(props) {
     const [subTotal, setSubTotal] = useState(0);
     const [shippingCost, setShippingCost] = useState(0);
     const [weight, setWeight] = useState(0);
-    const [selectedAddress, setSelectedAddress] = useState(addresses[0]);
+    const [selectedAddress, setSelectedAddress] = useState(addresses[0] ?? {});
 
     const toggleSelect = (address) => {
         setSelectedAddress(address);
