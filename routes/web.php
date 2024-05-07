@@ -15,6 +15,7 @@ use App\Http\Controllers\CheckoutController;
 
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 use App\Models\Product;
@@ -34,13 +35,15 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 */
 
 Route::get('/', function () {
+    $user = Auth::user();    
     $products = Product::with('images')->get();
     $categories = Category::take(10)->get();
     return Inertia::render('LandingPage', [
         'products' => $products,
-        'categories' => $categories
+        'categories' => $categories,
+        'user' => $user
     ]);
-});
+})->name('landing-page');
 
 Route::get('/shop', function () {
     $products = Product::with('images')->get();

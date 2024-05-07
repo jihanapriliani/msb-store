@@ -34,11 +34,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::put('/user/cart/{id}', function(Request $request, string $id) {
     
-    
     $cart = Cart::findOrFail($id);
     $cart->update(['amount' => $request->amount]);
   
-    return response()->json($data);
+    return response()->json(['success' => 'Amount berhasil ditambahkan!']);
 
 })->name('api.user.cart.update');
 
@@ -50,6 +49,16 @@ Route::delete('/user/cart/{id}', function(string $id) {
     return response()->json(['success' => 'Barang berhasil dihapus!']);
 
 })->name('api.user.cart.delete');
+
+
+Route::post('/add-product-to-cart', function(Request $request) {
+    $response = Cart::create([
+        'user_id' => $request->user_id,
+        'product_id' => $request->product_id,
+        'amount' => 1
+    ]);
+    return response()->json($response);
+})->name('api.add-product_to_cart');
 
 
 Route::get('/get-provinces', function(Request $request) {

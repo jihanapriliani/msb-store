@@ -1,12 +1,9 @@
-import { Link, Head } from "@inertiajs/react";
+import { Link } from "@inertiajs/react";
 
 import GuestLayout from "@/Layouts/GuestLayout/Index";
+import ProductCard from "@/Components/ProductCard";
 
-export default function LandingPage({ categories, products }) {
-    console.log(products);
-
-    console.log("ISI GAMBARNYA", products[0].images[0].image);
-
+export default function LandingPage({ categories, products, user }) {
     return (
         <GuestLayout>
             <main classNameName="main__content_wrapper">
@@ -78,81 +75,11 @@ export default function LandingPage({ categories, products }) {
                                     <div class="product__wrapper">
                                         <div class="row mb--n30">
                                             {products.map((product, index) => (
-                                                <div
-                                                    key={index}
-                                                    class="col-lg-3 col-md-4 col-sm-6 col-6 custom-col mb-30"
-                                                >
-                                                    <article class="product__card">
-                                                        <div class="product__card--thumbnail">
-                                                            <a
-                                                                class="product__card--thumbnail__link display-block"
-                                                                href="product-details.html"
-                                                            >
-                                                                <img
-                                                                    class="product__card--thumbnail__img product__primary--img w-[300px] h-[200px] object-cover"
-                                                                    src={
-                                                                        window
-                                                                            .location
-                                                                            .origin +
-                                                                        "/" +
-                                                                        product
-                                                                            .images[0]
-                                                                            .image
-                                                                    }
-                                                                    alt="product-img"
-                                                                />
-                                                                <img
-                                                                    class="product__card--thumbnail__img product__secondary--img"
-                                                                    src={
-                                                                        window
-                                                                            .location
-                                                                            .origin +
-                                                                        "/" +
-                                                                        product
-                                                                            .images[0]
-                                                                            .image
-                                                                    }
-                                                                    alt="product-img"
-                                                                />
-                                                            </a>
-
-                                                            <ul class="product__card--action d-flex align-items-center justify-content-center"></ul>
-                                                        </div>
-                                                        <div class="product__card--content">
-                                                            <h3 class="product__card--title">
-                                                                <a
-                                                                    style={{
-                                                                        fontSize:
-                                                                            "2rem",
-                                                                    }}
-                                                                    href="product-details.html"
-                                                                >
-                                                                    {
-                                                                        product.name
-                                                                    }{" "}
-                                                                </a>
-                                                            </h3>
-                                                            <div
-                                                                class="product__card--price"
-                                                                style={{
-                                                                    fontSize:
-                                                                        "1.2rem",
-                                                                }}
-                                                            >
-                                                                Rp{" "}
-                                                                {product.price.toLocaleString()}
-                                                            </div>
-                                                            <div class="product__card--footer">
-                                                                <a
-                                                                    className="product__card--btn primary__btn text-white"
-                                                                    href="cart.html"
-                                                                >
-                                                                    Add to cart
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </article>
-                                                </div>
+                                                <ProductCard
+                                                    product={product}
+                                                    index={index}
+                                                    user={user}
+                                                />
                                             ))}
                                         </div>
                                     </div>
