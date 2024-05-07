@@ -79,7 +79,7 @@ class CheckoutController extends Controller
             ],
             'customer_details' => [
                 'first_name' => $user->fullname,
-                'email' => '11211005@student.itk.ac.id',
+                'email' => $user->email,
             ],
             'enabled_payment' => [
                 'gopay', 'permata_va', 'bri_va', 'mandiri_va', 'bank_transfer', 'other_va'
