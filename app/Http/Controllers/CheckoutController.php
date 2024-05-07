@@ -108,27 +108,27 @@ class CheckoutController extends Controller
         $transaction = Transaction::where('code', $request->order_id)->firstOrFail();
 
         if($hashed == $request->signature_key) {
-            if($status == 'capture') {
+            if($request->transaction_status == 'capture') {
                 $transaction->update(['status' => 'processed']);
             }
     
-            else if($status == 'settlement') {
+            else if($request->transaction_status == 'settlement') {
                 $transaction->update(['status' => 'processed']);
             }
     
-            else if($status == 'pending') {
+            else if($request->transaction_status == 'pending') {
                 $transaction->update(['status' => 'unpaid']);
             }
     
-            else if($status == 'deny') {
+            else if($request->transaction_status == 'deny') {
                 $transaction->update(['status' => 'canceled']);
             }
     
-            else if($status == 'expire') {
+            else if($request->transaction_status == 'expire') {
                 $transaction->update(['status' => 'canceled']);
             }
     
-            else if($status == 'cancel') {
+            else if($request->transaction_status == 'cancel') {
                  $transaction->update(['status' => 'canceled']);
             }
         }
