@@ -11,6 +11,7 @@ use App\Models\City;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\Product;
+use App\Http\Controllers\CheckoutController;
 
 use Kavist\RajaOngkir\Facades\RajaOngkir;
 use Illuminate\Support\Facades\Http;
@@ -203,4 +204,7 @@ Route::post('/get-products-with-price-range', function (Request $request) {
     ]);
 
 });
+
+Route::post('/midtrans-callback', [CheckoutController::class, 'callback'])->name('user.cart.callback');
+
 

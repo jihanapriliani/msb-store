@@ -126,6 +126,5 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::post('/checkout', [CheckoutController::class, 'processPayment'])->name('checkout');
-Route::post('/checkout/midtrans-callback', [CheckoutController::class, 'callback'])->name('user.cart.callback');
 
 require __DIR__.'/auth.php';
