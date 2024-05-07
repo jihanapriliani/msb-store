@@ -64,8 +64,7 @@ export default function Index(props) {
                 if (result.isConfirmed) {
                     handleDeleteItem(item.id);
                 }
-            }
-            );
+            });
         } else {
             item.amount -= 1;
 
@@ -75,7 +74,7 @@ export default function Index(props) {
                 })
                 .then((res) => console.log(res))
                 .catch((err) => console.log(err));
-            
+
             const updatedItems = items.map((item) => {
                 if (item.product_id === product_id) {
                     return { ...item, amount: item.amount - 1 };
@@ -293,6 +292,33 @@ export default function Index(props) {
                                                 <button
                                                     class="continue__shopping--clear"
                                                     type="submit"
+                                                    onClick={() => {
+                                                        Swal.fire({
+                                                            title: "Yakin ingin menghapus semua?",
+                                                            text: "Aksi berikut tidak bisa mengembalikan data!",
+                                                            icon: "warning",
+                                                            showCancelButton: true,
+                                                            confirmButtonColor:
+                                                                "#d33",
+                                                            cancelButtonColor:
+                                                                "gray",
+                                                            confirmButtonText:
+                                                                "Hapus!",
+                                                            cancelButtonText:
+                                                                "Batal",
+                                                        }).then((result) => {
+                                                            if (
+                                                                result.isConfirmed
+                                                            ) {
+                                                                router.delete(
+                                                                    route(
+                                                                        "user.cart.clear"
+                                                                    )
+                                                                );
+                                                                window.location.reload();
+                                                            }
+                                                        });
+                                                    }}
                                                 >
                                                     Clear Cart
                                                 </button>

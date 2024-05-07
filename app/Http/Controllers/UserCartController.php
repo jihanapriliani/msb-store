@@ -106,6 +106,18 @@ class UserCartController extends Controller
     {
     }
 
+    public function clear()
+    {
+        $user = Auth::user();
+        $carts = $user->carts;
+
+        foreach ($carts as $cart) {
+            $cart->delete();
+        }
+
+        return redirect()->route("user.cart");
+    }
+
     /**
      * Remove the specified resource from storage.
      */
@@ -117,4 +129,6 @@ class UserCartController extends Controller
 
         return redirect()->route("user.cart");
     }
+
+    
 }
