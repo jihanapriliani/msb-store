@@ -42,26 +42,48 @@ export default function Index(props) {
     };
 
     const handleDecreaseAmount = (product_id) => {
-        const updatedItems = items.map((item) => {
-            if (item.product_id === product_id) {
-                if (item.amount - 1 <= 0) {
+        // decrease amount
+        // if amount is 0, delete item
+        // show popup confirmation to delete item
+        // if user click yes, delete item
+        // if user click no, do nothing
+
+        const item = items.find((item) => item.product_id === product_id);
+
+        if (item.amount - 1 === 0) {
+            Swal.fire({
+                title: "Yakin ingin menghapus?",
+                text: "Aksi berikut tidak bisa mengembalikan data!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "gray",
+                confirmButtonText: "Hapus!",
+                cancelButtonText: "Batal",
+            }).then((result) => {
+                if (result.isConfirmed) {
                     handleDeleteItem(item.id);
-                } else {
-                    axios
-                        .put(`/api/user/cart/${item.id}`, {
-                            amount: item.amount - 1,
-                        })
-                        .then((res) => console.log(res))
-                        .catch((err) => console.log(err));
-
-                    return { ...item, amount: item.amount - 1 };
                 }
-            } else {
-                return item;
             }
-        });
+            );
+        } else {
+            item.amount -= 1;
 
-        setItems(updatedItems);
+            axios
+                .put(`/api/user/cart/${item.id}`, {
+                    amount: item.amount,
+                })
+                .then((res) => console.log(res))
+                .catch((err) => console.log(err));
+            
+            const updatedItems = items.map((item) => {
+                if (item.product_id === product_id) {
+                    return { ...item, amount: item.amount - 1 };
+                } else {
+                    return item;
+                }
+            });
+        }
     };
 
     useEffect(() => {
@@ -87,6 +109,7 @@ export default function Index(props) {
                 id: id,
             })
         );
+        window.location.reload();
     };
 
     return (

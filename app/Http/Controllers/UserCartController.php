@@ -115,6 +115,6 @@ class UserCartController extends Controller
         $cart->delete();
 
 
-        return redirect()->route("user.cart")->with('success', 'Barang berhasil dihapus!');
+        return redirect()->route("user.cart");
     }
 }
