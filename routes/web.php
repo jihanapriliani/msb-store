@@ -122,6 +122,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/cart/{id}', [UserCartController::class, 'destroy'])->name('user.cart.destroy');
 
         Route::get('/checkout', [UserCartController::class, 'checkout'])->name('user.cart.checkout');
+       
 
 
       
@@ -131,6 +132,7 @@ Route::middleware('auth')->group(function () {
 
 
     Route::post('/checkout', [CheckoutController::class, 'processPayment'])->name('checkout');
+    Route::post('/checkout/midtrans-callback', [CheckoutController::class, 'callback'])->name('user.cart.callback');
 });
 
 

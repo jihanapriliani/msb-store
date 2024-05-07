@@ -12,6 +12,7 @@ use App\Models\TransactionDetail;
 
 use Midtrans\Config;
 use Midtrans\Snap;
+use Midtrans\Notification;
 
 use Inertia\Inertia;
 use Carbon\Carbon;
@@ -78,7 +79,7 @@ class CheckoutController extends Controller
             ],
             'customer_details' => [
                 'first_name' => $user->fullname,
-                'email' => $user->email,
+                'email' => '11211005@student.itk.ac.id',
             ],
             'enabled_payment' => [
                 'gopay', 'permata_va', 'bri_va', 'mandiri_va', 'bank_transfer', 'other_va'
@@ -100,6 +101,59 @@ class CheckoutController extends Controller
     }
 
     public function callback(Request $request) {
-        
+        // set konfigurasi midtrans
+        Config::$serverKey = config('services.midtrans.serverKey');
+        Config::$isProduction = config('services.midtrans.isProduction');
+        Config::$isSanitized = config('services.midtrans.isSanitized');
+        Config::$is3ds = config('services.midtrans.is3ds');
+
+        // instance midtrans notification
+        $notification = new Notification();
+
+        // assign ke variabel untuk memudahkan  koding
+        $status = $notification->transaction_status;
+        $type = $notification->payment_type;
+        $fraud = $notification->fraud_status;
+        $order_id = $notification->order_id;
+
+        // cari transaksi berdasarkan id
+        $transaction = Transaction::findOrFail($order_id);
+
+        // handle notification status
+        if($status == 'capture') {
+            if($type == 'credit_card') {
+                if($fraud == 'challenge') {
+                    $transaction->status = 'UNPAID';
+                } else {
+                    $transaction->status = 'PROCESSED';
+                }
+            }
+        }
+
+        else if($status == 'settlement') {
+            $transaction->status = 'PROCESSED';
+        }
+
+        else if($status == 'pending') {
+            $transaction->status = 'UNPAID';
+        }
+
+        else if($status == 'deny') {
+            $transaction->status = 'CANCELED';
+        }
+
+        else if($status == 'expire') {
+            $transaction->status = 'CANCELED';
+        }
+
+        else if($status == 'cancel') {
+            $transaction->status = 'CANCELED';
+        }
+
+        // simpan transaksi
+        $transaction->save();
+    
+        // kirim ke email
+    
     }
 }
