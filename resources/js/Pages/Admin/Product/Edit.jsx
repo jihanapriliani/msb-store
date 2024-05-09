@@ -288,8 +288,9 @@ export default function Edit(props) {
                                                         src={
                                                             window.location
                                                                 .origin +
-                                                            "/" +
-                                                            image.image
+                                                                "/" +
+                                                                ( image.image ??
+                                                            "assets/images/default.png")
                                                         }
                                                         alt={`Uploaded Image ${index}`}
                                                         className=" object-cover rounded-lg mr-2 w-[300px] h-[220px]"

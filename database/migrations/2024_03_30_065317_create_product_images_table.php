@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('product_images', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('product_id')->constrained('products');
-            $table->string("image");
+            $table->string("image")->nullable();
             $table->boolean('is_thumbnail');
             $table->timestamps();
         });
