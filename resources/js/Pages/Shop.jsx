@@ -366,10 +366,11 @@ export default function LandingPage({ categories, products }) {
                                                                                             window
                                                                                                 .location
                                                                                                 .origin +
-                                                                                            "/" +
-                                                                                            product
-                                                                                                .images[0]
-                                                                                                .image
+                                                                                                "/" +
+                                                                                                (product
+                                                                                                    .images[0]
+                                                                                                    .image ??
+                                                                                            "assets/images/default.png")
                                                                                         }
                                                                                         alt="product-img"
                                                                                     />

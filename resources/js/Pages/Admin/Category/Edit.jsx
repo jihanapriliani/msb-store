@@ -103,14 +103,13 @@ export default function Edit(props) {
                                             <div className="pt-3">
                                                 <img
                                                     src={
-                                                        oldImage
-                                                            ? window.location
-                                                                  .origin +
-                                                              "/" +
-                                                              oldImage
-                                                            : URL.createObjectURL(
-                                                                  data.image
-                                                              )
+                                                        oldImage ?
+                                                            window.location.origin + "/" + oldImage
+                                                            : data.image ?
+                                                                URL.createObjectURL(
+                                                                data.image
+                                                                )
+                                                                : window.location.origin +"/assets/images/default.png"
                                                     }
                                                     alt={`Uploaded Image`}
                                                     className=" object-cover rounded-lg mr-2 w-[300px] h-[220px]"

@@ -34,8 +34,9 @@ export default function LandingPage({ categories, products, user }) {
                                                 class="categories__thumbnail--img w-32 h-32"
                                                 src={
                                                     window.location.origin +
-                                                    "/" +
-                                                    category.image
+                                                        "/" +
+                                                        (category.image ??
+                                                    "assets/images/default.png")
                                                 }
                                                 alt="categories-img"
                                             />
