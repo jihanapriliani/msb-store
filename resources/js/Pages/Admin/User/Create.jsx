@@ -6,12 +6,13 @@ import { Link } from "@inertiajs/react";
 import Select from "react-select";
 
 export default function Create(props) {
-    const { data, setData, post, processing, errors, reset } = useForm({
-        fullname: "",
-        username: "",
-        email: "",
-        phone: "",
-    });
+    const { data, setData, post, processing, errors, reset, setError } =
+        useForm({
+            fullname: "",
+            username: "",
+            email: "",
+            phone: "",
+        });
 
     const submit = (e) => {
         e.preventDefault();
@@ -27,9 +28,7 @@ export default function Create(props) {
                 forceFormData: true,
                 onError: (e) => {
                     console.log(e);
-                    if (e.errors) {
-                        errors(e.errors);
-                    }
+                    setError(e);
                 },
                 onSuccess: () => {
                     reset();
@@ -75,6 +74,9 @@ export default function Create(props) {
                                         }
                                         placeholder="Example: John Doe"
                                     />
+                                    <div class="form-text text-danger">
+                                        {errors.fullname}
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
@@ -95,6 +97,9 @@ export default function Create(props) {
                                         }
                                         placeholder="example: johndoe"
                                     />
+                                    <div class="form-text text-danger">
+                                        {errors.username}
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
@@ -115,6 +120,9 @@ export default function Create(props) {
                                         }
                                         placeholder="johndoe@gmail.com"
                                     />
+                                    <div class="form-text text-danger">
+                                        {errors.email}
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
@@ -135,6 +143,9 @@ export default function Create(props) {
                                         }
                                         placeholder="08*******"
                                     />
+                                    <div class="form-text text-danger">
+                                        {errors.phone}
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
@@ -155,6 +166,9 @@ export default function Create(props) {
                                         }
                                         placeholder="******"
                                     />
+                                    <div class="form-text text-danger">
+                                        {errors.password}
+                                    </div>
                                 </div>
 
                                 <button

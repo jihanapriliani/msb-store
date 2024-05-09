@@ -1,18 +1,21 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout/Index";
 import React, { useState } from "react";
 
-import { useForm, router } from "@inertiajs/react";
+import { router, useForm } from "@inertiajs/react";
 import { Link } from "@inertiajs/react";
 
 export default function Edit(props) {
     const { category } = props;
 
-    const { data, setData, put, processing, errors, reset } = useForm({
-        display_name: category.display_name,
-        image: category.image,
-    });
+    const { data, setData, put, processing, errors, reset, setError } = useForm(
+        {
+            display_name: category.display_name,
+            image_file: null,
+            image : category.image
+        }
+    );
 
-    console.log("DATA APA AJA", category);
+    console.log(errors);
 
     const submit = (e) => {
         e.preventDefault();
@@ -26,12 +29,9 @@ export default function Edit(props) {
                 ...data,
             },
             {
-                forceFormData: true,
                 onError: (e) => {
                     console.log(e);
-                    if (e.errors) {
-                        form.errors(e.errors);
-                    }
+                    setError(e);
                 },
             }
         );
@@ -81,6 +81,9 @@ export default function Edit(props) {
                                         }
                                         placeholder="example: Bolts.."
                                     />
+                                    <div className="form-text text-danger">
+                                        {errors.display_name}
+                                    </div>
                                     <div id="emailHelp" className="form-text">
                                         Display name adalah nama yang tampil
                                         pada halaman.
@@ -99,17 +102,22 @@ export default function Edit(props) {
                                     </div>
 
                                     <div className="flex items-center flex-wrap gap-3">
-                                        {oldImage || data.image ? (
+                                        {oldImage || data.image_file ? (
                                             <div className="pt-3">
                                                 <img
                                                     src={
-                                                        oldImage ?
-                                                            window.location.origin + "/" + oldImage
-                                                            : data.image ?
-                                                                URL.createObjectURL(
-                                                                data.image
-                                                                )
-                                                                : window.location.origin +"/assets/images/default.png"
+                                                        oldImage
+                                                            ? window.location
+                                                                  .origin +
+                                                              "/" +
+                                                              oldImage
+                                                            : data.image_file
+                                                            ? URL.createObjectURL(
+                                                                  data.image_file
+                                                              )
+                                                            : window.location
+                                                                  .origin +
+                                                              "/assets/images/default.png"
                                                     }
                                                     alt={`Uploaded Image`}
                                                     className=" object-cover rounded-lg mr-2 w-[300px] h-[220px]"
@@ -161,12 +169,15 @@ export default function Edit(props) {
                                                         className="hidden"
                                                         onChange={(e) =>
                                                             setData(
-                                                                "image",
+                                                                "image_file",
                                                                 e.target
                                                                     .files[0]
                                                             )
                                                         }
                                                     />
+                                                    <div className="form-text text-danger">
+                                                        {errors.image}
+                                                    </div>
                                                 </label>
                                             </div>
                                         )}

@@ -93,6 +93,7 @@ class UserController extends Controller
             'fullname' => 'required|string',
             'email' => 'required|email|unique:users,email,' . $id,
             'password' => 'nullable|string',
+            'phone' => 'required|string',
         ]);
 
         $user = User::findOrFail($id);
