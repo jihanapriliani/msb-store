@@ -36,6 +36,9 @@ export default function Create(props) {
                         form.errors(e.errors);
                     }
                 },
+                onSuccess: () => {
+                    reset();
+                },
             }
         );
     };

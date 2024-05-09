@@ -23,7 +23,10 @@ class UserCartController extends Controller
 
         $user = Auth::user();
 
-        $carts = $user->load(['carts', 'carts.product.images']);
+        $carts = $user->load([
+            'carts'=> function($query) {
+                $query->with('product.images')->orderBy('created_at', 'desc');
+            }]);
 
         return Inertia::render('User/Cart/Index', [
            'carts' => $carts['carts']
@@ -104,6 +107,26 @@ class UserCartController extends Controller
      */
     public function update(Request $request, string $cart)
     {
+    }
+
+    public function addToCartAPI(Request $request){
+
+        $cart = Cart::where('user_id', $request->user_id)
+            ->where('product_id', $request->product_id)
+            ->first();
+
+        if ($cart) {
+            $cart->amount += 1;
+            $cart->save();
+            $response = $cart;
+        } else {
+            $response = Cart::create([
+                'user_id' => $request->user_id,
+                'product_id' => $request->product_id,
+                'amount' => 1
+            ]);
+        }
+        return response()->json($response);
     }
 
     public function clear()

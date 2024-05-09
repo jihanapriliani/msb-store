@@ -29,7 +29,6 @@ class ProductController extends Controller
      */
     public function create()
     {
-
         $categories = Category::all();
 
         return Inertia::render('Admin/Product/Create', [
@@ -45,7 +44,7 @@ class ProductController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string',
             'description' => 'required|string',
-            'category' => 'required',
+            'category' => 'required|exists:categories,id',
             'stock' => 'required',
             'price' => 'required',
             'unit_weight' => 'required',
@@ -118,8 +117,8 @@ class ProductController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string',
-            'description' => 'required|string',
-            'category' => 'required',
+            'description' => 'required|exists:categories,id',
+            'category' => 'required|in:',
             'stock' => 'required',
             'price' => 'required',
             'unit_weight' => 'required',
