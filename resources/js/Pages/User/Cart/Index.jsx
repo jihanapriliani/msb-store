@@ -185,10 +185,10 @@ export default function Index(props) {
                                                                                                 .location
                                                                                                 .origin +
                                                                                             "/" +
-                                                                                            cart
+                                                                                            (cart
                                                                                                 .product
                                                                                                 .images[0]
-                                                                                                .image
+                                                                                                .image ?? "assets/images/default.png")
                                                                                         }
                                                                                         alt="cart-product"
                                                                                     />
