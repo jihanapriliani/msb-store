@@ -1,11 +1,49 @@
 import ApplicationLogo from "@/Components/ApplicationLogo";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
+import { useState } from "react";
 
 import "../../../assets/guest-layout/css/style.css";
 import "../../../assets/guest-layout/css/custom.css";
 import "../../../assets/guest-layout/css/vendor/bootstrap.min.css";
 
-export default function Guest({ children }) {
+export default function Guest({ children, setIsLoading }) {
+    const [search, setSearch] = useState("");
+
+    if (!setIsLoading) {
+        setIsLoading = () => { };
+    }
+
+    const handleSearch = () => {
+        const url = new URL(route(route().current()).toString());
+
+        if (!url.toString().includes(route("shop").toString())) { 
+            url.pathname = "/shop"
+            router.get(route("shop"), {
+                search: search,
+                only: ["products"],
+                onFinish: () => {
+                    setIsLoading(false);
+                },
+            });
+
+            return;
+        }
+        
+        url.searchParams.set("search", search);
+        if (window.location.href !== url.toString()) {
+            setIsLoading(true);
+            router.reload({
+                data: {
+                    search: search,
+                },
+                only: ["products"],
+                onFinish: () => {
+                    setIsLoading(false);
+                },
+            });
+        }
+    };
+
     return (
         <>
             <header className="header__section">
@@ -178,12 +216,17 @@ export default function Guest({ children }) {
                                                 className="header__search--input"
                                                 placeholder="Search For Products..."
                                                 type="text"
+                                                value={search}
+                                                onChange={(e) =>
+                                                    setSearch(e.target.value)
+                                                }
                                             />
                                         </label>
                                         <button
                                             className="header__search--button bg__primary text-white"
                                             aria-label="search button"
-                                            type="submit"
+                                            type="button"
+                                            onClick={handleSearch}
                                         >
                                             <svg
                                                 width="16"

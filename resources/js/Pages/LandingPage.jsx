@@ -27,7 +27,9 @@ export default function LandingPage({ categories, products, user }) {
                                 >
                                     <a
                                         class="categories__card--link"
-                                        href="shop.html"
+                                        href={route("shop", {
+                                            categories: category.id,
+                                        })}
                                     >
                                         <div class="categories__thumbnail">
                                             <img

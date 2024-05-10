@@ -1,12 +1,13 @@
 <?php
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\CartController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ShopController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TransactionDetailController;
+use App\Http\Controllers\UserController;
 
 use App\Http\Controllers\UserTransactionController;
 use App\Http\Controllers\UserProfileController;
@@ -34,25 +35,9 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 |
 */
 
-Route::get('/', function () {
-    $user = Auth::user();    
-    $products = Product::with('images')->get();
-    $categories = Category::take(10)->get();
-    return Inertia::render('LandingPage', [
-        'products' => $products,
-        'categories' => $categories,
-        'user' => $user
-    ]);
-})->name('landing-page');
+Route::get('/', [ShopController::class, "landing"])->name('landing-page');
 
-Route::get('/shop', function () {
-    $products = Product::with('images')->get();
-    $categories = Category::all();
-    return Inertia::render('Shop', [
-        'products' => $products,
-        'categories' => $categories
-    ]);
-})->name("shop");
+Route::get('/shop', [ShopController::class, "shop"])->name("shop");
 
 Route::get('/detail-product', function () {
     
