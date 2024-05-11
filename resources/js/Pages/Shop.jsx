@@ -13,21 +13,6 @@ export default function LandingPage({ categories, products }) {
     const [startPrice, setStartPrice] = useState([]);
     const [endPrice, setEndPrice] = useState([]);
 
-    const handleCategoryCBClicked = (data) => {
-        const categoryExist = selectedCategories.find(
-            (category) => category.id === data.id
-        );
-
-        if (categoryExist) {
-            const filteredCategories = selectedCategories.filter(
-                (category) => category.id !== data.id
-            );
-            setSelectedCategories(filteredCategories);
-        } else {
-            setSelectedCategories([...selectedCategories, data]);
-        }
-    };
-
     useEffect(() => {
         setRenderedProducts(products);
     }, []);
@@ -47,6 +32,21 @@ export default function LandingPage({ categories, products }) {
                 });
         }
     }, [selectedCategories]);
+
+    const handleCategoryCBClicked = (data) => {
+        const categoryExist = selectedCategories.find(
+            (category) => category.id === data.id
+        );
+
+        if (categoryExist) {
+            const filteredCategories = selectedCategories.filter(
+                (category) => category.id !== data.id
+            );
+            setSelectedCategories(filteredCategories);
+        } else {
+            setSelectedCategories([...selectedCategories, data]);
+        }
+    };
 
     const handleFilterWithPrice = () => {
         if (parseInt(startPrice) > parseInt(endPrice)) {
