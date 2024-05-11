@@ -13,16 +13,14 @@ export default function LandingPage({ categories, products }) {
     const urlParams = new URLSearchParams(window.location.search);
 
     const [selectedCategories, setSelectedCategories] = useState([
-        ...urlParams.getAll("categories").map(it => parseInt(it)) ?? [],
+        ...(urlParams.getAll("categories").map((it) => parseInt(it)) ?? []),
     ]);
 
     console.log(selectedCategories);
     const [startPrice, setStartPrice] = useState(
         urlParams.get("startPrice") ?? ""
     );
-    const [endPrice, setEndPrice] = useState(
-        urlParams.get("endPrice") ?? ""
-    );
+    const [endPrice, setEndPrice] = useState(urlParams.get("endPrice") ?? "");
     const [isLoading, setIsLoading] = useState(false);
     const [orderBy, setOrderBy] = useState(1);
 
@@ -108,8 +106,7 @@ export default function LandingPage({ categories, products }) {
         orderBy,
     ]);
 
-
-    const handleCategoryFilter = (e,category) => {
+    const handleCategoryFilter = (e, category) => {
         const categoryId = category.id;
         const isChecked = e.target.checked;
 
@@ -180,9 +177,13 @@ export default function LandingPage({ categories, products }) {
                                                         )}
                                                         type="checkbox"
                                                         onChange={(e) => {
-                                                            console.log(e.currentTarget.value);
+                                                            console.log(
+                                                                e.currentTarget
+                                                                    .value
+                                                            );
                                                             handleCategoryFilter(
-                                                                e, category
+                                                                e,
+                                                                category
                                                             );
                                                         }}
                                                     />
@@ -254,7 +255,6 @@ export default function LandingPage({ categories, products }) {
                                                                         .value
                                                                 )
                                                             }
-                                                            
                                                         />
                                                     </div>
                                                 </div>
