@@ -14,6 +14,23 @@ export default function Index(props) {
     const [items, setItems] = useState(carts);
     const [subTotal, setSubTotal] = useState(0);
 
+    useEffect(() => {
+        const currTotalItems = items.reduce((acc, curr) => {
+            const currTotal = curr.amount * curr.product.price;
+            return acc + currTotal;
+        }, 0);
+
+        setSubTotal(currTotalItems);
+
+        if (flash.success) {
+            toast.success(flash.success, {
+                position: "top-right",
+            });
+
+            flash.success = null;
+        }
+    }, [items]);
+
     const handleIncreaseAmount = (product_id) => {
         const updatedItems = items.map((item) => {
             if (item.product_id === product_id) {
@@ -84,23 +101,6 @@ export default function Index(props) {
                 .catch((err) => console.log(err));
         }
     };
-
-    useEffect(() => {
-        const currTotalItems = items.reduce((acc, curr) => {
-            const currTotal = curr.amount * curr.product.price;
-            return acc + currTotal;
-        }, 0);
-
-        setSubTotal(currTotalItems);
-
-        if (flash.success) {
-            toast.success(flash.success, {
-                position: "top-right",
-            });
-
-            flash.success = null;
-        }
-    }, [items]);
 
     const handleDeleteItem = (id) => {
         router.delete(
