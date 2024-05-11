@@ -34,67 +34,70 @@ export default function LandingPage({ categories, products }) {
     useEffect(() => {
         const url = new URL(route(route().current()).toString());
 
-        // delete all query params
-        url.searchParams.delete("page");
-        url.searchParams.delete("categories");
-        url.searchParams.delete("startPrice");
-        url.searchParams.delete("endPrice");
-        url.searchParams.delete("search");
+        // Check if there are changes in startPrice, endPrice, or selectedCategories
+        const hasPriceChanges =
+            (startPrice !== undefined &&
+                url.searchParams.get("startPrice") !== startPrice.toString()) ||
+            (endPrice !== undefined &&
+                url.searchParams.get("endPrice") !== endPrice.toString());
+        const hasCategoryChanges =
+            selectedCategories.join(",") !== url.searchParams.get("categories");
 
-        if (startPrice && endPrice && startPrice > 0 && endPrice > 0) {
-            if (startPrice > endPrice || startPrice < 0 || endPrice < 0) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Tidak Bisa Filter Harga",
-                    text: "Harga Mulai Tidak Boleh Lebih Besar dari Batas Harga Akhir atau Harga tidak boleh minus!",
-                });
-            } else {
-                url.searchParams.set("startPrice", startPrice);
-                url.searchParams.set("endPrice", endPrice);
+        if (hasPriceChanges || hasCategoryChanges) {
+            if (startPrice && endPrice && startPrice > 0 && endPrice > 0) {
+                if (startPrice > endPrice || startPrice < 0 || endPrice < 0) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Tidak Bisa Filter Harga",
+                        text: "Harga Mulai Tidak Boleh Lebih Besar dari Batas Harga Akhir atau Harga tidak boleh minus!",
+                    });
+                } else {
+                    url.searchParams.set("startPrice", startPrice);
+                    url.searchParams.set("endPrice", endPrice);
+                }
+            } else if (startPrice) {
+                if (startPrice < 0) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Tidak Bisa Filter Harga",
+                        text: "Harga tidak boleh minus!",
+                    });
+                } else {
+                    url.searchParams.set("startPrice", startPrice);
+                }
+            } else if (endPrice) {
+                if (endPrice < 0) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Tidak Bisa Filter Harga",
+                        text: "Harga tidak boleh minus!",
+                    });
+                } else {
+                    url.searchParams.set("endPrice", endPrice);
+                }
             }
-        } else if (startPrice) {
-            if (startPrice < 0) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Tidak Bisa Filter Harga",
-                    text: "Harga tidak boleh minus!",
-                });
-            } else {
-                url.searchParams.set("startPrice", startPrice);
-                url.searchParams.delete("endPrice");
-            }
-        } else if (endPrice) {
-            if (endPrice < 0) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Tidak Bisa Filter Harga",
-                    text: "Harga tidak boleh minus!",
-                });
-            } else {
-                url.searchParams.delete("startPrice");
-                url.searchParams.set("endPrice", endPrice);
-            }
-        } else {
-            url.searchParams.delete("startPrice");
-            url.searchParams.delete("endPrice");
-        }
 
-        if (window.location.href !== url.toString()) {
-            setIsLoading(true);
-            router.reload({
-                data: {
-                    categories: selectedCategories.join(","),
-                    startPrice: startPrice,
-                    endPrice: endPrice,
-                    page: pagination.pageIndex + 1,
-                    perPage: pagination.pageSize,
-                    orderBy: orderBy,
-                },
-                only: ["products"],
-                onFinish: () => {
-                    setIsLoading(false);
-                },
-            });
+            // Set categories parameter
+            url.searchParams.set("categories", selectedCategories.join(","));
+
+            // Perform reload only if URL has changed
+            if (window.location.href !== url.toString()) {
+                setIsLoading(true);
+                router.reload({
+                    data: {
+                        categories: selectedCategories.join(","),
+                        startPrice: startPrice,
+                        endPrice: endPrice,
+                        page: pagination.pageIndex + 1,
+                        perPage: pagination.pageSize,
+                        orderBy: orderBy,
+                    },
+                    only: ["products"],
+                    onFinish: () => {
+                        setIsLoading(false);
+                    },
+                });
+            }
         }
     }, [
         selectedCategories,
@@ -104,6 +107,7 @@ export default function LandingPage({ categories, products }) {
         pagination.pageSize,
         orderBy,
     ]);
+
 
     const handleCategoryFilter = (e,category) => {
         const categoryId = category.id;
