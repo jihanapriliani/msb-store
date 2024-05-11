@@ -44,10 +44,6 @@ export default function LandingPage({ categories, products }) {
                     const { data } = res;
 
                     setRenderedProducts(data.data.products);
-                    console.log(
-                        "INI DATA YANG DIAMBIL DARI DB",
-                        data.data.products
-                    );
                 });
         }
     }, [selectedCategories]);
@@ -81,20 +77,20 @@ export default function LandingPage({ categories, products }) {
 
     return (
         <GuestLayout>
-            <main class="main__content_wrapper">
-                <section class="breadcrumb__section breadcrumb__bg">
-                    <div class="container">
-                        <div class="row row-cols-1">
-                            <div class="col">
-                                <div class="breadcrumb__content text-center">
-                                    <h1 class="breadcrumb__content--title">
+            <main className="main__content_wrapper">
+                <section className="breadcrumb__section breadcrumb__bg">
+                    <div className="container">
+                        <div className="row row-cols-1">
+                            <div className="col">
+                                <div className="breadcrumb__content text-center">
+                                    <h1 className="breadcrumb__content--title">
                                         Product
                                     </h1>
-                                    <ul class="breadcrumb__content--menu d-flex justify-content-center">
-                                        <li class="breadcrumb__content--menu__items">
+                                    <ul className="breadcrumb__content--menu d-flex justify-content-center">
+                                        <li className="breadcrumb__content--menu__items">
                                             <a href="index.html">Home</a>
                                         </li>
-                                        <li class="breadcrumb__content--menu__items">
+                                        <li className="breadcrumb__content--menu__items">
                                             <span>Product</span>
                                         </li>
                                     </ul>
@@ -104,32 +100,32 @@ export default function LandingPage({ categories, products }) {
                     </div>
                 </section>
 
-                <div class="shop__section section--padding">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-xl-3 col-lg-4 shop-col-width-lg-4">
-                                <div class="shop__sidebar--widget widget__area d-none d-lg-block">
-                                    <div class="single__widget widget__bg">
-                                        <h2 class="widget__title h3">
+                <div className="shop__section section--padding">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-xl-3 col-lg-4 shop-col-width-lg-4">
+                                <div className="shop__sidebar--widget widget__area d-none d-lg-block">
+                                    <div className="single__widget widget__bg">
+                                        <h2 className="widget__title h3">
                                             Categories
                                         </h2>
-                                        <ul class="widget__form--check">
+                                        <ul className="widget__form--check">
                                             {categories.map(
                                                 (category, index) => (
                                                     <li
-                                                        class="widget__form--check__list"
+                                                        className="widget__form--check__list"
                                                         key={index}
                                                     >
                                                         <label
-                                                            class="widget__form--check__label"
-                                                            for="check1"
+                                                            className="widget__form--check__label"
+                                                            htmlFor="check1"
                                                         >
                                                             {
                                                                 category.display_name
                                                             }
                                                         </label>
                                                         <input
-                                                            class="widget__form--check__input"
+                                                            className="widget__form--check__input"
                                                             id="check1"
                                                             type="checkbox"
                                                             onClick={() =>
@@ -138,31 +134,31 @@ export default function LandingPage({ categories, products }) {
                                                                 )
                                                             }
                                                         />
-                                                        <span class="widget__form--checkmark"></span>
+                                                        <span className="widget__form--checkmark"></span>
                                                     </li>
                                                 )
                                             )}
                                         </ul>
                                     </div>
-                                    <div class="single__widget price__filter widget__bg">
-                                        <h2 class="widget__title h3">
+                                    <div className="single__widget price__filter widget__bg">
+                                        <h2 className="widget__title h3">
                                             Filter By Price
                                         </h2>
-                                        <form class="price__filter--form">
-                                            <div class="price__filter--form__inner mb-15 d-flex align-items-center">
-                                                <div class="price__filter--group">
+                                        <form className="price__filter--form">
+                                            <div className="price__filter--form__inner mb-15 d-flex align-items-center">
+                                                <div className="price__filter--group">
                                                     <label
-                                                        class="price__filter--label"
-                                                        for="Filter-Price-GTE2"
+                                                        className="price__filter--label"
+                                                        htmlFor="Filter-Price-GTE2"
                                                     >
                                                         Mulai Dari
                                                     </label>
-                                                    <div class="price__filter--input border-radius-5 d-flex align-items-center">
-                                                        <span class="price__filter--currency">
+                                                    <div className="price__filter--input border-radius-5 d-flex align-items-center">
+                                                        <span className="price__filter--currency">
                                                             Rp
                                                         </span>
                                                         <input
-                                                            class="price__filter--input__field border-0"
+                                                            className="price__filter--input__field border-0"
                                                             name="filter.v.price.gte"
                                                             id="Filter-Price-GTE2"
                                                             type="number"
@@ -178,22 +174,22 @@ export default function LandingPage({ categories, products }) {
                                                         />
                                                     </div>
                                                 </div>
-                                                <div class="price__divider">
+                                                <div className="price__divider">
                                                     <span>-</span>
                                                 </div>
-                                                <div class="price__filter--group">
+                                                <div className="price__filter--group">
                                                     <label
-                                                        class="price__filter--label"
-                                                        for="Filter-Price-LTE2"
+                                                        className="price__filter--label"
+                                                        htmlFor="Filter-Price-LTE2"
                                                     >
                                                         Hingga
                                                     </label>
-                                                    <div class="price__filter--input border-radius-5 d-flex align-items-center">
-                                                        <span class="price__filter--currency">
+                                                    <div className="price__filter--input border-radius-5 d-flex align-items-center">
+                                                        <span className="price__filter--currency">
                                                             Rp
                                                         </span>
                                                         <input
-                                                            class="price__filter--input__field border-0"
+                                                            className="price__filter--input__field border-0"
                                                             name="filter.v.price.lte"
                                                             id="Filter-Price-LTE2"
                                                             type="number"
@@ -211,7 +207,7 @@ export default function LandingPage({ categories, products }) {
                                                 </div>
                                             </div>
                                             <button
-                                                class="primary__btn price__filter--btn"
+                                                className="primary__btn price__filter--btn"
                                                 type="button"
                                                 onClick={handleFilterWithPrice}
                                             >
@@ -221,26 +217,26 @@ export default function LandingPage({ categories, products }) {
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-9 col-lg-8 shop-col-width-lg-8">
-                                <div class="shop__right--sidebar">
-                                    <div class="shop__product--wrapper">
-                                        <div class="shop__header d-flex align-items-center justify-content-between mb-30">
-                                            <div class="product__view--mode d-flex align-items-center">
+                            <div className="col-xl-9 col-lg-8 shop-col-width-lg-8">
+                                <div className="shop__right--sidebar">
+                                    <div className="shop__product--wrapper">
+                                        <div className="shop__header d-flex align-items-center justify-content-between mb-30">
+                                            <div className="product__view--mode d-flex align-items-center">
                                                 <button
-                                                    class="widget__filter--btn d-flex d-lg-none align-items-center"
+                                                    className="widget__filter--btn d-flex d-lg-none align-items-center"
                                                     data-offcanvas
                                                 >
                                                     <svg
-                                                        class="widget__filter--btn__icon"
+                                                        className="widget__filter--btn__icon"
                                                         xmlns="http://www.w3.org/2000/svg"
                                                         viewBox="0 0 512 512"
                                                     >
                                                         <path
                                                             fill="none"
                                                             stroke="currentColor"
-                                                            stroke-linecap="round"
-                                                            stroke-linejoin="round"
-                                                            stroke-width="28"
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            strokeWidth="28"
                                                             d="M368 128h80M64 128h240M368 384h80M64 384h240M208 256h240M64 256h80"
                                                         />
                                                         <circle
@@ -249,9 +245,9 @@ export default function LandingPage({ categories, products }) {
                                                             r="28"
                                                             fill="none"
                                                             stroke="currentColor"
-                                                            stroke-linecap="round"
-                                                            stroke-linejoin="round"
-                                                            stroke-width="28"
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            strokeWidth="28"
                                                         />
                                                         <circle
                                                             cx="176"
@@ -259,9 +255,9 @@ export default function LandingPage({ categories, products }) {
                                                             r="28"
                                                             fill="none"
                                                             stroke="currentColor"
-                                                            stroke-linecap="round"
-                                                            stroke-linejoin="round"
-                                                            stroke-width="28"
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            strokeWidth="28"
                                                         />
                                                         <circle
                                                             cx="336"
@@ -269,24 +265,23 @@ export default function LandingPage({ categories, products }) {
                                                             r="28"
                                                             fill="none"
                                                             stroke="currentColor"
-                                                            stroke-linecap="round"
-                                                            stroke-linejoin="round"
-                                                            stroke-width="28"
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            strokeWidth="28"
                                                         />
                                                     </svg>
-                                                    <span class="widget__filter--btn__text">
+                                                    <span className="widget__filter--btn__text">
                                                         Filter
                                                     </span>
                                                 </button>
-                                                <div class="product__view--mode__list product__short--by align-items-center d-flex ">
-                                                    <label class="product__view--label">
+                                                <div className="product__view--mode__list product__short--by align-items-center d-flex ">
+                                                    <label className="product__view--label">
                                                         Prev Page :
                                                     </label>
-                                                    <div class="select shop__header--select">
-                                                        <select class="product__view--select">
+                                                    <div className="select shop__header--select">
+                                                        <select className="product__view--select">
                                                             <option
-                                                                selected
-                                                                value="1"
+                                                                defaultValue={1}
                                                             >
                                                                 65
                                                             </option>
@@ -305,15 +300,14 @@ export default function LandingPage({ categories, products }) {
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="product__view--mode__list product__short--by align-items-center d-flex">
-                                                    <label class="product__view--label">
+                                                <div className="product__view--mode__list product__short--by align-items-center d-flex">
+                                                    <label className="product__view--label">
                                                         Sort By :
                                                     </label>
-                                                    <div class="select shop__header--select">
-                                                        <select class="product__view--select">
+                                                    <div className="select shop__header--select">
+                                                        <select className="product__view--select">
                                                             <option
-                                                                selected
-                                                                value="1"
+                                                                defaultValue={1}
                                                             >
                                                                 Sort by latest
                                                             </option>
@@ -331,17 +325,17 @@ export default function LandingPage({ categories, products }) {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <p class="product__showing--count">
+                                            <p className="product__showing--count">
                                                 Showing 1–9 of 21 results
                                             </p>
                                         </div>
-                                        <div class="tab_content">
+                                        <div className="tab_content">
                                             <div
                                                 id="product_grid"
-                                                class="tab_pane active show"
+                                                className="tab_pane active show"
                                             >
-                                                <div class="product__section--inner">
-                                                    <div class="row mb--n30">
+                                                <div className="product__section--inner">
+                                                    <div className="row mb--n30">
                                                         {renderedProducts &&
                                                             renderedProducts.map(
                                                                 (
@@ -352,16 +346,16 @@ export default function LandingPage({ categories, products }) {
                                                                         key={
                                                                             index
                                                                         }
-                                                                        class="col-lg-3 col-md-4 col-sm-6 col-6 custom-col mb-30"
+                                                                        className="col-lg-3 col-md-4 col-sm-6 col-6 custom-col mb-30"
                                                                     >
-                                                                        <article class="product__card">
-                                                                            <div class="product__card--thumbnail">
+                                                                        <article className="product__card">
+                                                                            <div className="product__card--thumbnail">
                                                                                 <a
-                                                                                    class="product__card--thumbnail__link display-block"
+                                                                                    className="product__card--thumbnail__link display-block"
                                                                                     href="product-details.html"
                                                                                 >
                                                                                     <img
-                                                                                        class="product__card--thumbnail__img product__primary--img w-[300px] h-[200px] object-cover"
+                                                                                        className="product__card--thumbnail__img product__primary--img w-[300px] h-[200px] object-cover"
                                                                                         src={
                                                                                             window
                                                                                                 .location
@@ -374,7 +368,7 @@ export default function LandingPage({ categories, products }) {
                                                                                         alt="product-img"
                                                                                     />
                                                                                     <img
-                                                                                        class="product__card--thumbnail__img product__secondary--img"
+                                                                                        className="product__card--thumbnail__img product__secondary--img"
                                                                                         src={
                                                                                             window
                                                                                                 .location
@@ -388,21 +382,21 @@ export default function LandingPage({ categories, products }) {
                                                                                     />
                                                                                 </a>
                                                                             </div>
-                                                                            <div class="product__card--content">
-                                                                                <h3 class="product__card--title">
+                                                                            <div className="product__card--content">
+                                                                                <h3 className="product__card--title">
                                                                                     <a href="product-details.html">
                                                                                         {
                                                                                             product.name
                                                                                         }{" "}
                                                                                     </a>
                                                                                 </h3>
-                                                                                <div class="product__card--price">
-                                                                                    <span class="current__price">
+                                                                                <div className="product__card--price">
+                                                                                    <span className="current__price">
                                                                                         Rp{" "}
                                                                                         {product.price.toLocaleString()}
                                                                                     </span>
                                                                                 </div>
-                                                                                <div class="product__card--footer">
+                                                                                <div className="product__card--footer">
                                                                                     <a
                                                                                         className="product__card--btn primary__btn text-white"
                                                                                         href="cart.html"
@@ -421,13 +415,13 @@ export default function LandingPage({ categories, products }) {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="pagination__area">
-                                            <nav class="pagination justify-content-center">
-                                                <ul class="pagination__wrapper d-flex align-items-center justify-content-center">
-                                                    <li class="pagination__list">
+                                        <div className="pagination__area">
+                                            <nav className="pagination justify-content-center">
+                                                <ul className="pagination__wrapper d-flex align-items-center justify-content-center">
+                                                    <li className="pagination__list">
                                                         <a
                                                             href="shop.html"
-                                                            class="pagination__item--arrow  link "
+                                                            className="pagination__item--arrow  link "
                                                         >
                                                             <svg
                                                                 xmlns="http://www.w3.org/2000/svg"
@@ -438,50 +432,50 @@ export default function LandingPage({ categories, products }) {
                                                                 <path
                                                                     fill="none"
                                                                     stroke="currentColor"
-                                                                    stroke-linecap="round"
-                                                                    stroke-linejoin="round"
-                                                                    stroke-width="48"
+                                                                    strokeLinecap="round"
+                                                                    strokeLinejoin="round"
+                                                                    strokeWidth="48"
                                                                     d="M244 400L100 256l144-144M120 256h292"
                                                                 />
                                                             </svg>
-                                                            <span class="visually-hidden">
+                                                            <span className="visually-hidden">
                                                                 page left arrow
                                                             </span>
                                                         </a>
                                                     </li>
-                                                    <li class="pagination__list">
-                                                        <span class="pagination__item pagination__item--current">
+                                                    <li className="pagination__list">
+                                                        <span className="pagination__item pagination__item--current">
                                                             1
                                                         </span>
                                                     </li>
-                                                    <li class="pagination__list">
+                                                    <li className="pagination__list">
                                                         <a
                                                             href="shop.html"
-                                                            class="pagination__item link"
+                                                            className="pagination__item link"
                                                         >
                                                             2
                                                         </a>
                                                     </li>
-                                                    <li class="pagination__list">
+                                                    <li className="pagination__list">
                                                         <a
                                                             href="shop.html"
-                                                            class="pagination__item link"
+                                                            className="pagination__item link"
                                                         >
                                                             3
                                                         </a>
                                                     </li>
-                                                    <li class="pagination__list">
+                                                    <li className="pagination__list">
                                                         <a
                                                             href="shop.html"
-                                                            class="pagination__item link"
+                                                            className="pagination__item link"
                                                         >
                                                             4
                                                         </a>
                                                     </li>
-                                                    <li class="pagination__list">
+                                                    <li className="pagination__list">
                                                         <a
                                                             href="shop.html"
-                                                            class="pagination__item--arrow  link "
+                                                            className="pagination__item--arrow  link "
                                                         >
                                                             <svg
                                                                 xmlns="http://www.w3.org/2000/svg"
@@ -492,13 +486,13 @@ export default function LandingPage({ categories, products }) {
                                                                 <path
                                                                     fill="none"
                                                                     stroke="currentColor"
-                                                                    stroke-linecap="round"
-                                                                    stroke-linejoin="round"
-                                                                    stroke-width="48"
+                                                                    strokeLinecap="round"
+                                                                    strokeLinejoin="round"
+                                                                    strokeWidth="48"
                                                                     d="M268 112l144 144-144 144M392 256H100"
                                                                 />
                                                             </svg>
-                                                            <span class="visually-hidden">
+                                                            <span className="visually-hidden">
                                                                 page right arrow
                                                             </span>
                                                         </a>

@@ -14,20 +14,23 @@ export default function Guest({ children }) {
                         <div className="header__topbar--inner d-flex align-items-center justify-content-between">
                             <ul className="header__topbar--info d-none d-lg-flex">
                                 <li className="header__info--list">
-                                    <a className="header__info--link" href=" ">
+                                    <Link
+                                        className="header__info--link"
+                                        href=""
+                                    >
                                         DELIVERY
-                                    </a>
+                                    </Link>
                                 </li>
                                 <li className="header__info--list">
-                                    <a
+                                    <Link
                                         className="header__info--link"
                                         href="privacy-policy.html"
                                     >
                                         GUARANTEE
-                                    </a>
+                                    </Link>
                                 </li>
                                 <li className="header__info--list">
-                                    <a
+                                    <Link
                                         className="header__info--link flex items-center"
                                         href="mailto:mandirisejatiborneo@gmail.com"
                                     >
@@ -44,13 +47,13 @@ export default function Guest({ children }) {
                                             />
                                         </svg>
                                         mandirisejatiborneo@gmail.com
-                                    </a>
+                                    </Link>
                                 </li>
                             </ul>
                             <div className="header__top--right d-flex align-items-center">
                                 <ul className="social__share d-flex">
                                     <li className="social__share--list">
-                                        <a
+                                        <Link
                                             className="social__share--icon"
                                             target="_blank"
                                             href="https://www.facebook.com"
@@ -70,11 +73,11 @@ export default function Guest({ children }) {
                                             <span className="visually-hidden">
                                                 Facebook
                                             </span>
-                                        </a>
+                                        </Link>
                                     </li>
 
                                     <li className="social__share--list">
-                                        <a
+                                        <Link
                                             className="social__share--icon"
                                             target="_blank"
                                             href="https://www.instagram.com"
@@ -94,10 +97,10 @@ export default function Guest({ children }) {
                                             <span className="visually-hidden">
                                                 Instagram
                                             </span>
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li className="social__share--list">
-                                        <a
+                                        <Link
                                             className="social__share--icon"
                                             target="_blank"
                                             href="https://www.youtube.com"
@@ -117,7 +120,7 @@ export default function Guest({ children }) {
                                             <span className="visually-hidden">
                                                 Youtube
                                             </span>
-                                        </a>
+                                        </Link>
                                     </li>
                                 </ul>
                             </div>
@@ -128,7 +131,7 @@ export default function Guest({ children }) {
                     <div className="container">
                         <div className="main__header--inner position__relative d-flex justify-content-between align-items-center">
                             <div className="offcanvas__header--menu__open ">
-                                <a
+                                <Link
                                     className="offcanvas__header--menu__open--btn"
                                     href="javascript:void(0)"
                                     data-offcanvas
@@ -150,7 +153,7 @@ export default function Guest({ children }) {
                                     <span className="visually-hidden">
                                         Offcanvas Menu Open
                                     </span>
-                                </a>
+                                </Link>
                             </div>
                             <div className="main__logo">
                                 <h1 className="main__logo--title">
@@ -163,9 +166,17 @@ export default function Guest({ children }) {
                                 <form
                                     className="d-flex header__search--form border-radius-5"
                                     action="#"
+                                    onSubmit={() =>
+                                        console.log("submit search")
+                                    }
                                 >
                                     <div className="header__select--categories select">
-                                        <select className="header__select--inner">
+                                        <select
+                                            className="header__select--inner"
+                                            onChange={() =>
+                                                console.log("Input change")
+                                            }
+                                        >
                                             <option defaultValue={1} value="1">
                                                 {" "}
                                                 All categories
@@ -178,6 +189,10 @@ export default function Guest({ children }) {
                                                 className="header__search--input"
                                                 placeholder="Search For Products..."
                                                 type="text"
+                                                onChange={() =>
+                                                    console.log("Input change")
+                                                }
+                                                defaultValue={1}
                                             />
                                         </label>
                                         <button
@@ -310,7 +325,7 @@ export default function Guest({ children }) {
                             <div className="header__account header__sticky--block">
                                 <ul className="header__account--wrapper d-flex align-items-center">
                                     <li className="header__account--items  header__account--search__items d-sm-2-none">
-                                        <a
+                                        <Link
                                             className="header__account--btn search__open--btn"
                                             href="javascript:void(0)"
                                             data-offcanvas
@@ -341,10 +356,10 @@ export default function Guest({ children }) {
                                             <span className="visually-hidden">
                                                 Search
                                             </span>
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li className="header__account--items d-none d-lg-block">
-                                        <a
+                                        <Link
                                             className="header__account--btn"
                                             href="my-account.html"
                                         >
@@ -370,10 +385,10 @@ export default function Guest({ children }) {
                                             <span className="visually-hidden">
                                                 My account
                                             </span>
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li className="header__account--items d-none d-lg-block">
-                                        <a
+                                        <Link
                                             className="header__account--btn"
                                             href="wishlist.html"
                                         >
@@ -391,10 +406,10 @@ export default function Guest({ children }) {
                                             >
                                                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
                                             </svg>
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li className="header__account--items header__minicart--items">
-                                        <a
+                                        <Link
                                             className="header__account--btn minicart__open--btn"
                                             href="javascript:void(0)"
                                             data-offcanvas
@@ -431,7 +446,7 @@ export default function Guest({ children }) {
                                             <span className="items__count">
                                                 2
                                             </span>
-                                        </a>
+                                        </Link>
                                     </li>
                                 </ul>
                             </div>
@@ -442,17 +457,17 @@ export default function Guest({ children }) {
                 <div className="offcanvas__header">
                     <div className="offcanvas__inner">
                         <div className="offcanvas__logo">
-                            <a
+                            <Link
                                 className="offcanvas__logo_link"
                                 href="index.html"
                             >
                                 <img
-                                    src="assets/img/logo/nav-log.webp"
+                                    src=""
                                     alt="Grocee Logo"
                                     width="158"
                                     height="36"
                                 />
-                            </a>
+                            </Link>
                             <button
                                 className="offcanvas__close--btn"
                                 data-offcanvas
@@ -463,392 +478,392 @@ export default function Guest({ children }) {
                         <nav className="offcanvas__menu">
                             <ul className="offcanvas__menu_ul">
                                 <li className="offcanvas__menu_li">
-                                    <a
+                                    <Link
                                         className="offcanvas__menu_item"
                                         href="index.html"
                                     >
                                         Home
-                                    </a>
+                                    </Link>
                                     <ul className="offcanvas__sub_menu">
                                         <li className="offcanvas__sub_menu_li">
-                                            <a
+                                            <Link
                                                 href="index.html"
                                                 className="offcanvas__sub_menu_item"
                                             >
                                                 Home One
-                                            </a>
+                                            </Link>
                                         </li>
                                         <li className="offcanvas__sub_menu_li">
-                                            <a
+                                            <Link
                                                 href="index-2.html"
                                                 className="offcanvas__sub_menu_item"
                                             >
                                                 Home Two
-                                            </a>
+                                            </Link>
                                         </li>
                                         <li className="offcanvas__sub_menu_li">
-                                            <a
+                                            <Link
                                                 href="index-3.html"
                                                 className="offcanvas__sub_menu_item"
                                             >
                                                 Home Three
-                                            </a>
+                                            </Link>
                                         </li>
                                         <li className="offcanvas__sub_menu_li">
-                                            <a
+                                            <Link
                                                 href="index-4.html"
                                                 className="offcanvas__sub_menu_item"
                                             >
                                                 Home Four
-                                            </a>
+                                            </Link>
                                         </li>
                                         <li className="offcanvas__sub_menu_li">
-                                            <a
+                                            <Link
                                                 href="index-5.html"
                                                 className="offcanvas__sub_menu_item"
                                             >
                                                 Home Five
-                                            </a>
+                                            </Link>
                                         </li>
                                     </ul>
                                 </li>
                                 <li className="offcanvas__menu_li">
-                                    <a
+                                    <Link
                                         className="offcanvas__menu_item"
                                         href=" "
                                     >
                                         Shop
-                                    </a>
+                                    </Link>
                                     <ul className="offcanvas__sub_menu">
                                         <li className="offcanvas__sub_menu_li">
-                                            <a
+                                            <Link
                                                 href="#"
                                                 className="offcanvas__sub_menu_item"
                                             >
                                                 Column One
-                                            </a>
+                                            </Link>
                                             <ul className="offcanvas__sub_menu">
                                                 <li className="offcanvas__sub_menu_li">
-                                                    <a
+                                                    <Link
                                                         className="offcanvas__sub_menu_item"
                                                         href=" "
                                                     >
                                                         Shop Left Sidebar
-                                                    </a>
+                                                    </Link>
                                                 </li>
                                                 <li className="offcanvas__sub_menu_li">
-                                                    <a
+                                                    <Link
                                                         className="offcanvas__sub_menu_item"
                                                         href="shop-right-sidebar.html"
                                                     >
                                                         Shop Right Sidebar
-                                                    </a>
+                                                    </Link>
                                                 </li>
                                                 <li className="offcanvas__sub_menu_li">
-                                                    <a
+                                                    <Link
                                                         className="offcanvas__sub_menu_item"
                                                         href="shop-grid.html"
                                                     >
                                                         Shop Grid
-                                                    </a>
+                                                    </Link>
                                                 </li>
                                                 <li className="offcanvas__sub_menu_li">
-                                                    <a
+                                                    <Link
                                                         className="offcanvas__sub_menu_item"
                                                         href="shop-grid-list.html"
                                                     >
                                                         Shop Grid List
-                                                    </a>
+                                                    </Link>
                                                 </li>
                                                 <li className="offcanvas__sub_menu_li">
-                                                    <a
+                                                    <Link
                                                         className="offcanvas__sub_menu_item"
                                                         href="shop-list.html"
                                                     >
                                                         Shop List
-                                                    </a>
+                                                    </Link>
                                                 </li>
                                             </ul>
                                         </li>
                                         <li className="offcanvas__sub_menu_li">
-                                            <a
+                                            <Link
                                                 href="#"
                                                 className="offcanvas__sub_menu_item"
                                             >
                                                 Column Two
-                                            </a>
+                                            </Link>
                                             <ul className="offcanvas__sub_menu">
                                                 <li className="offcanvas__sub_menu_li">
-                                                    <a
+                                                    <Link
                                                         className="offcanvas__sub_menu_item"
                                                         href="product-details.html"
                                                     >
                                                         Product Details
-                                                    </a>
+                                                    </Link>
                                                 </li>
                                                 <li className="offcanvas__sub_menu_li">
-                                                    <a
+                                                    <Link
                                                         className="offcanvas__sub_menu_item"
                                                         href="product-video.html"
                                                     >
                                                         Video Product
-                                                    </a>
+                                                    </Link>
                                                 </li>
                                                 <li className="offcanvas__sub_menu_li">
-                                                    <a
+                                                    <Link
                                                         className="offcanvas__sub_menu_item"
                                                         href="product-details.html"
                                                     >
                                                         Variable Product
-                                                    </a>
+                                                    </Link>
                                                 </li>
                                                 <li className="offcanvas__sub_menu_li">
-                                                    <a
+                                                    <Link
                                                         className="offcanvas__sub_menu_item"
                                                         href="product-left-sidebar.html"
                                                     >
                                                         Product Left Sidebar
-                                                    </a>
+                                                    </Link>
                                                 </li>
                                                 <li className="offcanvas__sub_menu_li">
-                                                    <a
+                                                    <Link
                                                         className="offcanvas__sub_menu_item"
                                                         href="product-gallery.html"
                                                     >
                                                         Product Gallery
-                                                    </a>
+                                                    </Link>
                                                 </li>
                                             </ul>
                                         </li>
                                         <li className="offcanvas__sub_menu_li">
-                                            <a
+                                            <Link
                                                 href="#"
                                                 className="offcanvas__sub_menu_item"
                                             >
                                                 Column Three
-                                            </a>
+                                            </Link>
                                             <ul className="offcanvas__sub_menu">
                                                 <li className="offcanvas__sub_menu_li">
-                                                    <a
+                                                    <Link
                                                         className="offcanvas__sub_menu_item"
                                                         href="my-account.html"
                                                     >
                                                         My Account
-                                                    </a>
+                                                    </Link>
                                                 </li>
                                                 <li className="offcanvas__sub_menu_li">
-                                                    <a
+                                                    <Link
                                                         className="offcanvas__sub_menu_item"
                                                         href="my-account-2.html"
                                                     >
                                                         My Account 2
-                                                    </a>
+                                                    </Link>
                                                 </li>
                                                 <li className="offcanvas__sub_menu_li">
-                                                    <a
+                                                    <Link
                                                         className="offcanvas__sub_menu_item"
                                                         href="404.html"
                                                     >
                                                         404 Page
-                                                    </a>
+                                                    </Link>
                                                 </li>
                                                 <li className="offcanvas__sub_menu_li">
-                                                    <a
+                                                    <Link
                                                         className="offcanvas__sub_menu_item"
                                                         href="login.html"
                                                     >
                                                         Login Page
-                                                    </a>
+                                                    </Link>
                                                 </li>
                                                 <li className="offcanvas__sub_menu_li">
-                                                    <a
+                                                    <Link
                                                         className="offcanvas__sub_menu_item"
                                                         href="faq.html"
                                                     >
                                                         Faq Page
-                                                    </a>
+                                                    </Link>
                                                 </li>
                                             </ul>
                                         </li>
                                         <li className="offcanvas__sub_menu_li">
-                                            <a
+                                            <Link
                                                 href="#"
                                                 className="offcanvas__sub_menu_item"
                                             >
                                                 Column Three
-                                            </a>
+                                            </Link>
                                             <ul className="offcanvas__sub_menu">
                                                 <li className="offcanvas__sub_menu_li">
-                                                    <a
+                                                    <Link
                                                         className="offcanvas__sub_menu_item"
                                                         href="about.html"
                                                     >
                                                         About Us
-                                                    </a>
+                                                    </Link>
                                                 </li>
                                                 <li className="offcanvas__sub_menu_li">
-                                                    <a
+                                                    <Link
                                                         className="offcanvas__sub_menu_item"
                                                         href="contact.html"
                                                     >
                                                         Contact Us
-                                                    </a>
+                                                    </Link>
                                                 </li>
                                                 <li className="offcanvas__sub_menu_li">
-                                                    <a
+                                                    <Link
                                                         className="offcanvas__sub_menu_item"
                                                         href="portfolio.html"
                                                     >
                                                         Portfolio
-                                                    </a>
+                                                    </Link>
                                                 </li>
                                                 <li className="offcanvas__sub_menu_li">
-                                                    <a
+                                                    <Link
                                                         className="offcanvas__sub_menu_item"
                                                         href="compare.html"
                                                     >
                                                         Compare Pages
-                                                    </a>
+                                                    </Link>
                                                 </li>
                                                 <li className="offcanvas__sub_menu_li">
-                                                    <a
+                                                    <Link
                                                         className="offcanvas__sub_menu_item"
                                                         href="checkout.html"
                                                     >
                                                         Checkout page
-                                                    </a>
+                                                    </Link>
                                                 </li>
                                             </ul>
                                         </li>
                                     </ul>
                                 </li>
                                 <li className="offcanvas__menu_li">
-                                    <a
+                                    <Link
                                         className="offcanvas__menu_item"
                                         href="blog.html"
                                     >
                                         Blog
-                                    </a>
+                                    </Link>
                                     <ul className="offcanvas__sub_menu">
                                         <li className="offcanvas__sub_menu_li">
-                                            <a
+                                            <Link
                                                 href="blog.html"
                                                 className="offcanvas__sub_menu_item"
                                             >
                                                 Blog Grid
-                                            </a>
+                                            </Link>
                                         </li>
                                         <li className="offcanvas__sub_menu_li">
-                                            <a
+                                            <Link
                                                 href="blog-details.html"
                                                 className="offcanvas__sub_menu_item"
                                             >
                                                 Blog Details
-                                            </a>
+                                            </Link>
                                         </li>
                                         <li className="offcanvas__sub_menu_li">
-                                            <a
+                                            <Link
                                                 href="blog-left-sidebar.html"
                                                 className="offcanvas__sub_menu_item"
                                             >
                                                 Blog Left Sidebar
-                                            </a>
+                                            </Link>
                                         </li>
                                         <li className="offcanvas__sub_menu_li">
-                                            <a
+                                            <Link
                                                 href="blog-right-sidebar.html"
                                                 className="offcanvas__sub_menu_item"
                                             >
                                                 Blog Right Sidebar
-                                            </a>
+                                            </Link>
                                         </li>
                                     </ul>
                                 </li>
                                 <li className="offcanvas__menu_li">
-                                    <a
+                                    <Link
                                         className="offcanvas__menu_item"
                                         href="#"
                                     >
                                         Pages
-                                    </a>
+                                    </Link>
                                     <ul className="offcanvas__sub_menu">
                                         <li className="offcanvas__sub_menu_li">
-                                            <a
+                                            <Link
                                                 href="about.html"
                                                 className="offcanvas__sub_menu_item"
                                             >
                                                 About Us
-                                            </a>
+                                            </Link>
                                         </li>
                                         <li className="offcanvas__sub_menu_li">
-                                            <a
+                                            <Link
                                                 href="contact.html"
                                                 className="offcanvas__sub_menu_item"
                                             >
                                                 Contact Us
-                                            </a>
+                                            </Link>
                                         </li>
                                         <li className="offcanvas__sub_menu_li">
-                                            <a
+                                            <Link
                                                 href="cart.html"
                                                 className="offcanvas__sub_menu_item"
                                             >
                                                 Cart Page
-                                            </a>
+                                            </Link>
                                         </li>
                                         <li className="offcanvas__sub_menu_li">
-                                            <a
+                                            <Link
                                                 href="portfolio.html"
                                                 className="offcanvas__sub_menu_item"
                                             >
                                                 Portfolio Page
-                                            </a>
+                                            </Link>
                                         </li>
                                         <li className="offcanvas__sub_menu_li">
-                                            <a
+                                            <Link
                                                 href="wishlist.html"
                                                 className="offcanvas__sub_menu_item"
                                             >
                                                 Wishlist Page
-                                            </a>
+                                            </Link>
                                         </li>
                                         <li className="offcanvas__sub_menu_li">
-                                            <a
+                                            <Link
                                                 href="login.html"
                                                 className="offcanvas__sub_menu_item"
                                             >
                                                 Login Page
-                                            </a>
+                                            </Link>
                                         </li>
                                         <li className="offcanvas__sub_menu_li">
-                                            <a
+                                            <Link
                                                 href="404.html"
                                                 className="offcanvas__sub_menu_item"
                                             >
                                                 Error Page
-                                            </a>
+                                            </Link>
                                         </li>
                                     </ul>
                                 </li>
                                 <li className="offcanvas__menu_li">
-                                    <a
+                                    <Link
                                         className="offcanvas__menu_item"
                                         href="about.html"
                                     >
                                         About
-                                    </a>
+                                    </Link>
                                 </li>
                                 <li className="offcanvas__menu_li">
-                                    <a
+                                    <Link
                                         className="offcanvas__menu_item"
                                         href="contact.html"
                                     >
                                         Contact
-                                    </a>
+                                    </Link>
                                 </li>
                             </ul>
                             <div className="offcanvas__account--items">
-                                <a
+                                <Link
                                     className="offcanvas__account--items__btn d-flex align-items-center"
                                     href="login.html"
                                 >
@@ -879,18 +894,15 @@ export default function Guest({ children }) {
                                     <span className="offcanvas__account--items__label">
                                         Login / Register
                                     </span>
-                                </a>
+                                </Link>
                             </div>
                             <div className="offcanvas__account--wrapper d-flex">
                                 <div className="offcanvas__account--currency">
-                                    <a
+                                    <Link
                                         className="offcanvas__account--currency__menu d-flex align-items-center text-black"
                                         href="javascript:void(0)"
                                     >
-                                        <img
-                                            src="assets/img/icon/usd-icon.webp"
-                                            alt="currency"
-                                        />
+                                        <img src="" alt="currency" />
                                         <span>USD</span>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
@@ -905,46 +917,46 @@ export default function Guest({ children }) {
                                                 opacity="0.7"
                                             />
                                         </svg>
-                                    </a>
+                                    </Link>
                                     <div className="offcanvas__account--currency__submenu">
                                         <ul>
                                             <li className="currency__items">
-                                                <a
+                                                <Link
                                                     className="currency__text"
                                                     href="#"
                                                 >
                                                     CAD
-                                                </a>
+                                                </Link>
                                             </li>
                                             <li className="currency__items">
-                                                <a
+                                                <Link
                                                     className="currency__text"
                                                     href="#"
                                                 >
                                                     CNY
-                                                </a>
+                                                </Link>
                                             </li>
                                             <li className="currency__items">
-                                                <a
+                                                <Link
                                                     className="currency__text"
                                                     href="#"
                                                 >
                                                     EUR
-                                                </a>
+                                                </Link>
                                             </li>
                                             <li className="currency__items">
-                                                <a
+                                                <Link
                                                     className="currency__text"
                                                     href="#"
                                                 >
                                                     GBP
-                                                </a>
+                                                </Link>
                                             </li>
                                         </ul>
                                     </div>
                                 </div>
                                 <div className="language__currency--list">
-                                    <a
+                                    <Link
                                         className="offcanvas__language--switcher"
                                         href="javascript:void(0)"
                                     >
@@ -962,32 +974,32 @@ export default function Guest({ children }) {
                                                 opacity="0.7"
                                             />
                                         </svg>
-                                    </a>
+                                    </Link>
                                     <div className="offcanvas__dropdown--language">
                                         <ul>
                                             <li className="language__items">
-                                                <a
+                                                <Link
                                                     className="language__text"
                                                     href="#"
                                                 >
                                                     France
-                                                </a>
+                                                </Link>
                                             </li>
                                             <li className="language__items">
-                                                <a
+                                                <Link
                                                     className="language__text"
                                                     href="#"
                                                 >
                                                     Russia
-                                                </a>
+                                                </Link>
                                             </li>
                                             <li className="language__items">
-                                                <a
+                                                <Link
                                                     className="language__text"
                                                     href="#"
                                                 >
                                                     Spanish
-                                                </a>
+                                                </Link>
                                             </li>
                                         </ul>
                                     </div>
@@ -1000,7 +1012,7 @@ export default function Guest({ children }) {
                 <div className="offcanvas__stikcy--toolbar">
                     <ul className="d-flex justify-content-between">
                         <li className="offcanvas__stikcy--toolbar__list">
-                            <a
+                            <Link
                                 className="offcanvas__stikcy--toolbar__btn"
                                 href="index.html"
                             >
@@ -1021,10 +1033,10 @@ export default function Guest({ children }) {
                                 <span className="offcanvas__stikcy--toolbar__label">
                                     Home
                                 </span>
-                            </a>
+                            </Link>
                         </li>
                         <li className="offcanvas__stikcy--toolbar__list">
-                            <a
+                            <Link
                                 className="offcanvas__stikcy--toolbar__btn"
                                 href=" "
                             >
@@ -1042,10 +1054,10 @@ export default function Guest({ children }) {
                                 <span className="offcanvas__stikcy--toolbar__label">
                                     Shop
                                 </span>
-                            </a>
+                            </Link>
                         </li>
                         <li className="offcanvas__stikcy--toolbar__list ">
-                            <a
+                            <Link
                                 className="offcanvas__stikcy--toolbar__btn search__open--btn"
                                 href="javascript:void(0)"
                                 data-offcanvas
@@ -1077,10 +1089,10 @@ export default function Guest({ children }) {
                                 <span className="offcanvas__stikcy--toolbar__label">
                                     Search
                                 </span>
-                            </a>
+                            </Link>
                         </li>
                         <li className="offcanvas__stikcy--toolbar__list">
-                            <a
+                            <Link
                                 className="offcanvas__stikcy--toolbar__btn minicart__open--btn"
                                 href="javascript:void(0)"
                                 data-offcanvas
@@ -1120,10 +1132,10 @@ export default function Guest({ children }) {
                                     Cart
                                 </span>
                                 <span className="items__count">3</span>
-                            </a>
+                            </Link>
                         </li>
                         <li className="offcanvas__stikcy--toolbar__list">
-                            <a
+                            <Link
                                 className="offcanvas__stikcy--toolbar__btn"
                                 href="wishlist.html"
                             >
@@ -1147,213 +1159,9 @@ export default function Guest({ children }) {
                                     Wishlist
                                 </span>
                                 <span className="items__count">3</span>
-                            </a>
+                            </Link>
                         </li>
                     </ul>
-                </div>
-
-                <div className="offCanvas__minicart">
-                    <div className="minicart__header ">
-                        <div className="minicart__header--top d-flex justify-content-between align-items-center">
-                            <h3 className="minicart__title"> Shopping Cart</h3>
-                            <button
-                                className="minicart__close--btn"
-                                aria-label="minicart close btn"
-                                data-offcanvas
-                            >
-                                <svg
-                                    className="minicart__close--icon"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 512 512"
-                                >
-                                    <path
-                                        fill="currentColor"
-                                        stroke="currentColor"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="32"
-                                        d="M368 368L144 144M368 144L144 368"
-                                    />
-                                </svg>
-                            </button>
-                        </div>
-                        <p className="minicart__header--desc">
-                            The organic foods products are limited
-                        </p>
-                    </div>
-                    <div className="minicart__product">
-                        <div className="minicart__product--items d-flex">
-                            <div className="minicart__thumb">
-                                <a href="product-details.html">
-                                    <img
-                                        src="assets/img/product/small-product/product1.webp"
-                                        alt="prduct-img"
-                                    />
-                                </a>
-                            </div>
-                            <div className="minicart__text">
-                                <h4 className="minicart__subtitle">
-                                    <a href="product-details.html">
-                                        Car & Motorbike Care.
-                                    </a>
-                                </h4>
-                                <span className="color__variant">
-                                    <b>Color:</b> Beige
-                                </span>
-                                <div className="minicart__price">
-                                    <span className="minicart__current--price">
-                                        $125.00
-                                    </span>
-                                    <span className="minicart__old--price">
-                                        $140.00
-                                    </span>
-                                </div>
-                                <div className="minicart__text--footer d-flex align-items-center">
-                                    <div className="quantity__box minicart__quantity">
-                                        <button
-                                            type="button"
-                                            className="quantity__value decrease"
-                                            aria-label="quantity value"
-                                            value="Decrease Value"
-                                        >
-                                            -
-                                        </button>
-                                        <label>
-                                            <input
-                                                type="number"
-                                                className="quantity__number"
-                                                value="1"
-                                                data-counter
-                                            />
-                                        </label>
-                                        <button
-                                            type="button"
-                                            className="quantity__value increase"
-                                            aria-label="quantity value"
-                                            value="Increase Value"
-                                        >
-                                            +
-                                        </button>
-                                    </div>
-                                    <button
-                                        className="minicart__product--remove"
-                                        type="button"
-                                    >
-                                        Remove
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="minicart__product--items d-flex">
-                            <div className="minicart__thumb">
-                                <a href="product-details.html">
-                                    <img
-                                        src="assets/img/product/small-product/product2.webp"
-                                        alt="prduct-img"
-                                    />
-                                </a>
-                            </div>
-                            <div className="minicart__text">
-                                <h4 className="minicart__subtitle">
-                                    <a href="product-details.html">
-                                        Engine And Drivetrain.
-                                    </a>
-                                </h4>
-                                <span className="color__variant">
-                                    <b>Color:</b> Green
-                                </span>
-                                <div className="minicart__price">
-                                    <span className="minicart__current--price">
-                                        $115.00
-                                    </span>
-                                    <span className="minicart__old--price">
-                                        $130.00
-                                    </span>
-                                </div>
-                                <div className="minicart__text--footer d-flex align-items-center">
-                                    <div className="quantity__box minicart__quantity">
-                                        <button
-                                            type="button"
-                                            className="quantity__value decrease"
-                                            aria-label="quantity value"
-                                            value="Decrease Value"
-                                        >
-                                            -
-                                        </button>
-                                        <label>
-                                            <input
-                                                type="number"
-                                                className="quantity__number"
-                                                value="1"
-                                                data-counter
-                                            />
-                                        </label>
-                                        <button
-                                            type="button"
-                                            className="quantity__value increase"
-                                            aria-label="quantity value"
-                                            value="Increase Value"
-                                        >
-                                            +
-                                        </button>
-                                    </div>
-                                    <button
-                                        className="minicart__product--remove"
-                                        type="button"
-                                    >
-                                        Remove
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="minicart__amount">
-                        <div className="minicart__amount_list d-flex justify-content-between">
-                            <span>Sub Total:</span>
-                            <span>
-                                <b>$240.00</b>
-                            </span>
-                        </div>
-                        <div className="minicart__amount_list d-flex justify-content-between">
-                            <span>Total:</span>
-                            <span>
-                                <b>$240.00</b>
-                            </span>
-                        </div>
-                    </div>
-                    <div className="minicart__conditions text-center">
-                        <input
-                            className="minicart__conditions--input"
-                            id="accept"
-                            type="checkbox"
-                        />
-                        <label
-                            className="minicart__conditions--label"
-                            htmlFor="accept"
-                        >
-                            I agree with the{" "}
-                            <a
-                                className="minicart__conditions--link"
-                                href="privacy-policy.html"
-                            >
-                                Privacy Policy
-                            </a>
-                        </label>
-                    </div>
-                    <div className="minicart__button d-flex justify-content-center">
-                        <a
-                            className="primary__btn minicart__button--link"
-                            href="cart.html"
-                        >
-                            View cart
-                        </a>
-                        <a
-                            className="primary__btn minicart__button--link"
-                            href="checkout.html"
-                        >
-                            Checkout
-                        </a>
-                    </div>
                 </div>
 
                 <div className="predictive__search--box ">
@@ -1485,44 +1293,44 @@ export default function Guest({ children }) {
                                     </h2>
                                     <ul className="footer__widget--menu footer__widget--inner">
                                         <li className="footer__widget--menu__list">
-                                            <a
+                                            <Link
                                                 className="footer__widget--menu__text"
                                                 href="my-account.html"
                                             >
                                                 My Account
-                                            </a>
+                                            </Link>
                                         </li>
                                         <li className="footer__widget--menu__list">
-                                            <a
+                                            <Link
                                                 className="footer__widget--menu__text"
                                                 href="cart.html"
                                             >
                                                 Shopping Cart
-                                            </a>
+                                            </Link>
                                         </li>
                                         <li className="footer__widget--menu__list">
-                                            <a
+                                            <Link
                                                 className="footer__widget--menu__text"
                                                 href="cart.html"
                                             >
                                                 Login
-                                            </a>
+                                            </Link>
                                         </li>
                                         <li className="footer__widget--menu__list">
-                                            <a
+                                            <Link
                                                 className="footer__widget--menu__text"
                                                 href="login.html"
                                             >
                                                 Register
-                                            </a>
+                                            </Link>
                                         </li>
                                         <li className="footer__widget--menu__list">
-                                            <a
+                                            <Link
                                                 className="footer__widget--menu__text"
                                                 href="checkout.html"
                                             >
                                                 Checkout
-                                            </a>
+                                            </Link>
                                         </li>
                                     </ul>
                                 </div>
@@ -1551,20 +1359,20 @@ export default function Guest({ children }) {
                                     </h2>
                                     <ul className="footer__widget--menu footer__widget--inner">
                                         <li className="footer__widget--menu__list">
-                                            <a
+                                            <Link
                                                 className="footer__widget--menu__text"
                                                 href="contact.html"
                                             >
                                                 Contact Us
-                                            </a>
+                                            </Link>
                                         </li>
                                         <li className="footer__widget--menu__list">
-                                            <a
+                                            <Link
                                                 className="footer__widget--menu__text"
                                                 href="about.html"
                                             >
                                                 About Us
-                                            </a>
+                                            </Link>
                                         </li>
                                         <li className="footer__widget--menu__list">
                                             <Link
@@ -1575,20 +1383,20 @@ export default function Guest({ children }) {
                                             </Link>
                                         </li>
                                         <li className="footer__widget--menu__list">
-                                            <a
+                                            <Link
                                                 className="footer__widget--menu__text"
                                                 href="privacy-policy.html"
                                             >
                                                 Privacy Policy
-                                            </a>
+                                            </Link>
                                         </li>
                                         <li className="footer__widget--menu__list">
-                                            <a
+                                            <Link
                                                 className="footer__widget--menu__text"
                                                 href="faq.html"
                                             >
                                                 Frequently
-                                            </a>
+                                            </Link>
                                         </li>
                                     </ul>
                                 </div>
@@ -1617,44 +1425,44 @@ export default function Guest({ children }) {
                                     </h2>
                                     <ul className="footer__widget--menu footer__widget--inner">
                                         <li className="footer__widget--menu__list">
-                                            <a
+                                            <Link
                                                 className="footer__widget--menu__text"
                                                 href=" "
                                             >
                                                 Smartphone ablet
-                                            </a>
+                                            </Link>
                                         </li>
                                         <li className="footer__widget--menu__list">
-                                            <a
+                                            <Link
                                                 className="footer__widget--menu__text"
                                                 href=" "
                                             >
                                                 Computer Laptop
-                                            </a>
+                                            </Link>
                                         </li>
                                         <li className="footer__widget--menu__list">
-                                            <a
+                                            <Link
                                                 className="footer__widget--menu__text"
                                                 href=" "
                                             >
                                                 TV & Audio
-                                            </a>
+                                            </Link>
                                         </li>
                                         <li className="footer__widget--menu__list">
-                                            <a
+                                            <Link
                                                 className="footer__widget--menu__text"
                                                 href=" "
                                             >
                                                 Car Accessories
-                                            </a>
+                                            </Link>
                                         </li>
                                         <li className="footer__widget--menu__list">
-                                            <a
+                                            <Link
                                                 className="footer__widget--menu__text"
                                                 href=" "
                                             >
                                                 Cameras Photos
-                                            </a>
+                                            </Link>
                                         </li>
                                     </ul>
                                 </div>
@@ -1696,67 +1504,67 @@ export default function Guest({ children }) {
                                     xmlns="http://www.w3.org/2000/svg"
                                 >
                                     <path
-                                        fill-rule="evenodd"
+                                        fillRule="evenodd"
                                         clipRule="evenodd"
                                         d="M34.4506 19.1161C34.0912 19.1161 33.8007 18.84 33.8007 18.4995V16.6495C33.8007 10.0795 27.5195 4.93302 19.5002 4.93302C11.4809 4.93302 5.20048 10.0797 5.20048 16.6495V18.4995C5.20048 18.84 4.90993 19.1161 4.55057 19.1161C4.19093 19.1161 3.90039 18.84 3.90039 18.4995V16.6495C3.90039 9.38758 10.7529 3.69946 19.5004 3.69946C28.2482 3.69946 35.1004 9.38758 35.1004 16.6495V18.4995C35.1004 18.84 34.8098 19.1161 34.4505 19.1161"
                                         fill="currentColor"
                                     />
                                     <path
-                                        fill-rule="evenodd"
+                                        fillRule="evenodd"
                                         clipRule="evenodd"
                                         d="M6.50032 19.1436C3.66377 19.381 1.30023 21.1391 1.30023 23.1249C1.30023 25.1104 3.66377 26.8686 6.50032 27.106V19.1436ZM7.15023 28.3665C3.27419 28.3665 0 25.9657 0 23.1249C0 20.2838 3.27405 17.8831 7.15023 17.8831C7.5096 17.8831 7.80013 18.1595 7.80013 18.4999V27.7499C7.80013 28.0904 7.50959 28.3665 7.15023 28.3665V28.3665Z"
                                         fill="currentColor"
                                     />
                                     <path
-                                        fill-rule="evenodd"
+                                        fillRule="evenodd"
                                         clipRule="evenodd"
                                         d="M38.3502 23.4334C37.9908 23.4334 37.7003 23.157 37.7003 22.8166V19.1165C37.7003 7.75154 31.0662 1.23356 19.4998 1.23356C7.76363 1.23356 1.30008 7.58444 1.30008 19.1165V22.8166C1.30008 23.157 1.00954 23.4334 0.650178 23.4334C0.290536 23.4334 0 23.157 0 22.8166V19.1165C0 6.96727 7.10774 0 19.5 0C31.8922 0 39 6.96793 39 19.1165V22.8166C39 23.157 38.7094 23.4334 38.3501 23.4334"
                                         fill="currentColor"
                                     />
                                     <path
-                                        fill-rule="evenodd"
+                                        fillRule="evenodd"
                                         clipRule="evenodd"
                                         d="M19.5016 36.9998C19.1422 36.9998 18.8517 36.7237 18.8517 36.3833C18.8517 35.0229 20.0176 33.9164 21.4516 33.9164H24.3428C26.3658 33.9164 28.2167 32.5944 28.9507 30.6278C29.0704 30.3065 29.4409 30.1369 29.7801 30.2518C30.1188 30.3659 30.2957 30.7179 30.176 31.0384C29.2595 33.4978 26.915 35.1499 24.3428 35.1499H21.4515C20.7347 35.1499 20.1517 35.703 20.1517 36.3833C20.1517 36.7237 19.8612 36.9999 19.5015 36.9999"
                                         fill="currentColor"
                                     />
                                     <path
-                                        fill-rule="evenodd"
+                                        fillRule="evenodd"
                                         clipRule="evenodd"
                                         d="M19.5001 37C19.1407 37 18.8502 36.7238 18.8502 36.3834C18.8502 35.703 18.2672 35.15 17.5501 35.15H14.6591C12.0875 35.15 9.743 33.4984 8.8265 31.0398C8.7068 30.7185 8.88363 30.3665 9.22178 30.2529C9.56292 30.1388 9.93206 30.3079 10.0518 30.6284C10.7855 32.5951 12.6367 33.9166 14.6591 33.9166H17.5501C18.984 33.9166 20.1503 35.023 20.1503 36.3834C20.1503 36.7238 19.8597 37 19.5001 37"
                                         fill="currentColor"
                                     />
                                     <path
-                                        fill-rule="evenodd"
+                                        fillRule="evenodd"
                                         clipRule="evenodd"
                                         d="M9.10186 16.6499C8.38502 16.6499 7.80177 17.203 7.80177 17.8834V28.9834C7.80177 29.6635 8.38502 30.2166 9.10186 30.2166C9.81869 30.2166 10.4019 29.6635 10.4019 28.9834V17.8834C10.4019 17.203 9.81869 16.6499 9.10186 16.6499ZM9.10186 31.45C7.66791 31.45 6.50195 30.3438 6.50195 28.9834V17.8834C6.50195 16.5229 7.66791 15.4165 9.10186 15.4165C10.5358 15.4165 11.7018 16.5229 11.7018 17.8834V28.9834C11.7018 30.3438 10.5358 31.45 9.10186 31.45Z"
                                         fill="currentColor"
                                     />
                                     <path
-                                        fill-rule="evenodd"
+                                        fillRule="evenodd"
                                         clipRule="evenodd"
                                         d="M32.5013 19.1435V27.1058C35.3378 26.8683 37.7013 25.1102 37.7013 23.1247C37.7013 21.1389 35.3378 19.3808 32.5013 19.1433V19.1435ZM31.8513 28.3663C31.4917 28.3663 31.2012 28.0901 31.2012 27.7497V18.4997C31.2012 18.1592 31.4917 17.8828 31.8513 17.8828C35.7271 17.8828 39.0009 20.2836 39.0009 23.1247C39.0009 25.9655 35.7268 28.3663 31.8513 28.3663"
                                         fill="currentColor"
                                     />
                                     <path
-                                        fill-rule="evenodd"
+                                        fillRule="evenodd"
                                         clipRule="evenodd"
                                         d="M29.901 16.6499C29.1839 16.6499 28.6009 17.203 28.6009 17.8834V28.9834C28.6009 29.6635 29.1839 30.2166 29.901 30.2166C30.6178 30.2166 31.2008 29.6635 31.2008 28.9834V17.8834C31.2008 17.203 30.6178 16.6499 29.901 16.6499ZM29.901 31.45C28.467 31.45 27.3008 30.3438 27.3008 28.9834V17.8834C27.3008 16.5229 28.467 15.4165 29.901 15.4165C31.3346 15.4165 32.5009 16.5229 32.5009 17.8834V28.9834C32.5009 30.3438 31.3346 31.45 29.901 31.45Z"
                                         fill="currentColor"
                                     />
                                     <path
-                                        fill-rule="evenodd"
+                                        fillRule="evenodd"
                                         clipRule="evenodd"
                                         d="M19.4979 18.4998C16.6309 18.4998 14.2981 20.7129 14.2981 23.4332C14.2981 26.1533 16.6309 28.3664 19.4979 28.3664C22.3653 28.3664 24.698 26.1533 24.698 23.4332C24.698 20.7129 22.3653 18.4998 19.4979 18.4998ZM19.4979 29.5998C15.9138 29.5998 12.998 26.8333 12.998 23.4332C12.998 20.0328 15.9138 17.2664 19.4979 17.2664C23.0821 17.2664 25.9981 20.0328 25.9981 23.4332C25.9981 26.8333 23.0821 29.5998 19.4979 29.5998Z"
                                         fill="currentColor"
                                     />
                                     <path
-                                        fill-rule="evenodd"
+                                        fillRule="evenodd"
                                         clipRule="evenodd"
                                         d="M19.5018 18.4998C18.7063 18.4998 17.5518 20.4221 17.5518 23.4332C17.5518 26.4444 18.7063 28.3664 19.5018 28.3664C20.2975 28.3664 21.4518 26.4444 21.4518 23.4332C21.4518 20.4221 20.2975 18.4998 19.5018 18.4998ZM19.5018 29.5998C17.6486 29.5998 16.252 26.9487 16.252 23.4332C16.252 19.9175 17.6486 17.2664 19.5018 17.2664C21.3549 17.2664 22.7519 19.9175 22.7519 23.4332C22.7519 26.9487 21.3549 29.5998 19.5018 29.5998Z"
                                         fill="currentColor"
                                     />
                                     <path
-                                        fill-rule="evenodd"
+                                        fillRule="evenodd"
                                         clipRule="evenodd"
                                         d="M25.3479 24.0498H13.648C13.2886 24.0498 12.998 23.7737 12.998 23.4332C12.998 23.0928 13.2886 22.8164 13.648 22.8164H25.3479C25.7076 22.8164 25.9981 23.0928 25.9981 23.4332C25.9981 23.7737 25.7076 24.0498 25.3479 24.0498Z"
                                         fill="currentColor"
@@ -1850,33 +1658,27 @@ export default function Guest({ children }) {
                     <div className="container">
                         <div className="footer__bottom--inenr d-flex justify-content-between align-items-center">
                             <div className="footer__logo">
-                                <a
+                                <Link
                                     className="footer__logo--link"
                                     href="index.html"
                                 >
-                                    <img
-                                        src="assets/img/logo/nav-log-light.webp"
-                                        alt="logo-img"
-                                    />
-                                </a>
+                                    <img src="" alt="logo-img" />
+                                </Link>
                             </div>
                             <p className="copyright__content">
                                 <span className="text__secondary">© 2024</span>{" "}
                                 Powered by{" "}
-                                <a
+                                <Link
                                     className="copyright__content--link"
                                     target="_blank"
                                     href="https://themeforest.net/search/hooktheme"
                                 >
                                     Mandiri Sejati Borneo
-                                </a>{" "}
+                                </Link>{" "}
                                 . All Rights Reserved.
                             </p>
                             <div className="footer__payment">
-                                <img
-                                    src="assets/img/icon/payment-img.webp"
-                                    alt="payment-img"
-                                />
+                                <img src="" alt="payment-img" />
                             </div>
                         </div>
                     </div>

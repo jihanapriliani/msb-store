@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-export default function ProductCard({ product, index, user }) {
+export default function ProductCard({ product, user }) {
     const handleAddProductToCart = (productId) => {
         if (user) {
             axios
@@ -30,10 +30,7 @@ export default function ProductCard({ product, index, user }) {
     };
 
     return (
-        <div
-            key={index}
-            className="col-lg-3 col-md-4 col-sm-6 col-6 custom-col mb-30"
-        >
+        <div>
             <article className="product__card">
                 <div className="product__card--thumbnail">
                     <a

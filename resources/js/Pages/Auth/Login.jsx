@@ -38,7 +38,7 @@ export default function Login({ status, canResetPassword }) {
 
             {/* <form className="" onSubmit={submit}>
                 <div>
-                    <InputLabel htmlFor="email" value="Email" />
+                    <InputLabel htmlhtmlFor="email" value="Email" />
 
                     <TextInput
                         id="email"
@@ -55,7 +55,7 @@ export default function Login({ status, canResetPassword }) {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                    <InputLabel htmlhtmlFor="password" value="Password" />
 
                     <TextInput
                         id="password"
@@ -101,11 +101,11 @@ export default function Login({ status, canResetPassword }) {
                 </div>
             </form> */}
 
-            <form class="max-w-5xl mx-auto my-20" onSubmit={submit}>
-                <div class="my-5">
+            <form className="max-w-5xl mx-auto my-20" onSubmit={submit}>
+                <div className="my-5">
                     <label
-                        for="email"
-                        class="block mb-2 font-medium text-gray-700 dark:text-white text-3xl"
+                        htmlFor="email"
+                        className="block mb-2 font-medium text-gray-700 dark:text-white text-3xl"
                     >
                         Email
                     </label>
@@ -126,10 +126,10 @@ export default function Login({ status, canResetPassword }) {
                     <InputError message={errors.email} className="mt-2" />
                 </div>
 
-                <div class="mb-5">
+                <div className="mb-5">
                     <label
-                        for="password"
-                        class="block mb-2 font-medium text-gray-700 dark:text-white text-3xl"
+                        htmlFor="password"
+                        className="block mb-2 font-medium text-gray-700 dark:text-white text-3xl"
                     >
                         Password
                     </label>

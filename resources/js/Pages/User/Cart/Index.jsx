@@ -93,47 +93,49 @@ export default function Index(props) {
         <GuestLayout>
             <ToastContainer />
             <main
-                class="main__content_wrapper "
+                className="main__content_wrapper "
                 style={{
                     display: "flex",
                     justifyContent: "center",
                 }}
             >
-                <section class="cart__section section--padding min-w-[60vw]">
-                    <div class="container-fluid">
-                        <div class="cart__section--inner">
+                <section className="cart__section section--padding min-w-[60vw]">
+                    <div className="container-fluid">
+                        <div className="cart__section--inner">
                             <form action="#">
-                                <h2 class="cart__title mb-30">Shopping Cart</h2>
-                                <div class="row">
-                                    <div class="">
-                                        <div class="cart__table">
-                                            <table class="cart__table--inner">
-                                                <thead class="cart__table--header">
-                                                    <tr class="cart__table--header__items">
-                                                        <th class="cart__table--header__list">
+                                <h2 className="cart__title mb-30">
+                                    Shopping Cart
+                                </h2>
+                                <div className="row">
+                                    <div className="">
+                                        <div className="cart__table">
+                                            <table className="cart__table--inner">
+                                                <thead className="cart__table--header">
+                                                    <tr className="cart__table--header__items">
+                                                        <th className="cart__table--header__list">
                                                             Product
                                                         </th>
-                                                        <th class="cart__table--header__list">
+                                                        <th className="cart__table--header__list">
                                                             Price
                                                         </th>
-                                                        <th class="cart__table--header__list">
+                                                        <th className="cart__table--header__list">
                                                             Quantity
                                                         </th>
-                                                        <th class="cart__table--header__list">
+                                                        <th className="cart__table--header__list">
                                                             Total
                                                         </th>
                                                     </tr>
                                                 </thead>
-                                                <tbody class="cart__table--body">
+                                                <tbody className="cart__table--body">
                                                     {items &&
                                                         items.map(
                                                             (cart, index) => (
                                                                 <tr
-                                                                    class="cart__table--body__items"
+                                                                    className="cart__table--body__items"
                                                                     key={index}
                                                                 >
-                                                                    <td class="cart__table--body__list">
-                                                                        <div class="cart__product d-flex align-items-center">
+                                                                    <td className="cart__table--body__list">
+                                                                        <div className="cart__product d-flex align-items-center">
                                                                             <button
                                                                                 className="cart__remove--btn flex justify-center items-center"
                                                                                 aria-label="search button"
@@ -154,10 +156,10 @@ export default function Index(props) {
                                                                                     <path d="M 4.7070312 3.2929688 L 3.2929688 4.7070312 L 10.585938 12 L 3.2929688 19.292969 L 4.7070312 20.707031 L 12 13.414062 L 19.292969 20.707031 L 20.707031 19.292969 L 13.414062 12 L 20.707031 4.7070312 L 19.292969 3.2929688 L 12 10.585938 L 4.7070312 3.2929688 z" />
                                                                                 </svg>
                                                                             </button>
-                                                                            <div class="cart__thumbnail">
+                                                                            <div className="cart__thumbnail">
                                                                                 <a href="product-details.html">
                                                                                     <img
-                                                                                        class="border-radius-5"
+                                                                                        className="border-radius-5"
                                                                                         src={
                                                                                             window
                                                                                                 .location
@@ -172,8 +174,8 @@ export default function Index(props) {
                                                                                     />
                                                                                 </a>
                                                                             </div>
-                                                                            <div class="cart__content">
-                                                                                <h3 class="cart__content--title h4">
+                                                                            <div className="cart__content">
+                                                                                <h3 className="cart__content--title h4">
                                                                                     <a href="product-details.html">
                                                                                         {
                                                                                             cart
@@ -183,7 +185,7 @@ export default function Index(props) {
                                                                                     </a>
                                                                                 </h3>
 
-                                                                                <span class="cart__content--variant">
+                                                                                <span className="cart__content--variant">
                                                                                     WEIGHT:
                                                                                     {
                                                                                         cart
@@ -195,17 +197,17 @@ export default function Index(props) {
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    <td class="cart__table--body__list">
-                                                                        <span class="cart__price">
+                                                                    <td className="cart__table--body__list">
+                                                                        <span className="cart__price">
                                                                             Rp{" "}
                                                                             {cart.product.price.toLocaleString()}
                                                                         </span>
                                                                     </td>
-                                                                    <td class="cart__table--body__list">
-                                                                        <div class="quantity__box">
+                                                                    <td className="cart__table--body__list">
+                                                                        <div className="quantity__box">
                                                                             <button
                                                                                 type="button"
-                                                                                class="quantity__value quickview__value--quantity decrease"
+                                                                                className="quantity__value quickview__value--quantity decrease"
                                                                                 aria-label="quantity value"
                                                                                 value="Decrease Value"
                                                                                 onClick={() =>
@@ -219,7 +221,7 @@ export default function Index(props) {
                                                                             <label>
                                                                                 <input
                                                                                     type="number"
-                                                                                    class="quantity__number quickview__value--number"
+                                                                                    className="quantity__number quickview__value--number"
                                                                                     value={
                                                                                         cart.amount
                                                                                     }
@@ -231,7 +233,7 @@ export default function Index(props) {
                                                                             </label>
                                                                             <button
                                                                                 type="button"
-                                                                                class="quantity__value quickview__value--quantity increase"
+                                                                                className="quantity__value quickview__value--quantity increase"
                                                                                 aria-label="quantity value"
                                                                                 value="Increase Value"
                                                                                 onClick={() =>
@@ -244,8 +246,8 @@ export default function Index(props) {
                                                                             </button>
                                                                         </div>
                                                                     </td>
-                                                                    <td class="cart__table--body__list">
-                                                                        <span class="cart__price end">
+                                                                    <td className="cart__table--body__list">
+                                                                        <span className="cart__price end">
                                                                             Rp{" "}
                                                                             {(
                                                                                 cart.amount *
@@ -260,15 +262,15 @@ export default function Index(props) {
                                                         )}
                                                 </tbody>
                                             </table>
-                                            <div class="continue__shopping d-flex justify-content-between">
+                                            <div className="continue__shopping d-flex justify-content-between">
                                                 <a
-                                                    class="continue__shopping--link"
+                                                    className="continue__shopping--link"
                                                     href="shop.html"
                                                 >
                                                     Continue shopping
                                                 </a>
                                                 <button
-                                                    class="continue__shopping--clear"
+                                                    className="continue__shopping--clear"
                                                     type="submit"
                                                 >
                                                     Clear Cart
