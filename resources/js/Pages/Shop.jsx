@@ -78,6 +78,10 @@ export default function LandingPage({ categories, products }) {
             // Set categories parameter
             url.searchParams.set("categories", selectedCategories.join(","));
 
+            if (categories === NaN) {
+                url.searchParams.set("");
+            }
+
             // Perform reload only if URL has changed
             if (window.location.href !== url.toString()) {
                 setIsLoading(true);
