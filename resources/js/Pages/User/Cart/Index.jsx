@@ -66,22 +66,22 @@ export default function Index(props) {
                 }
             });
         } else {
-            item.amount -= 1;
-
-            axios
-                .put(`/api/user/cart/${item.id}`, {
-                    amount: item.amount,
-                })
-                .then((res) => console.log(res))
-                .catch((err) => console.log(err));
-
             const updatedItems = items.map((item) => {
                 if (item.product_id === product_id) {
-                    return { ...item, amount: item.amount - 1 };
+                    return { ...item, amount: item.amount-1};
                 } else {
                     return item;
                 }
             });
+
+            setItems(updatedItems);
+
+            axios
+                .put(`/api/user/cart/${item.id}`, {
+                    amount: item.amount - 1,
+                })
+                .then((res) => console.log(res))
+                .catch((err) => console.log(err));
         }
     };
 
@@ -188,7 +188,8 @@ export default function Index(props) {
                                                                                             (cart
                                                                                                 .product
                                                                                                 .images[0]
-                                                                                                .image ?? "assets/images/default.png")
+                                                                                                .image ??
+                                                                                                "assets/images/default.png")
                                                                                         }
                                                                                         alt="cart-product"
                                                                                     />
