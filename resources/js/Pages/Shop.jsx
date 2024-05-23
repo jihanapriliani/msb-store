@@ -32,79 +32,53 @@ export default function LandingPage({ categories, products }) {
     useEffect(() => {
         const url = new URL(route(route().current()).toString());
 
-        // Check if there are changes in startPrice, endPrice, or selectedCategories
-        const hasPriceChanges =
-            (startPrice !== undefined &&
-                url.searchParams.get("startPrice") !== startPrice.toString()) ||
-            (endPrice !== undefined &&
-                url.searchParams.get("endPrice") !== endPrice.toString());
+        const params = {};
+
+        const currentCategories = url.searchParams.get("categories");
+        const selectedCategoriesString = selectedCategories.join(",");
+
         const hasCategoryChanges =
-            selectedCategories.join(",") !== url.searchParams.get("categories");
+            selectedCategoriesString !== currentCategories;
 
-        if (hasPriceChanges || hasCategoryChanges) {
-            if (startPrice && endPrice && startPrice > 0 && endPrice > 0) {
-                if (startPrice > endPrice || startPrice < 0 || endPrice < 0) {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Tidak Bisa Filter Harga",
-                        text: "Harga Mulai Tidak Boleh Lebih Besar dari Batas Harga Akhir atau Harga tidak boleh minus!",
-                    });
-                } else {
-                    url.searchParams.set("startPrice", startPrice);
-                    url.searchParams.set("endPrice", endPrice);
-                }
-            } else if (startPrice) {
-                if (startPrice < 0) {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Tidak Bisa Filter Harga",
-                        text: "Harga tidak boleh minus!",
-                    });
-                } else {
-                    url.searchParams.set("startPrice", startPrice);
-                }
-            } else if (endPrice) {
-                if (endPrice < 0) {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Tidak Bisa Filter Harga",
-                        text: "Harga tidak boleh minus!",
-                    });
-                } else {
-                    url.searchParams.set("endPrice", endPrice);
-                }
-            }
-
-            // Set categories parameter
-            url.searchParams.set("categories", selectedCategories.join(","));
-
-            if (categories === NaN) {
-                url.searchParams.set("");
-            }
-
-            // Perform reload only if URL has changed
-            if (window.location.href !== url.toString()) {
-                setIsLoading(true);
-                router.reload({
-                    data: {
-                        categories: selectedCategories.join(","),
-                        startPrice: startPrice,
-                        endPrice: endPrice,
-                        page: pagination.pageIndex + 1,
-                        perPage: pagination.pageSize,
-                        orderBy: orderBy,
-                    },
-                    only: ["products"],
-                    onFinish: () => {
-                        setIsLoading(false);
-                    },
-                });
+        if (hasCategoryChanges) {
+            if (selectedCategories.length > 0) {
+                // Perform reload only if URL has changed
+                console.log("Category Changes");
+                url.searchParams.set("categories", selectedCategoriesString);
+                params.categories = selectedCategoriesString;
+            } else {
+                url.searchParams.delete("categories");
+                delete params.categories;
             }
         }
+
+        // Update other URL parameters
+        url.searchParams.set("page", pagination.pageIndex + 1);
+        url.searchParams.set("per_page", pagination.pageSize);
+        url.searchParams.set("orderBy", orderBy);
+
+        url.searchParams.sort();
+
+        // Check if the URL has actually changed
+        if (window.location.href !== url.toString()) {
+            // Update the browser URL
+            window.history.replaceState(null, "", url.toString());
+
+            console.log(url.toString(), window.location.href);
+            console.log(params);
+
+            setIsLoading(true);
+            router.reload({
+                replace: true,
+                data: params,
+                only: ["products"],
+                onFinish: () => {
+                    setIsLoading(false);
+                },
+            });
+        }
     }, [
-        selectedCategories,
-        startPrice,
-        endPrice,
+        selectedCategories.toString(),
         pagination.pageIndex,
         pagination.pageSize,
         orderBy,
@@ -125,6 +99,80 @@ export default function LandingPage({ categories, products }) {
                 return prevCategories; // Kembalikan array tanpa perubahan
             }
         });
+    };
+
+    const handlePriceFilter = (e) => {
+        e.preventDefault();
+
+        const url = new URL(window.location.href);
+
+        const setPriceFilters = () => {
+            if (startPrice && endPrice && startPrice > 0 && endPrice > 0) {
+
+                if (startPrice > endPrice) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Tidak Bisa Filter Harga",
+                        text: "Harga Mulai Tidak Boleh Lebih Besar dari Batas Harga Akhir!",
+                    });
+                    return false;
+                } else {
+                    url.searchParams.set("startPrice", startPrice);
+                    url.searchParams.set("endPrice", endPrice);
+                    return true;
+                }
+            } else if (startPrice) {
+                if (startPrice < 0) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Tidak Bisa Filter Harga",
+                        text: "Harga tidak boleh minus!",
+                    });
+                    return false;
+                } else {
+                    url.searchParams.set("startPrice", startPrice);
+                    url.searchParams.delete("endPrice");
+                    return true;
+                }
+            } else if (endPrice) {
+                if (endPrice < 0) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Tidak Bisa Filter Harga",
+                        text: "Harga tidak boleh minus!",
+                    });
+                    return false;
+                } else {
+                    url.searchParams.delete("startPrice");
+                    url.searchParams.set("endPrice", endPrice);
+                    return true;
+                }
+            } else {
+                url.searchParams.delete("startPrice");
+                url.searchParams.delete("endPrice");
+                return true;
+            }
+        };
+
+        if (setPriceFilters()) {
+            console.log(
+                url.toString(),
+                window.location.href !== url.toString()
+            );
+            if (window.location.href.toString() !== url.toString()) {
+                setIsLoading(true);
+                router.reload({
+                    data: {
+                        startPrice: startPrice > 0 ? startPrice : null,
+                        endPrice: endPrice > 0 ? endPrice : null,
+                    },
+                    only: ["products"],
+                    onFinish: () => {
+                        setIsLoading(false);
+                    },
+                });
+            }
+        }
     };
 
     return (
@@ -223,8 +271,10 @@ export default function LandingPage({ categories, products }) {
                                                             value={startPrice}
                                                             onChange={(e) =>
                                                                 setStartPrice(
-                                                                    e.target
-                                                                        .value
+                                                                    parseInt(
+                                                                        e.target
+                                                                            .value
+                                                                    )
                                                                 )
                                                             }
                                                         />
@@ -255,21 +305,23 @@ export default function LandingPage({ categories, products }) {
                                                             // change the value of endPrice state after user input done
                                                             onChange={(e) =>
                                                                 setEndPrice(
-                                                                    e.target
-                                                                        .value
+                                                                    parseInt(
+                                                                        e.target
+                                                                            .value
+                                                                    )
                                                                 )
                                                             }
                                                         />
                                                     </div>
                                                 </div>
                                             </div>
-                                            {/* <button
+                                            <button
                                                 class="primary__btn price__filter--btn"
                                                 type="button"
-                                                onClick={handleFilterWithPrice}
+                                                onClick={handlePriceFilter}
                                             >
                                                 Filter
-                                            </button> */}
+                                            </button>
                                         </form>
                                     </div>
                                 </div>
@@ -352,6 +404,9 @@ export default function LandingPage({ categories, products }) {
                                                                 20, 25, 50, 100,
                                                             ].map((perPage) => (
                                                                 <option
+                                                                    key={
+                                                                        perPage
+                                                                    }
                                                                     selected={
                                                                         products.per_page ===
                                                                         perPage
