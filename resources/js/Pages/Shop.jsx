@@ -18,7 +18,6 @@ export default function LandingPage({ categories, products, user }) {
         ...(urlParams.getAll("categories").map((it) => parseInt(it)) ?? []),
     ]);
 
-    console.log(selectedCategories);
     const [startPrice, setStartPrice] = useState(
         urlParams.get("startPrice") ?? ""
     );
@@ -36,6 +35,20 @@ export default function LandingPage({ categories, products, user }) {
 
         const params = {};
 
+        if (
+            new URLSearchParams(window.location.search).get("search") !==
+                null &&
+            new URLSearchParams(window.location.search).get("search") !== ""
+        ) {
+            params.search = new URLSearchParams(window.location.search).get(
+                "search"
+            );
+            url.searchParams.set("search", params.search);
+        } else {
+            delete params.search;
+            url.searchParams.delete("search");
+        }
+
         const currentCategories = url.searchParams.get("categories");
         const selectedCategoriesString = selectedCategories.join(",");
 
@@ -45,7 +58,6 @@ export default function LandingPage({ categories, products, user }) {
         if (hasCategoryChanges) {
             if (selectedCategories.length > 0) {
                 // Perform reload only if URL has changed
-                console.log("Category Changes");
                 url.searchParams.set("categories", selectedCategoriesString);
                 params.categories = selectedCategoriesString;
             } else {
@@ -65,10 +77,6 @@ export default function LandingPage({ categories, products, user }) {
         if (window.location.href !== url.toString()) {
             // Update the browser URL
             window.history.replaceState(null, "", url.toString());
-
-            console.log(url.toString(), window.location.href);
-            console.log(params);
-
             setIsLoading(true);
             router.reload({
                 replace: true,
@@ -89,8 +97,6 @@ export default function LandingPage({ categories, products, user }) {
     const handleCategoryFilter = (e, category) => {
         const categoryId = category.id;
         const isChecked = e.target.checked;
-
-        console.log(categoryId, isChecked);
 
         setSelectedCategories((prevCategories) => {
             if (isChecked && !prevCategories.includes(categoryId)) {
@@ -156,10 +162,6 @@ export default function LandingPage({ categories, products, user }) {
         };
 
         if (setPriceFilters()) {
-            console.log(
-                url.toString(),
-                window.location.href !== url.toString()
-            );
             if (window.location.href.toString() !== url.toString()) {
                 setIsLoading(true);
                 router.reload({
@@ -230,10 +232,6 @@ export default function LandingPage({ categories, products, user }) {
                                                         )}
                                                         type="checkbox"
                                                         onChange={(e) => {
-                                                            console.log(
-                                                                e.currentTarget
-                                                                    .value
-                                                            );
                                                             handleCategoryFilter(
                                                                 e,
                                                                 category
