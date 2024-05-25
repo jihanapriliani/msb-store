@@ -286,12 +286,12 @@ export default function Index(props) {
                                                 </tbody>
                                             </table>
                                             <div className="continue__shopping d-flex justify-content-between">
-                                                <a
+                                                <Link
                                                     className="continue__shopping--link"
-                                                    href="shop.html"
+                                                    href="/shop"
                                                 >
                                                     Continue shopping
-                                                </a>
+                                                </Link>
                                                 <button
                                                     class="continue__shopping--clear"
                                                     type="button"
