@@ -55,7 +55,7 @@ export default function LandingPage({ categories, products, user }) {
                                     className="categories__card--style3 text-center"
                                     key={index}
                                 >
-                                    <a
+                                    <Link
                                         className="categories__card--link"
                                         href={route("shop", {
                                             categories: category.id,
@@ -81,7 +81,7 @@ export default function LandingPage({ categories, products, user }) {
                                                 Tyres Sensor
                                             </span>
                                         </div>
-                                    </a>
+                                    </Link>
                                 </div>
                             ))}
                         </div>
