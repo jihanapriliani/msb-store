@@ -7,14 +7,16 @@ import "../../../assets/guest-layout/css/custom.css";
 import "../../../assets/guest-layout/css/vendor/bootstrap.min.css";
 
 export default function Guest({ children, setIsLoading }) {
-    const [search, setSearch] = useState("");
+    const [search, setSearch] = useState(
+        new URLSearchParams(window.location.search).get("search") || ""
+    );
 
     if (!setIsLoading) {
         setIsLoading = () => {};
     }
 
     const handleSearch = () => {
-        const url = new URL(route(route().current()).toString());
+        const url = new URL(window.location.href);
 
         if (!url.toString().includes(route("shop").toString())) {
             url.pathname = "/shop";
@@ -29,13 +31,26 @@ export default function Guest({ children, setIsLoading }) {
             return;
         }
 
-        url.searchParams.set("search", search);
+        const params = {};
+
+        console.log(search);
+        // remove empty search from url such as search="" or search=" " or search="  " etc and null search from url
+        if (search.trim() !== "") {
+            url.searchParams.set("search", search);
+            params.search = search;
+        } else {
+            delete params.search;
+            url.searchParams.delete("search");
+        }
+
+        url.searchParams.sort();
+
         if (window.location.href !== url.toString()) {
+            window.history.replaceState(null, "", url.toString());
             setIsLoading(true);
             router.reload({
-                data: {
-                    search: search,
-                },
+                replace: true,
+                data: params,
                 only: ["products"],
                 onFinish: () => {
                     setIsLoading(false);
@@ -195,26 +210,15 @@ export default function Guest({ children, setIsLoading }) {
                                 </h1>
                             </div>
                             <div className="header__search--widget d-none d-lg-block header__sticky--none">
-                                <form
-                                    className="d-flex header__search--form border-radius-5"
-                                    action="#"
-                                    onSubmit={() =>
-                                        console.log("submit search")
-                                    }
-                                >
+                                <div className="d-flex header__search--form border-radius-5">
                                     {/* <div className="header__select--categories select">
-                                        <select
-                                            className="header__select--inner"
-                                            onChange={() =>
-                                                console.log("Input change")
-                                            }
-                                        >
-                                            <option defaultValue={""} value="">
+                                        <select className="header__select--inner">
+                                            <option defaultValue={1} value="1">
                                                 {" "}
                                                 All categories
                                             </option>
                                         </select>
-                                    </div> */}
+                                    </div>  */}
                                     <div className="header__search--box">
                                         <label>
                                             <input
@@ -228,8 +232,15 @@ export default function Guest({ children, setIsLoading }) {
                                                 }}
                                                 value={search}
                                                 onChange={(e) =>
-                                                    setSearch(e.target.value)
+                                                    setSearch(
+                                                        e.target.value.trim()
+                                                    )
                                                 }
+                                                onKeyDown={(e) => {
+                                                    if (e.key === "Enter") {
+                                                        handleSearch();
+                                                    }
+                                                }}
                                             />
                                         </label>
                                         <button
@@ -252,7 +263,7 @@ export default function Guest({ children, setIsLoading }) {
                                             </svg>
                                         </button>
                                     </div>
-                                </form>
+                                </div>
                             </div>
 
                             <div className="header__account header__sticky--none">
