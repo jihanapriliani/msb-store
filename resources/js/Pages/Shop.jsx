@@ -10,7 +10,7 @@ import ProductCard from "@/Components/ProductCard";
 
 import Swal from "sweetalert2";
 
-export default function LandingPage({ categories, products }) {
+export default function LandingPage({ categories, products, user }) {
     // get Query Params
     const urlParams = new URLSearchParams(window.location.search);
 

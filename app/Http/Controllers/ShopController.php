@@ -28,6 +28,7 @@ class ShopController extends Controller
         // parse str to array
         // dd($request->all());
         $query = Product::query();
+        $user = Auth::user();
 
         if ($request->has('categories') && $request->categories != ""){
             $query->whereIn('category_id', explode(",", $request->categories));
@@ -66,6 +67,7 @@ class ShopController extends Controller
         // dd($products);
         $categories = Category::orderBy('id', 'asc')->get();
         return Inertia::render('Shop', [
+            'user' => $user,
             'products' => $products,
             'categories' => $categories
         ]);
