@@ -175,11 +175,11 @@ export default function Checkout(props) {
                                                                                 window
                                                                                     .location
                                                                                     .origin +
-                                                                                "/" +
-                                                                                cart
-                                                                                    .product
-                                                                                    .images[0]
-                                                                                    .image
+                                                                                    "/" +
+                                                                                    (cart
+                                                                                        .product
+                                                                                        .images[0]
+                                                                                        .image ?? "assets/images/default.png")
                                                                             }
                                                                             alt="cart-product"
                                                                         />

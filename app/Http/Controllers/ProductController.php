@@ -29,7 +29,6 @@ class ProductController extends Controller
      */
     public function create()
     {
-
         $categories = Category::all();
 
         return Inertia::render('Admin/Product/Create', [
@@ -45,7 +44,7 @@ class ProductController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string',
             'description' => 'required|string',
-            'category' => 'required',
+            'category' => 'required|exists:categories,id',
             'stock' => 'required',
             'price' => 'required',
             'unit_weight' => 'required',
@@ -118,19 +117,17 @@ class ProductController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string',
-            'description' => 'required|string',
-            'category' => 'required',
-            'stock' => 'required',
-            'price' => 'required',
-            'unit_weight' => 'required',
+            'description' => 'required',
+            'category' => 'required|exists:categories,id',
+            'stock' => 'required|numeric',
+            'price' => 'required|numeric',
+            'unit_weight' => 'required|numeric',
             'old_product_images.*' => 'nullable', 
             'new_product_images.*' => 'nullable|image|mimes:jpeg,png,jpg'
         ]);
 
-
         $product = Product::findOrFail($product->id);
         
-
         $product->update([
             'name' => $validatedData['name'],
             'slug' => Str::slug($validatedData['name'], '-'),

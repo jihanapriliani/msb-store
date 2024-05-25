@@ -57,7 +57,9 @@ export default function LandingPage({ categories, products, user }) {
                                 >
                                     <a
                                         className="categories__card--link"
-                                        href=""
+                                        href={route("shop", {
+                                            categories: category.id,
+                                        })}
                                     >
                                         <div className="categories__thumbnail">
                                             <img
@@ -65,7 +67,8 @@ export default function LandingPage({ categories, products, user }) {
                                                 src={
                                                     window.location.origin +
                                                     "/" +
-                                                    category.image
+                                                    (category.image ??
+                                                        "assets/images/default.png")
                                                 }
                                                 alt="categories-img"
                                             />

@@ -1,91 +1,190 @@
-import { Link, Head } from "@inertiajs/react";
+import { Link, Head, router } from "@inertiajs/react";
 
 import GuestLayout from "@/Layouts/GuestLayout/Index";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
+import { route } from "ziggy-js";
 
 import ProductCard from "@/Components/ProductCard";
 
 import Swal from "sweetalert2";
 
-export default function LandingPage({ categories, products, user }) {
-    const [renderedProducts, setRenderedProducts] = useState([]);
-    const [selectedCategories, setSelectedCategories] = useState([]);
-    const [startPrice, setStartPrice] = useState([]);
-    const [endPrice, setEndPrice] = useState([]);
+export default function LandingPage({ categories, products }) {
+    // get Query Params
+    const urlParams = new URLSearchParams(window.location.search);
 
-    const handleCategoryCBClicked = (data) => {
-        const categoryExist = selectedCategories.find(
-            (category) => category.id === data.id
-        );
+    const [selectedCategories, setSelectedCategories] = useState([
+        ...(urlParams.getAll("categories").map((it) => parseInt(it)) ?? []),
+    ]);
 
-        if (categoryExist) {
-            const filteredCategories = selectedCategories.filter(
-                (category) => category.id !== data.id
-            );
-            setSelectedCategories(filteredCategories);
-        } else {
-            setSelectedCategories([...selectedCategories, data]);
+    console.log(selectedCategories);
+    const [startPrice, setStartPrice] = useState(
+        urlParams.get("startPrice") ?? ""
+    );
+    const [endPrice, setEndPrice] = useState(urlParams.get("endPrice") ?? "");
+    const [isLoading, setIsLoading] = useState(false);
+    const [orderBy, setOrderBy] = useState(1);
+
+    const [pagination, setPagination] = useState({
+        pageIndex: products.current_page - 1,
+        pageSize: products.per_page,
+    });
+
+    useEffect(() => {
+        const url = new URL(route(route().current()).toString());
+
+        const params = {};
+
+        const currentCategories = url.searchParams.get("categories");
+        const selectedCategoriesString = selectedCategories.join(",");
+
+        const hasCategoryChanges =
+            selectedCategoriesString !== currentCategories;
+
+        if (hasCategoryChanges) {
+            if (selectedCategories.length > 0) {
+                // Perform reload only if URL has changed
+                console.log("Category Changes");
+                url.searchParams.set("categories", selectedCategoriesString);
+                params.categories = selectedCategoriesString;
+            } else {
+                url.searchParams.delete("categories");
+                delete params.categories;
+            }
         }
+
+        // Update other URL parameters
+        url.searchParams.set("page", pagination.pageIndex + 1);
+        url.searchParams.set("per_page", pagination.pageSize);
+        url.searchParams.set("orderBy", orderBy);
+
+        url.searchParams.sort();
+
+        // Check if the URL has actually changed
+        if (window.location.href !== url.toString()) {
+            // Update the browser URL
+            window.history.replaceState(null, "", url.toString());
+
+            console.log(url.toString(), window.location.href);
+            console.log(params);
+
+            setIsLoading(true);
+            router.reload({
+                replace: true,
+                data: params,
+                only: ["products"],
+                onFinish: () => {
+                    setIsLoading(false);
+                },
+            });
+        }
+    }, [
+        selectedCategories.toString(),
+        pagination.pageIndex,
+        pagination.pageSize,
+        orderBy,
+    ]);
+
+    const handleCategoryFilter = (e, category) => {
+        const categoryId = category.id;
+        const isChecked = e.target.checked;
+
+        console.log(categoryId, isChecked);
+
+        setSelectedCategories((prevCategories) => {
+            if (isChecked && !prevCategories.includes(categoryId)) {
+                return [...prevCategories, categoryId]; // Tambahkan categoryId ke array
+            } else if (!isChecked && prevCategories.includes(categoryId)) {
+                return prevCategories.filter((id) => id !== categoryId); // Hapus categoryId dari array
+            } else {
+                return prevCategories; // Kembalikan array tanpa perubahan
+            }
+        });
     };
 
-    useEffect(() => {
-        setRenderedProducts(products);
-    }, []);
+    const handlePriceFilter = (e) => {
+        e.preventDefault();
 
-    useEffect(() => {
-        if (selectedCategories.length === 0) {
-            setRenderedProducts(products);
-        } else {
-            axios
-                .post("/api/get-products-by-category", {
-                    selected_categories: selectedCategories,
-                })
-                .then((res) => {
-                    const { data } = res;
+        const url = new URL(window.location.href);
 
-                    setRenderedProducts(data.data.products);
+        const setPriceFilters = () => {
+            if (startPrice && endPrice && startPrice > 0 && endPrice > 0) {
+                if (startPrice > endPrice) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Tidak Bisa Filter Harga",
+                        text: "Harga Mulai Tidak Boleh Lebih Besar dari Batas Harga Akhir!",
+                    });
+                    return false;
+                } else {
+                    url.searchParams.set("startPrice", startPrice);
+                    url.searchParams.set("endPrice", endPrice);
+                    return true;
+                }
+            } else if (startPrice) {
+                if (startPrice < 0) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Tidak Bisa Filter Harga",
+                        text: "Harga tidak boleh minus!",
+                    });
+                    return false;
+                } else {
+                    url.searchParams.set("startPrice", startPrice);
+                    url.searchParams.delete("endPrice");
+                    return true;
+                }
+            } else if (endPrice) {
+                if (endPrice < 0) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Tidak Bisa Filter Harga",
+                        text: "Harga tidak boleh minus!",
+                    });
+                    return false;
+                } else {
+                    url.searchParams.delete("startPrice");
+                    url.searchParams.set("endPrice", endPrice);
+                    return true;
+                }
+            } else {
+                url.searchParams.delete("startPrice");
+                url.searchParams.delete("endPrice");
+                return true;
+            }
+        };
+
+        if (setPriceFilters()) {
+            console.log(
+                url.toString(),
+                window.location.href !== url.toString()
+            );
+            if (window.location.href.toString() !== url.toString()) {
+                setIsLoading(true);
+                router.reload({
+                    data: {
+                        startPrice: startPrice > 0 ? startPrice : null,
+                        endPrice: endPrice > 0 ? endPrice : null,
+                    },
+                    only: ["products"],
+                    onFinish: () => {
+                        setIsLoading(false);
+                    },
                 });
-        }
-    }, [selectedCategories]);
-
-    const handleFilterWithPrice = () => {
-        if (parseInt(startPrice) > parseInt(endPrice)) {
-            Swal.fire({
-                icon: "error",
-                title: "Tidak Bisa Filter Harga",
-                text: "Harga Mulai Tidak Boleh Lebih Besar dari Batas Harga Akhir!",
-            });
-        } else if (parseInt(startPrice) < 0 || parseInt(endPrice) < 0) {
-            Swal.fire({
-                icon: "error",
-                title: "Tidak Bisa Filter Harga",
-                text: "Harga tidak boleh minus!",
-            });
-        } else {
-            axios
-                .post("/api/get-products-with-price-range", {
-                    start_price: startPrice,
-                    end_price: endPrice,
-                    selected_categories: selectedCategories,
-                })
-                .then((res) => {
-                    const { data } = res;
-                    setRenderedProducts(data.data.products);
-                });
+            }
         }
     };
 
     return (
-        <GuestLayout>
-            <main className="main__content_wrapper">
-                <section className="breadcrumb__section breadcrumb__bg">
-                    <div className="container">
-                        <div className="row row-cols-1">
-                            <div className="col">
-                                <div className="breadcrumb__content text-center">
-                                    <h1 className="breadcrumb__content--title">
+        <GuestLayout setIsLoading={setIsLoading}>
+            <main class="main__content_wrapper">
+                <section class="breadcrumb__section breadcrumb__bg">
+                    <div class="container">
+                        <div class="row row-cols-1">
+                            <div class="col">
+                                <div class="breadcrumb__content text-center">
+                                    <h1 class="breadcrumb__content--title">
                                         Product
                                     </h1>
                                     <ul className="breadcrumb__content--menu d-flex justify-content-center">
@@ -111,35 +210,39 @@ export default function LandingPage({ categories, products, user }) {
                                         <h2 className="widget__title h3">
                                             Categories
                                         </h2>
-                                        <ul className="widget__form--check">
-                                            {categories.map(
-                                                (category, index) => (
-                                                    <li
-                                                        className="widget__form--check__list"
-                                                        key={index}
+                                        <ul class="widget__form--check">
+                                            {categories.map((category) => (
+                                                <li
+                                                    class="widget__form--check__list"
+                                                    key={category.id}
+                                                >
+                                                    <label
+                                                        class="widget__form--check__label"
+                                                        for={`check+${category.id}`}
                                                     >
-                                                        <label
-                                                            className="widget__form--check__label"
-                                                            htmlFor="check1"
-                                                        >
-                                                            {
-                                                                category.display_name
-                                                            }
-                                                        </label>
-                                                        <input
-                                                            className="widget__form--check__input"
-                                                            id="check1"
-                                                            type="checkbox"
-                                                            onClick={() =>
-                                                                handleCategoryCBClicked(
-                                                                    category
-                                                                )
-                                                            }
-                                                        />
-                                                        <span className="widget__form--checkmark"></span>
-                                                    </li>
-                                                )
-                                            )}
+                                                        {category.display_name}
+                                                    </label>
+                                                    <input
+                                                        class="widget__form--check__input"
+                                                        id={`check+${category.id}`}
+                                                        checked={selectedCategories.includes(
+                                                            category.id
+                                                        )}
+                                                        type="checkbox"
+                                                        onChange={(e) => {
+                                                            console.log(
+                                                                e.currentTarget
+                                                                    .value
+                                                            );
+                                                            handleCategoryFilter(
+                                                                e,
+                                                                category
+                                                            );
+                                                        }}
+                                                    />
+                                                    <span class="widget__form--checkmark"></span>
+                                                </li>
+                                            ))}
                                         </ul>
                                     </div>
                                     <div className="single__widget price__filter widget__bg">
@@ -169,8 +272,10 @@ export default function LandingPage({ categories, products, user }) {
                                                             value={startPrice}
                                                             onChange={(e) =>
                                                                 setStartPrice(
-                                                                    e.target
-                                                                        .value
+                                                                    parseInt(
+                                                                        e.target
+                                                                            .value
+                                                                    )
                                                                 )
                                                             }
                                                         />
@@ -198,10 +303,13 @@ export default function LandingPage({ categories, products, user }) {
                                                             min={0}
                                                             placeholder="0"
                                                             value={endPrice}
+                                                            // change the value of endPrice state after user input done
                                                             onChange={(e) =>
                                                                 setEndPrice(
-                                                                    e.target
-                                                                        .value
+                                                                    parseInt(
+                                                                        e.target
+                                                                            .value
+                                                                    )
                                                                 )
                                                             }
                                                         />
@@ -211,7 +319,7 @@ export default function LandingPage({ categories, products, user }) {
                                             <button
                                                 className="primary__btn price__filter--btn"
                                                 type="button"
-                                                onClick={handleFilterWithPrice}
+                                                onClick={handlePriceFilter}
                                             >
                                                 Filter
                                             </button>
@@ -276,29 +384,41 @@ export default function LandingPage({ categories, products, user }) {
                                                         Filter
                                                     </span>
                                                 </button>
-                                                <div className="product__view--mode__list product__short--by align-items-center d-flex ">
-                                                    <label className="product__view--label">
-                                                        Prev Page :
+                                                <div class="product__view--mode__list product__short--by align-items-center d-flex ">
+                                                    <label class="product__view--label">
+                                                        Per Page :
                                                     </label>
-                                                    <div className="select shop__header--select">
-                                                        <select className="product__view--select">
-                                                            <option
-                                                                defaultValue={1}
-                                                            >
-                                                                65
-                                                            </option>
-                                                            <option value="2">
-                                                                40
-                                                            </option>
-                                                            <option value="3">
-                                                                42
-                                                            </option>
-                                                            <option value="4">
-                                                                57{" "}
-                                                            </option>
-                                                            <option value="5">
-                                                                60{" "}
-                                                            </option>
+                                                    <div class="select shop__header--select">
+                                                        <select
+                                                            class="product__view--select"
+                                                            onChange={(e) => {
+                                                                setPagination({
+                                                                    ...pagination,
+                                                                    pageSize:
+                                                                        e.target
+                                                                            .value,
+                                                                });
+                                                            }}
+                                                        >
+                                                            {[
+                                                                5, 10, 12, 15,
+                                                                20, 25, 50, 100,
+                                                            ].map((perPage) => (
+                                                                <option
+                                                                    key={
+                                                                        perPage
+                                                                    }
+                                                                    selected={
+                                                                        products.per_page ===
+                                                                        perPage
+                                                                    }
+                                                                    value={
+                                                                        perPage
+                                                                    }
+                                                                >
+                                                                    {perPage}
+                                                                </option>
+                                                            ))}
                                                         </select>
                                                     </div>
                                                 </div>
@@ -306,29 +426,43 @@ export default function LandingPage({ categories, products, user }) {
                                                     <label className="product__view--label">
                                                         Sort By :
                                                     </label>
-                                                    <div className="select shop__header--select">
-                                                        <select className="product__view--select">
+                                                    <div class="select shop__header--select">
+                                                        <select
+                                                            class="product__view--select"
+                                                            onChange={(e) => {
+                                                                setOrderBy(
+                                                                    e.target
+                                                                        .value
+                                                                );
+                                                            }}
+                                                        >
                                                             <option
                                                                 defaultValue={1}
                                                             >
-                                                                Sort by latest
+                                                                Sort by newest
                                                             </option>
                                                             <option value="2">
-                                                                Sort by
-                                                                popularity
+                                                                Sort by highest
+                                                                price
                                                             </option>
                                                             <option value="3">
-                                                                Sort by newness
+                                                                Sort by lowest
+                                                                price
                                                             </option>
                                                             <option value="4">
-                                                                Sort by rating{" "}
+                                                                Sort by a to z
+                                                            </option>
+                                                            <option value="5">
+                                                                Sort by z to a
                                                             </option>
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <p className="product__showing--count">
-                                                Showing 1–9 of 21 results
+                                            <p class="product__showing--count">
+                                                Showing {products.from}–
+                                                {products.to} of{" "}
+                                                {products.total} results
                                             </p>
                                         </div>
                                         <div className="tab_content">
@@ -336,10 +470,11 @@ export default function LandingPage({ categories, products, user }) {
                                                 id="product_grid"
                                                 className="tab_pane active show"
                                             >
-                                                <div className="product__section--inner">
-                                                    <div className="row mb--n30">
-                                                        {renderedProducts &&
-                                                            renderedProducts.map(
+                                                <div class="product__section--inner">
+                                                    <div class="row mb--n30">
+                                                        {!isLoading ? (
+                                                            products.data &&
+                                                            products.data.map(
                                                                 (
                                                                     product,
                                                                     index
@@ -360,18 +495,54 @@ export default function LandingPage({ categories, products, user }) {
                                                                         />
                                                                     </div>
                                                                 )
-                                                            )}
+                                                            )
+                                                        ) : (
+                                                            <div class="col-lg-12">
+                                                                <div class="d-flex justify-content-center align-items-center">
+                                                                    <div
+                                                                        class="spinner-border text-primary"
+                                                                        role="status"
+                                                                    >
+                                                                        <span class="visually-hidden">
+                                                                            Loading...
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        )}
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="pagination__area">
-                                            <nav className="pagination justify-content-center">
-                                                <ul className="pagination__wrapper d-flex align-items-center justify-content-center">
-                                                    <li className="pagination__list">
-                                                        <a
+                                        <div class="pagination__area">
+                                            <nav class="pagination justify-content-center">
+                                                <ul class="pagination__wrapper d-flex align-items-center justify-content-center">
+                                                    <li class="pagination__list">
+                                                        <button
                                                             href="shop.html"
-                                                            className="pagination__item--arrow  link "
+                                                            class="pagination__item--arrow  link "
+                                                            disabled={
+                                                                products.current_page ===
+                                                                1
+                                                            }
+                                                            onClick={
+                                                                products.current_page ===
+                                                                1
+                                                                    ? (e) => {
+                                                                          e.preventDefault();
+                                                                      }
+                                                                    : (e) => {
+                                                                          e.preventDefault();
+                                                                          setPagination(
+                                                                              {
+                                                                                  ...pagination,
+                                                                                  pageIndex:
+                                                                                      pagination.pageIndex -
+                                                                                      1,
+                                                                              }
+                                                                          );
+                                                                      }
+                                                            }
                                                         >
                                                             <svg
                                                                 xmlns="http://www.w3.org/2000/svg"
@@ -391,41 +562,71 @@ export default function LandingPage({ categories, products, user }) {
                                                             <span className="visually-hidden">
                                                                 page left arrow
                                                             </span>
-                                                        </a>
+                                                        </button>
                                                     </li>
-                                                    <li className="pagination__list">
-                                                        <span className="pagination__item pagination__item--current">
-                                                            1
-                                                        </span>
-                                                    </li>
-                                                    <li className="pagination__list">
-                                                        <a
+                                                    {Array.from(
+                                                        Array(
+                                                            products.last_page
+                                                        ),
+                                                        (e, i) => {
+                                                            return (
+                                                                <li
+                                                                    key={i}
+                                                                    class={`pagination__list ${
+                                                                        i ===
+                                                                        products.current_page -
+                                                                            1
+                                                                            ? "active"
+                                                                            : ""
+                                                                    }`}
+                                                                >
+                                                                    <div
+                                                                        class="pagination__item link"
+                                                                        onClick={(
+                                                                            e
+                                                                        ) => {
+                                                                            e.preventDefault();
+                                                                            setPagination(
+                                                                                {
+                                                                                    ...pagination,
+                                                                                    pageIndex:
+                                                                                        i,
+                                                                                }
+                                                                            );
+                                                                        }}
+                                                                    >
+                                                                        {i + 1}
+                                                                    </div>
+                                                                </li>
+                                                            );
+                                                        }
+                                                    )}
+                                                    <li class="pagination__list">
+                                                        <button
                                                             href="shop.html"
-                                                            className="pagination__item link"
-                                                        >
-                                                            2
-                                                        </a>
-                                                    </li>
-                                                    <li className="pagination__list">
-                                                        <a
-                                                            href="shop.html"
-                                                            className="pagination__item link"
-                                                        >
-                                                            3
-                                                        </a>
-                                                    </li>
-                                                    <li className="pagination__list">
-                                                        <a
-                                                            href="shop.html"
-                                                            className="pagination__item link"
-                                                        >
-                                                            4
-                                                        </a>
-                                                    </li>
-                                                    <li className="pagination__list">
-                                                        <a
-                                                            href="shop.html"
-                                                            className="pagination__item--arrow  link "
+                                                            class="pagination__item--arrow  link "
+                                                            disabled={
+                                                                products.current_page ===
+                                                                products.last_page
+                                                            }
+                                                            onClick={
+                                                                products.current_page ===
+                                                                products.last_page
+                                                                    ? (e) => {
+                                                                          e.preventDefault();
+                                                                      }
+                                                                    : (e) => {
+                                                                          e.preventDefault();
+                                                                          setPagination(
+                                                                              {
+                                                                                  ...pagination,
+                                                                                  pageIndex:
+                                                                                      pagination.pageIndex +
+                                                                                      1,
+                                                                              }
+                                                                          );
+                                                                      }
+                                                            }
                                                         >
                                                             <svg
                                                                 xmlns="http://www.w3.org/2000/svg"
@@ -445,7 +646,7 @@ export default function LandingPage({ categories, products, user }) {
                                                             <span className="visually-hidden">
                                                                 page right arrow
                                                             </span>
-                                                        </a>
+                                                        </button>
                                                     </li>
                                                 </ul>
                                             </nav>

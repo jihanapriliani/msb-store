@@ -9,12 +9,13 @@ import Select from "react-select";
 export default function Edit(props) {
     const { user } = props;
 
-    const { data, setData, post, processing, errors, reset } = useForm({
-        fullname: user.fullname,
-        username: user.username,
-        email: user.email,
-        phone: user.phone,
-    });
+    const { data, setData, post, processing, errors, reset, setError } =
+        useForm({
+            fullname: user.fullname,
+            username: user.username,
+            email: user.email,
+            phone: user.phone,
+        });
 
     const submit = (e) => {
         e.preventDefault();
@@ -31,9 +32,7 @@ export default function Edit(props) {
                 forceFormData: true,
                 onError: (e) => {
                     console.log(e);
-                    if (e.errors) {
-                        errors(e.errors);
-                    }
+                    setError(e);
                 },
                 onSuccess: () => {
                     reset();
@@ -74,6 +73,9 @@ export default function Edit(props) {
                                         }
                                         placeholder="example: Bolts.."
                                     />
+                                    <div class="form-text text-danger">
+                                        {errors.fullname}
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
@@ -95,6 +97,9 @@ export default function Edit(props) {
                                         }
                                         placeholder="example: Bolts.."
                                     />
+                                    <div class="form-text text-danger">
+                                        {errors.username}
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
@@ -116,6 +121,9 @@ export default function Edit(props) {
                                         }
                                         placeholder="example: bolts..."
                                     />
+                                    <div class="form-text text-danger">
+                                        {errors.email}
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
@@ -137,6 +145,9 @@ export default function Edit(props) {
                                         }
                                         placeholder="example: bolts..."
                                     />
+                                    <div class="form-text text-danger">
+                                        {errors.phone}
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
@@ -157,6 +168,9 @@ export default function Edit(props) {
                                         }
                                         placeholder="******"
                                     />
+                                    <div class="form-text text-danger">
+                                        {errors.password}
+                                    </div>
                                 </div>
 
                                 <button

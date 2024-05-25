@@ -19,8 +19,9 @@ export default function ProductCard({ product, user }) {
                             className="product__card--thumbnail__img product__primary--img w-[300px] h-[200px] object-cover"
                             src={
                                 window.location.origin +
-                                "/" +
-                                product.images[0].image
+                                    "/" +
+                                    (product.images[0].image ??
+                                "assets/images/default.png")
                             }
                             alt="product-img"
                         />
@@ -28,8 +29,9 @@ export default function ProductCard({ product, user }) {
                             className="product__card--thumbnail__img product__secondary--img"
                             src={
                                 window.location.origin +
-                                "/" +
-                                product.images[0].image
+                                    "/" +
+                                    (product.images[0].image ??
+                                "assets/images/default.png")
                             }
                             alt="product-img"
                         />

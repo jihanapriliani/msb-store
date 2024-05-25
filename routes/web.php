@@ -1,13 +1,13 @@
 <?php
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\CartController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ShopController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TransactionDetailController;
-use App\Http\Controllers\SuperadminController;
+use App\Http\Controllers\UserController;
 
 use App\Http\Controllers\UserTransactionController;
 use App\Http\Controllers\UserProfileController;
@@ -58,6 +58,9 @@ Route::get('/shop', function () {
         'user' => $user
     ]);
 })->name("shop");
+
+// Route::get('/', [ShopController::class, "landing"])->name('landing-page');
+// Route::get('/shop', [ShopController::class, "shop"])->name("shop");
 
 Route::get('/detail-product/{id}', function (string $id) {
     $user = Auth::user();
@@ -136,6 +139,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/cart', [UserCartController::class, 'index'])->name('user.cart');
         Route::delete('/cart/{id}', [UserCartController::class, 'destroy'])->name('user.cart.destroy');
+        Route::delete('/cart', [UserCartController::class, 'clear'])->name('user.cart.clear');
 
         Route::get('/checkout', [UserCartController::class, 'checkout'])->name('user.cart.checkout');
     });
