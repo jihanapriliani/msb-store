@@ -145,7 +145,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::group(['middleware' => ['role:admin']], function() {
+    Route::group(['middleware' => ['role:admin|super-admin']], function() {
         Route::prefix('dashboard')->group(function () {
             Route::prefix('admin')->group(function () {
                 Route::get('/', function() {
