@@ -1,12 +1,16 @@
 import { useMemo } from "react";
 import { MantineReactTable, useMantineReactTable } from "mantine-react-table";
 
-import { Link, router } from "@inertiajs/react";
+import { Link, router, usePage } from "@inertiajs/react";
 
 import Swal from "sweetalert2";
 
 const Example = (props) => {
     const { data } = props;
+
+    const pageProps = usePage().props;
+
+    // console.log();
 
     const handleDelete = (row) => {
         Swal.fire({
@@ -29,10 +33,8 @@ const Example = (props) => {
         });
     };
 
-    console.log(data);
-
-    const columns = useMemo(
-        () => [
+    const columns = useMemo(() => {
+        const table = [
             {
                 accessorKey: "fullname",
                 header: "Nama Lengkap",
@@ -66,10 +68,19 @@ const Example = (props) => {
                 },
                 header: "Verifikasi Email",
             },
-        ],
+        ];
+        if (pageProps.auth.user.roles[0].name === "super-admin") {
+            table.push({
+                accessorKey: "roles",
+                header: "Roles",
+                accessorFn: (row) => {
+                    return row.roles.map((role) => role.name).join(", ");
+                },
+            });
+        }
 
-        []
-    );
+        return table;
+    }, []);
 
     const table = useMantineReactTable({
         columns,
