@@ -66,6 +66,22 @@ export default function LandingPage({ categories, products, user }) {
             }
         }
 
+        if (startPrice && startPrice > 0) {
+            url.searchParams.set("startPrice", startPrice);
+            params.startPrice = startPrice;
+        } else {
+            url.searchParams.delete("startPrice");
+            delete params.startPrice;
+        }
+
+        if (endPrice && endPrice > 0) {
+            url.searchParams.set("endPrice", endPrice);
+            params.endPrice = endPrice;
+        } else {
+            url.searchParams.delete("endPrice");
+            delete params.endPrice;
+        }
+
         // Update other URL parameters
         url.searchParams.set("page", pagination.pageIndex + 1);
         url.searchParams.set("per_page", pagination.pageSize);
@@ -113,6 +129,7 @@ export default function LandingPage({ categories, products, user }) {
         e.preventDefault();
 
         const url = new URL(window.location.href);
+        const params = {};
 
         const setPriceFilters = () => {
             if (startPrice && endPrice && startPrice > 0 && endPrice > 0) {
@@ -126,6 +143,8 @@ export default function LandingPage({ categories, products, user }) {
                 } else {
                     url.searchParams.set("startPrice", startPrice);
                     url.searchParams.set("endPrice", endPrice);
+                    params.startPrice = startPrice;
+                    params.endPrice = endPrice;
                     return true;
                 }
             } else if (startPrice) {
@@ -139,6 +158,8 @@ export default function LandingPage({ categories, products, user }) {
                 } else {
                     url.searchParams.set("startPrice", startPrice);
                     url.searchParams.delete("endPrice");
+                    params.startPrice = startPrice;
+                    delete params.endPrice;
                     return true;
                 }
             } else if (endPrice) {
@@ -152,23 +173,27 @@ export default function LandingPage({ categories, products, user }) {
                 } else {
                     url.searchParams.delete("startPrice");
                     url.searchParams.set("endPrice", endPrice);
+                    delete params.startPrice;
+                    params.endPrice = endPrice;
                     return true;
                 }
             } else {
                 url.searchParams.delete("startPrice");
                 url.searchParams.delete("endPrice");
+                delete params.startPrice;
+                delete params.endPrice;
                 return true;
             }
         };
 
+        url.searchParams.sort();
+
         if (setPriceFilters()) {
             if (window.location.href.toString() !== url.toString()) {
+                window.history.replaceState(null, "", url.toString());
                 setIsLoading(true);
                 router.reload({
-                    data: {
-                        startPrice: startPrice > 0 ? startPrice : null,
-                        endPrice: endPrice > 0 ? endPrice : null,
-                    },
+                    data: params,
                     only: ["products"],
                     onFinish: () => {
                         setIsLoading(false);
