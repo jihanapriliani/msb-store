@@ -48,19 +48,8 @@ Route::get('/', function () {
     ]);
 })->name('landing-page');
 
-Route::get('/shop', function () {
-    $user = Auth::user();
-    $products = Product::with('images')->get();
-    $categories = Category::all();
-    return Inertia::render('Shop', [
-        'products' => $products,
-        'categories' => $categories,
-        'user' => $user
-    ]);
-})->name("shop");
-
 // Route::get('/', [ShopController::class, "landing"])->name('landing-page');
-// Route::get('/shop', [ShopController::class, "shop"])->name("shop");
+Route::get('/shop', [ShopController::class, "shop"])->name("shop");
 
 Route::get('/detail-product/{id}', function (string $id) {
     $user = Auth::user();
