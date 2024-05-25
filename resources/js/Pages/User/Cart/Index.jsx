@@ -68,7 +68,7 @@ export default function Index(props) {
         } else {
             const updatedItems = items.map((item) => {
                 if (item.product_id === product_id) {
-                    return { ...item, amount: item.amount-1};
+                    return { ...item, amount: item.amount - 1 };
                 } else {
                     return item;
                 }
@@ -292,7 +292,7 @@ export default function Index(props) {
                                                 </a>
                                                 <button
                                                     class="continue__shopping--clear"
-                                                    type="submit"
+                                                    type="button"
                                                     onClick={() => {
                                                         Swal.fire({
                                                             title: "Yakin ingin menghapus semua?",
