@@ -604,7 +604,7 @@ export default function LandingPage({ categories, products, user }) {
                                                                     }`}
                                                                 >
                                                                     <div
-                                                                        class="pagination__item link"
+                                                                        class="pagination__item link "
                                                                         onClick={(
                                                                             e
                                                                         ) => {
