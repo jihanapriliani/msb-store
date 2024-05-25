@@ -4,6 +4,14 @@ a {
     text-decoration: none !important;
 }
 
+footer li.footer__widget--menu__list a.footer__widget--menu__text {
+    color: rgb(148, 148, 148) !important;
+}
+
+footer a.copyright__content--link {
+    color: rgb(148, 148, 148) !important;
+}
+
 .active-address-card {
     background: gray;
 }

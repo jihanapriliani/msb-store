@@ -53,11 +53,22 @@ Route::delete('/user/cart/{id}', function(string $id) {
 
 
 Route::post('/add-product-to-cart', function(Request $request) {
-    $response = Cart::create([
-        'user_id' => $request->user_id,
-        'product_id' => $request->product_id,
-        'amount' => 1
+    $validated = $request->validate([
+        'user_id' => 'required|exists:users,id',
+        'product_id' => 'required|exists:products,id',
+        'amount' => 'required|integer|min:1'
     ]);
+
+    $response = Cart::updateOrCreate(
+        [
+            'user_id' => $validated['user_id'],
+            'product_id' => $validated['product_id']
+        ],
+        [
+            'amount' => $validated['amount']
+        ]
+    );
+
     return response()->json($response);
 })->name('api.add-product_to_cart');
 

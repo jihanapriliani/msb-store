@@ -30,16 +30,21 @@ export default function ResetPassword({ token, email }) {
         <GuestLayout>
             <Head title="Reset Password" />
 
-            <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="email" value="Email" />
+            <form onSubmit={submit} className="max-w-5xl mx-auto my-20">
+                <div className="my-5">
+                    <label
+                        htmlFor="email"
+                        className="block mb-2 font-medium text-gray-700 dark:text-white text-3xl"
+                    >
+                        Email
+                    </label>
 
                     <TextInput
                         id="email"
                         type="email"
                         name="email"
                         value={data.email}
-                        className="mt-1 block w-full"
+                        className="h-[50px]  bg-gray-50 border border-gray-300 text-gray-900 text-2xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         autoComplete="username"
                         onChange={(e) => setData("email", e.target.value)}
                     />
@@ -48,16 +53,22 @@ export default function ResetPassword({ token, email }) {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                    <label
+                        htmlFor="password"
+                        className="block mb-2 font-medium text-gray-700 dark:text-white text-3xl"
+                    >
+                        Password
+                    </label>
 
                     <TextInput
                         id="password"
                         type="password"
                         name="password"
                         value={data.password}
-                        className="mt-1 block w-full"
+                        className="h-[50px]  bg-gray-50 border border-gray-300 text-gray-900 text-2xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         autoComplete="new-password"
                         isFocused={true}
+                        placeholder="*****"
                         onChange={(e) => setData("password", e.target.value)}
                     />
 
@@ -65,16 +76,19 @@ export default function ResetPassword({ token, email }) {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel
+                    <label
                         htmlFor="password_confirmation"
-                        value="Confirm Password"
-                    />
+                        className="block mb-2 font-medium text-gray-700 dark:text-white text-3xl"
+                    >
+                        Confirm Password
+                    </label>
 
                     <TextInput
                         type="password"
                         name="password_confirmation"
                         value={data.password_confirmation}
-                        className="mt-1 block w-full"
+                        placeholder="*****"
+                        className="h-[50px]  bg-gray-50 border border-gray-300 text-gray-900 text-2xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         autoComplete="new-password"
                         onChange={(e) =>
                             setData("password_confirmation", e.target.value)
@@ -88,8 +102,11 @@ export default function ResetPassword({ token, email }) {
                 </div>
 
                 <div className="flex items-center justify-end mt-4">
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Reset Password
+                    <PrimaryButton
+                        className="px-12 py-4 rounded-lg bg-black text-white text-3xl"
+                        disabled={processing}
+                    >
+                        <p className="text-2xl">Reset Password</p>
                     </PrimaryButton>
                 </div>
             </form>

@@ -101,7 +101,10 @@ export default function Login({ status, canResetPassword }) {
                 </div>
             </form> */}
 
-            <form className="max-w-5xl mx-auto my-20" onSubmit={submit}>
+            <form
+                className="max-w-5xl mx-auto my-20 flex flex-col "
+                onSubmit={submit}
+            >
                 <div className="my-5">
                     <label
                         htmlFor="email"
@@ -150,10 +153,19 @@ export default function Login({ status, canResetPassword }) {
 
                 <button
                     type="submit"
-                    className="px-12 py-4 rounded-lg bg-black text-white text-3xl"
+                    className="px-12 py-4 rounded-xl bg-black text-white text-3xl"
                 >
                     Log In
                 </button>
+
+                <p className="text-[1.5rem] mx-auto mt-5">
+                    Lupa password?
+                    <Link href="/forgot-password">
+                        <p className="underline underline-offset-2 ml-2">
+                            Reset Password Sekarang.
+                        </p>
+                    </Link>
+                </p>
             </form>
         </GuestLayout>
     );

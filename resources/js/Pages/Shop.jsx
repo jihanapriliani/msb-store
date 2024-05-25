@@ -5,9 +5,11 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 
+import ProductCard from "@/Components/ProductCard";
+
 import Swal from "sweetalert2";
 
-export default function LandingPage({ categories, products }) {
+export default function LandingPage({ categories, products, user }) {
     const [renderedProducts, setRenderedProducts] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [startPrice, setStartPrice] = useState([]);
@@ -348,66 +350,14 @@ export default function LandingPage({ categories, products }) {
                                                                         }
                                                                         className="col-lg-3 col-md-4 col-sm-6 col-6 custom-col mb-30"
                                                                     >
-                                                                        <article className="product__card">
-                                                                            <div className="product__card--thumbnail">
-                                                                                <a
-                                                                                    className="product__card--thumbnail__link display-block"
-                                                                                    href="product-details.html"
-                                                                                >
-                                                                                    <img
-                                                                                        className="product__card--thumbnail__img product__primary--img w-[300px] h-[200px] object-cover"
-                                                                                        src={
-                                                                                            window
-                                                                                                .location
-                                                                                                .origin +
-                                                                                            "/" +
-                                                                                            product
-                                                                                                .images[0]
-                                                                                                .image
-                                                                                        }
-                                                                                        alt="product-img"
-                                                                                    />
-                                                                                    <img
-                                                                                        className="product__card--thumbnail__img product__secondary--img"
-                                                                                        src={
-                                                                                            window
-                                                                                                .location
-                                                                                                .origin +
-                                                                                            "/" +
-                                                                                            product
-                                                                                                .images[0]
-                                                                                                .image
-                                                                                        }
-                                                                                        alt="product-img"
-                                                                                    />
-                                                                                </a>
-                                                                            </div>
-                                                                            <div className="product__card--content">
-                                                                                <h3 className="product__card--title">
-                                                                                    <a href="product-details.html">
-                                                                                        {
-                                                                                            product.name
-                                                                                        }{" "}
-                                                                                    </a>
-                                                                                </h3>
-                                                                                <div className="product__card--price">
-                                                                                    <span className="current__price">
-                                                                                        Rp{" "}
-                                                                                        {product.price.toLocaleString()}
-                                                                                    </span>
-                                                                                </div>
-                                                                                <div className="product__card--footer">
-                                                                                    <a
-                                                                                        className="product__card--btn primary__btn text-white"
-                                                                                        href="cart.html"
-                                                                                    >
-                                                                                        Add
-                                                                                        to
-                                                                                        cart
-                                                                                    </a>
-                                                                                </div>
-                                                                            </div>
-                                                                        </article>
+                                                                        <ProductCard
+                                                                            product={
+                                                                                product
+                                                                            }
+                                                                            user={
+                                                                                user
+                                                                            }
+                                                                        />
                                                                     </div>
                                                                 )
                                                             )}

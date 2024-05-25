@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TransactionDetailController;
+use App\Http\Controllers\SuperadminController;
 
 use App\Http\Controllers\UserTransactionController;
 use App\Http\Controllers\UserProfileController;
@@ -20,8 +21,10 @@ use Inertia\Inertia;
 
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Cart;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
+use App\Http\Controllers\Email\TestSendEmailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,7 +39,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::get('/', function () {
     $user = Auth::user();    
-    $products = Product::with('images')->get();
+    $products = Product::with('images')->take(8)->get();
     $categories = Category::take(10)->get();
     return Inertia::render('LandingPage', [
         'products' => $products,
@@ -46,20 +49,33 @@ Route::get('/', function () {
 })->name('landing-page');
 
 Route::get('/shop', function () {
+    $user = Auth::user();
     $products = Product::with('images')->get();
     $categories = Category::all();
     return Inertia::render('Shop', [
         'products' => $products,
-        'categories' => $categories
+        'categories' => $categories,
+        'user' => $user
     ]);
 })->name("shop");
 
-Route::get('/detail-product', function () {
-    
-    $product = Product::with('images')->first();
+Route::get('/detail-product/{id}', function (string $id) {
+    $user = Auth::user();
+    $product = Product::with(['images', 'category'])->findOrFail($id);
 
+
+    if($user !== null) {
+        $product_cart = Cart::where('user_id', $user->id)
+                        ->where('product_id', $id)
+                        ->first();
+    }
+
+    $product_cart = $product_cart ?? 0;
+    
     return Inertia::render('DetailProduct', [
-        'product' => $product
+        'product' => $product,
+        'user' => $user,
+        'productCart' => $product_cart
     ]);
 })->name("detail.product");
 
@@ -126,5 +142,15 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::post('/checkout', [CheckoutController::class, 'processPayment'])->name('checkout');
+
+
+Route::get('/send-email', [TestSendEmailController::class, 'index']);
+Route::get('/send-newsletter', [TestSendEmailController::class, 'newsletter']);
+
+
+
+Route::get('/superadmin', [SuperadminController::class, 'index']);
+
+
 
 require __DIR__.'/auth.php';
