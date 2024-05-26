@@ -35,7 +35,7 @@ export default function Index({ user, transactions }) {
                 <Tabs
                     aria-label="Pills"
                     style="pills"
-                    className="w-100 p-4 "
+                    className="w-100 p-4 class-tabs"
                     onClick={(e) => setSelectedTab(e.target.textContent)}
                     theme={customTheme}
                 >

@@ -97,7 +97,7 @@ export default function UserAddressCreate() {
                     </div>
 
                     <div className="p-8">
-                        <h5 className="text-4xl mb-6">Tambah Alamat Baru</h5>
+                        <h5 className="text-4xl mb-6 ">Tambah Alamat Baru</h5>
 
                         <form onSubmit={submit}>
                             <div className="mb-3">

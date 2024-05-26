@@ -39,7 +39,8 @@ class CheckoutController extends Controller
             'delivery_code' => "-",
             'code' => $code,
             'status' => 'unpaid',
-            'created_at'=> Carbon::now()
+            'note' => $request->note,
+            'created_at'=> Carbon::now(),
         ]);
 
         // create transaction detail
@@ -91,7 +92,11 @@ class CheckoutController extends Controller
         
         try {
                 $paymentUrl = Snap::createTransaction($midtrans)->redirect_url;
-            
+                
+                $transaction->update([
+                    'payment_url' => $paymentUrl
+                ]);
+
                 return Inertia::location($paymentUrl);
         }
         catch (Exception $e) {
@@ -122,14 +127,33 @@ class CheckoutController extends Controller
     
             else if($request->transaction_status == 'deny') {
                 $transaction->update(['status' => 'canceled']);
+
+                foreach ($transaction->transaction_details as $transaction_detail) {
+                    $transaction_detail->product->update([
+                        'stock' => $transaction_detail->product->stock + $transaction_detail->amount,
+                    ]);
+                }
+
             }
     
             else if($request->transaction_status == 'expire') {
                 $transaction->update(['status' => 'canceled']);
+
+                foreach ($transaction->transaction_details as $transaction_detail) {
+                    $transaction_detail->product->update([
+                        'stock' => $transaction_detail->product->stock + $transaction_detail->amount,
+                    ]);
+                }
             }
     
             else if($request->transaction_status == 'cancel') {
                  $transaction->update(['status' => 'canceled']);
+
+                 foreach ($transaction->transaction_details as $transaction_detail) {
+                    $transaction_detail->product->update([
+                        'stock' => $transaction_detail->product->stock + $transaction_detail->amount,
+                    ]);
+                }
             }
         }
        

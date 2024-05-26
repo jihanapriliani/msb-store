@@ -8,7 +8,13 @@ import UserSidebar from "@/Components/UserSidebar";
 import { Link, router } from "@inertiajs/react";
 
 import { Button, Timeline } from "flowbite-react";
-import { HiArrowNarrowLeft, HiCalendar, HiPhone } from "react-icons/hi";
+import {
+    HiArrowNarrowLeft,
+    HiCalendar,
+    HiPhone,
+    HiHome,
+    HiBookmark,
+} from "react-icons/hi";
 import { useEffect } from "react";
 
 import Swal from "sweetalert2";
@@ -69,6 +75,52 @@ export default function Index({ user, transaction }) {
         );
     };
 
+    const handlePayment = () => {
+        if (transaction.payment_url) {
+            window.location.href = transaction.payment_url;
+        } else {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Link pembayaran tidak tersedia.",
+                confirmButtonText: "Oke",
+                customClass: {
+                    confirmButton: "swal2-confirm",
+                },
+            });
+        }
+    };
+
+    const handleCancleTransaction = () => {
+        router.post(
+            route("transactions.cancel", transaction.id),
+            {
+                _method: "put",
+                id: transaction.id,
+            },
+            {
+                forceFormData: true,
+                onSuccess: () => {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Pesanan Dibatalkan!",
+                        text: "Berhasil membatalkan pesanan.",
+                        confirmButtonText: "Oke",
+                        customClass: {
+                            confirmButton: "swal2-confirm",
+                        },
+                    });
+                },
+                onError: (e) => {
+                    console.log(e);
+                    if (e.errors) {
+                        form.errors(e.errors);
+                    }
+                },
+            }
+        );
+    };
+
     return (
         <GuestLayout>
             <main className="container flex gap-10 my-36 min-h-[20vh]">
@@ -106,13 +158,16 @@ export default function Index({ user, transaction }) {
                         </div>
                         <div className="flex w-100 gap-6">
                             <div className="flex-1">
-                                <h2>
+                                <h2 className="flex gap-2 items-center text-red-500">
+                                    <HiHome className="ml-2 h-6 w-6 text-gray" />
                                     <span className="text-4xl">
                                         Alamat Pengiriman
                                     </span>
                                 </h2>
-                                <h5 className="text-xl">(+62) 895635766855</h5>
-                                <p className="text-2xl font-bold text-red-500">
+                                <h5 className="text-xl text-gray-400">
+                                    (+62) 895635766855
+                                </h5>
+                                <p className="text-2xl font-bold text-gray-500">
                                     {transaction.user_address.alias}
                                 </p>
                                 <p className="text-2xl text-gray-600 max-w-2xl">
@@ -122,6 +177,15 @@ export default function Index({ user, transaction }) {
                                     {transaction.user_address.district_id},{" "}
                                     {transaction.user_address.village_id},{" "}
                                     {transaction.user_address.zipcode}.
+                                </p>
+
+                                <h2 className="mt-20 flex gap-2 items-center text-red-500">
+                                    <HiBookmark className="ml-2 h-6 w-6 text-gray" />
+                                    <span className="text-4xl">Catatan</span>
+                                </h2>
+
+                                <p className="text-2xl text-gray-600 max-w-2xl">
+                                    {transaction.note ?? "Tidak Ada"}
                                 </p>
                             </div>
 
@@ -202,6 +266,27 @@ export default function Index({ user, transaction }) {
                                             </Timeline.Body>
                                         </Timeline.Content>
                                     </Timeline.Item>
+
+                                    {transaction.status === "canceled" && (
+                                        <Timeline.Item>
+                                            <Timeline.Point icon={HiCalendar} />
+                                            <Timeline.Content>
+                                                <Timeline.Title className="text-3xl">
+                                                    Pesanan Dibatalkan
+                                                </Timeline.Title>
+                                                <Timeline.Time className="text-xl text-gray-600">
+                                                    {transaction.canceled_at
+                                                        ? formatDate(
+                                                              transaction.accepted_at
+                                                          )
+                                                        : "-"}
+                                                </Timeline.Time>
+                                                <Timeline.Body className="text-2xl">
+                                                    Pesanan dibatalkan.
+                                                </Timeline.Body>
+                                            </Timeline.Content>
+                                        </Timeline.Item>
+                                    )}
                                 </Timeline>
                             </div>
                         </div>
@@ -308,25 +393,43 @@ export default function Index({ user, transaction }) {
                         </a>
 
                         <div className="flex gap-3">
-                            <button className="bg-transparent border-1 border-gray-500 text-gray-600 text-xl px-5 py-3 rounded-lg">
+                            <Link
+                                href={`/transactions/${transaction.code}/invoice `}
+                                className="bg-transparent border-1 border-gray-500 text-gray-600 text-xl px-5 py-3 rounded-lg"
+                            >
                                 Lihat Faktur
-                            </button>
+                            </Link>
 
                             {/* <button className="bg-transparent border-1 border-gray-500 text-gray-600 text-xl px-5 py-3 rounded-lg">
                                 Batalkan Pesanan
                             </button> */}
 
-                            <button
-                                className={`text-white text-xl px-5 py-3 rounded-lg ${
-                                    isDisabled
-                                        ? "bg-gray-400 cursor-not-allowed"
-                                        : "bg-red-600"
-                                }`}
-                                disabled={isDisabled}
-                                onClick={handleCompleteTransaction}
-                            >
-                                Pesanan Diterima
-                            </button>
+                            {transaction.status === "shipped" && (
+                                <button
+                                    className={`text-white text-xl px-5 py-3 rounded-lg bg-red-600`}
+                                    onClick={handleCompleteTransaction}
+                                >
+                                    Pesanan Diterima
+                                </button>
+                            )}
+
+                            {transaction.status === "unpaid" && (
+                                <>
+                                    <button
+                                        className={`text-white text-xl px-5 py-3 rounded-lg bg-gray-600`}
+                                        onClick={handleCancleTransaction}
+                                    >
+                                        Batalkan Pesanan
+                                    </button>
+
+                                    <button
+                                        className={`text-white text-xl px-5 py-3 rounded-lg bg-red-600`}
+                                        onClick={handlePayment}
+                                    >
+                                        Bayar Sekarang
+                                    </button>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>

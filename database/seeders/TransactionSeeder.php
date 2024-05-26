@@ -44,7 +44,7 @@ class TransactionSeeder extends Seeder
                 'processed_at' => $faker->dateTimeBetween('-1 month', 'now'),
                 'shipped_at' => $faker->dateTimeBetween('-1 month', 'now'),
                 'accepted_at' => $faker->dateTimeBetween('-1 month', 'now'),
-                'rejected_at' => $faker->dateTimeBetween('-1 month', 'now'),
+                'canceled_at' => $faker->dateTimeBetween('-1 month', 'now'),
                 'status' => $faker->randomElement(['unpaid', 'processed', 'shipped', 'accepted', 'rejected', 'canceled']),
             ]);
         }

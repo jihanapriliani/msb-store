@@ -232,9 +232,7 @@ export default function Guest({ children, setIsLoading }) {
                                                 }}
                                                 value={search}
                                                 onChange={(e) =>
-                                                    setSearch(
-                                                        e.target.value.trim()
-                                                    )
+                                                    setSearch(e.target.value)
                                                 }
                                                 onKeyDown={(e) => {
                                                     if (e.key === "Enter") {
