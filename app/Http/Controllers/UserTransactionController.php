@@ -70,8 +70,19 @@ class UserTransactionController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $transaction = Transaction::findOrFail($id);
+
+        $transaction->update([
+            'status' => 'accepted',
+            'accepted_at' => now()->setTimezone('Asia/Singapore'),
+        ]);
+
+        return redirect()->back();
     }
+
+
+
+    
 
     /**
      * Remove the specified resource from storage.

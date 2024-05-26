@@ -22,9 +22,12 @@ use Inertia\Inertia;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Cart;
+use App\Models\UserAddress;
+use App\Models\Transaction;
+
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
-use App\Http\Controllers\Email\TestSendEmailController;
+// use App\Http\Controllers\Email\TestSendEmailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +53,63 @@ Route::get('/', function () {
 
 // Route::get('/', [ShopController::class, "landing"])->name('landing-page');
 Route::get('/shop', [ShopController::class, "shop"])->name("shop");
+
+Route::get('/user-settings', function() {
+    $user = Auth::user();
+    
+    $user_address = UserAddress::where('user_id', $user->id)->get();
+
+    return Inertia::render('UserSettings', [
+        'user' => $user,
+        'userAddress' => $user_address
+    ]);
+});
+
+Route::get('/user-transaction', function() {
+    $user = Auth::user();
+    
+    $transactions = Transaction::where('user_id', $user->id)->with('transaction_details.product.images')->get();
+   
+
+    return Inertia::render('UserTransaction', [
+        'user' => $user,
+        'transactions' => $transactions
+    ]);
+});
+
+Route::get('/user-transaction/{id}', function(string $id) {
+    $user = Auth::user();
+    
+    $transaction = Transaction::where('code', $id)->with('transaction_details.product.images', 'user_address')->first();
+
+   
+    return Inertia::render('UserTransactionDetail', [
+        'user' => $user,
+        'transaction' => $transaction
+    ]);
+});
+
+Route::get('/user-address', function() {
+    $user = Auth::user();
+    
+    $addresses = UserAddress::where('user_id', $user->id)->get();
+
+   
+    return Inertia::render('UserAddress', [
+        'user' => $user,
+        'addresses' => $addresses
+    ]);
+})->name('user.address');
+
+Route::get('/user-address/create', function() {
+    return Inertia::render('UserAddressCreate');
+});
+
+Route::get('/user-address/edit', function() {
+    return Inertia::render('UserAddressEdit');
+});
+
+
 
 Route::get('/detail-product/{id}', function (string $id) {
     $user = Auth::user();
@@ -122,6 +182,7 @@ Route::middleware('auth')->group(function () {
 
                     Route::get('/edit-profile', [UserProfileController::class,'edit'])->name('edit');
                     Route::put('/update-profile', [UserProfileController::class,'update'])->name('update');
+                    Route::put('/update-email', [UserProfileController::class,'updateEmail'])->name('update.email');
                 });    
             });
         });
@@ -137,12 +198,13 @@ Route::middleware('auth')->group(function () {
 Route::post('/checkout', [CheckoutController::class, 'processPayment'])->name('checkout');
 
 
-Route::get('/send-email', [TestSendEmailController::class, 'index']);
-Route::get('/send-newsletter', [TestSendEmailController::class, 'newsletter']);
+// Route::get('/send-email', [TestSendEmailController::class, 'index']);
+// Route::get('/send-newsletter', [TestSendEmailController::class, 'newsletter']);
 
 
 
-Route::get('/superadmin', [SuperadminController::class, 'index']);
+// Route::get('/superadmin', [SuperadminController::class, 'index']);
+
 
 
 
