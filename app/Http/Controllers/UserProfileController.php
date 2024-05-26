@@ -163,20 +163,14 @@ class UserProfileController extends Controller
         
         try {
             $validatedData = $request->validate([
-                'username' => 'required|string',
                 'fullname' => 'required|string',
-                'phone' => 'required|string',
-                'email' => [
-                    'required',
-                    Rule::unique('users')->ignore($user->id),
-                ],
-                
+                'phone' => 'required|string', 
             ]);
 
            
             $user->update($validatedData);
     
-            return redirect()->route('profile.index')->with('success', 'Profil berhasil diperbarui!');
+            return redirect()->back()->with('success', 'Profil berhasil diperbarui!');
 
         } catch (ValidationException $e) { 
             if ($e->validator->errors()->has('email')) {
@@ -187,6 +181,36 @@ class UserProfileController extends Controller
         }
         
     }
+
+    public function updateEmail(Request $request) {
+        $user = Auth::user();
+
+        try {
+            $validatedData = $request->validate([
+                'email' => [
+                    'required',
+                    Rule::unique('users')->ignore($user->id),
+                ],
+            ]);
+
+            $user->update([
+                'email' => $validatedData['email'],
+                'email_verified_at' => null
+            ]);
+
+            $request->user()->sendEmailVerificationNotification();
+
+            return redirect()->back();
+
+        } catch (ValidationException $e) { 
+            if ($e->validator->errors()->has('email')) {
+                return redirect()->back()->withInput()->with('error', 'Email tidak tersedia.');
+            } else {
+                throw $e;
+            }
+        }
+    } 
+
 
     /**
      * Remove the specified resource from storage.

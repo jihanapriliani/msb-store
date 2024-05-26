@@ -15,3 +15,7 @@ footer a.copyright__content--link {
 .active-address-card {
     background: gray;
 }
+
+.bg-gray-50 {
+    background-color: white !important;
+}
