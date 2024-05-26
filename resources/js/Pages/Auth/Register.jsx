@@ -130,14 +130,7 @@ export default function Register() {
                     />
                 </div>
 
-                <div className="flex items-center justify-end mt-4">
-                    <Link
-                        href={route("login")}
-                        className="underline text-sm mr-5 text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                        Already registered?
-                    </Link>
-
+                <div className="flex flex-col items-center justify-end mt-4">
                     <button
                         type="submit"
                         className="px-12 py-4 rounded-lg bg-black text-white text-3xl"
@@ -145,6 +138,15 @@ export default function Register() {
                     >
                         Register
                     </button>
+
+                    <Link
+                        href={route("login")}
+                        className="mt-10 underline text-sm mr-5 text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                        <p className="text-2xl">
+                            Sudah punya akun? Login disini.
+                        </p>
+                    </Link>
                 </div>
             </form>
         </GuestLayout>
