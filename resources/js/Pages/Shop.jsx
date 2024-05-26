@@ -286,7 +286,7 @@ export default function LandingPage({ categories, products, user }) {
                                                             Rp
                                                         </span>
                                                         <input
-                                                            className="price__filter--input__field border-0"
+                                                            className="price__filter--input__field border-0 w-100"
                                                             name="filter.v.price.gte"
                                                             id="Filter-Price-GTE2"
                                                             type="number"
@@ -319,7 +319,7 @@ export default function LandingPage({ categories, products, user }) {
                                                             Rp
                                                         </span>
                                                         <input
-                                                            className="price__filter--input__field border-0"
+                                                            className="price__filter--input__field border-0 w-100"
                                                             name="filter.v.price.lte"
                                                             id="Filter-Price-LTE2"
                                                             type="number"

@@ -170,6 +170,8 @@ Route::middleware('auth')->group(function () {
                 })->name('dashboard.user');  
 
                 Route::resource('transactions', UserTransactionController::class);
+                Route::put('/transactions/{id}/cancel', [UserTransactionController::class, 'cancel'])->name('transactions.cancel');
+                
             
 
                 Route::prefix('profile')->name('profile.')->group(function() {
@@ -192,6 +194,9 @@ Route::middleware('auth')->group(function () {
         Route::delete('/cart', [UserCartController::class, 'clear'])->name('user.cart.clear');
 
         Route::get('/checkout', [UserCartController::class, 'checkout'])->name('user.cart.checkout');
+
+        Route::get('/transactions/{id}/invoice', [UserTransactionController::class, 'invoice'])->name('transactions.invoice');
+       
     });
 });
 

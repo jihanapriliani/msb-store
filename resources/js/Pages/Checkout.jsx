@@ -16,7 +16,10 @@ export default function Checkout(props) {
     const [subTotal, setSubTotal] = useState(0);
     const [shippingCost, setShippingCost] = useState(0);
     const [weight, setWeight] = useState(0);
-    const [selectedAddress, setSelectedAddress] = useState(addresses[0] ?? {});
+    const [selectedAddress, setSelectedAddress] = useState({});
+
+    const [note, setNote] = useState("");
+    const [loadAddress, setLoadAddress] = useState(false);
 
     const toggleSelect = (address) => {
         setSelectedAddress(address);
@@ -53,9 +56,12 @@ export default function Checkout(props) {
             courier: "jne",
         };
 
+        setLoadAddress(true);
+
         axios
             .post("/api/get-shipping-cost", { params: requestData })
             .then((response) => {
+                setLoadAddress(false);
                 setShippingCost(response.data[0].costs[0].cost[0].value);
             })
             .catch((error) => {
@@ -67,16 +73,16 @@ export default function Checkout(props) {
         <GuestLayout>
             <ToastContainer />
 
-            <main class="main__content_wrapper">
-                <div class="checkout__page--area section--padding">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-7 col-md-6">
-                                <div class="main checkout__mian">
+            <main className="main__content_wrapper">
+                <div className="checkout__page--area section--padding">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-lg-7 col-md-6">
+                                <div className="main checkout__mian">
                                     <form action="#">
-                                        <div class="checkout__content--step section__shipping--address">
-                                            <div class="section__header mb-25">
-                                                <h2 class="section__header--title h3">
+                                        <div className="checkout__content--step section__shipping--address">
+                                            <div className="section__header mb-25 mt-[-5rem]">
+                                                <h2 className="section__header--title h3">
                                                     Alamat
                                                 </h2>
                                             </div>
@@ -88,7 +94,7 @@ export default function Checkout(props) {
                                                             className={`card flex-1 hover:cursor-pointer ${
                                                                 selectedAddress.id ===
                                                                     address.id &&
-                                                                "bg-secondary text-white"
+                                                                "border border-secondary shadow-xl"
                                                             }`}
                                                             key={index}
                                                             onClick={() =>
@@ -113,22 +119,28 @@ export default function Checkout(props) {
                                                 )}
                                             </div>
                                         </div>
-                                        <div class="mb-3">
-                                            <div class="section__header">
-                                                <h2 class="section__header--title h3">
+                                        <div className="mb-3">
+                                            <div className="section__header">
+                                                <h2 className="section__header--title h3">
                                                     Catatan Pesanan
                                                 </h2>
                                             </div>
                                             <textarea
-                                                class="form-control"
+                                                className="form-control"
                                                 id="exampleFormControlTextarea1"
-                                                rows="5"
+                                                rows="6"
+                                                style={{
+                                                    fontSize: "1.5rem",
+                                                }}
+                                                onChange={(e) =>
+                                                    setNote(e.target.value)
+                                                }
                                             ></textarea>
                                         </div>
-                                        <div class="checkout__content--step__footer d-flex align-items-center">
-                                            <a
-                                                class="continue__shipping--btn primary__btn border-radius-5"
-                                                href="index.html"
+                                        <div className="checkout__content--step__footer d-flex align-items-center flex items-center  mt-4">
+                                            <Link
+                                                className="continue__shipping--btn primary__btn border-radius-5"
+                                                href="/shop"
                                             >
                                                 <p
                                                     style={{
@@ -136,84 +148,85 @@ export default function Checkout(props) {
                                                         fontWeight: "300",
                                                     }}
                                                 >
-                                                    Continue To Shipping
+                                                    Continue To Shop
                                                 </p>
-                                            </a>
+                                            </Link>
                                             <Link
-                                                class="previous__link--content"
+                                                className="previous__link--content"
                                                 href="/cart"
                                             >
-                                                Return to cart
+                                                <p className="text-2xl">
+                                                    Return to cart
+                                                </p>
                                             </Link>
                                         </div>
                                     </form>
                                 </div>
                             </div>
-                            <div class="col-lg-5 col-md-6">
-                                <aside class="checkout__sidebar sidebar border-radius-10">
-                                    <h2 class="checkout__order--summary__title text-center mb-15">
+                            <div className="col-lg-5 col-md-6">
+                                <aside className="checkout__sidebar sidebar border-radius-10">
+                                    <h2 className="checkout__order--summary__title text-center mb-15">
                                         Ringkasan Pesanan
                                     </h2>
-                                    <div class="cart__table checkout__product--table">
-                                        <table class="cart__table--inner">
-                                            <tbody class="cart__table--body">
+                                    <div className="cart__table checkout__product--table">
+                                        <table className="cart__table--inner">
+                                            <tbody className="cart__table--body">
                                                 {carts.map((cart, index) => (
                                                     <tr
-                                                        class="cart__table--body__items"
+                                                        className="cart__table--body__items"
                                                         key={index}
                                                     >
-                                                        <td class="cart__table--body__list">
-                                                            <div class="product__image two  d-flex align-items-center">
-                                                                <div class="product__thumbnail border-radius-5">
+                                                        <td className="cart__table--body__list">
+                                                            <div className="product__image two  d-flex align-items-center">
+                                                                <div className="product__thumbnail border-radius-5">
                                                                     <a
-                                                                        class="display-block"
+                                                                        className="display-block"
                                                                         href="product-details.html"
                                                                     >
                                                                         <img
-                                                                            class="display-block border-radius-5"
+                                                                            className="display-block border-radius-5"
                                                                             src={
                                                                                 window
                                                                                     .location
                                                                                     .origin +
-                                                                                    "/" +
-                                                                                    (cart
-                                                                                        .product
-                                                                                        .images[0]
-                                                                                        .image ?? "assets/images/default.png")
+                                                                                "/" +
+                                                                                (cart
+                                                                                    .product
+                                                                                    .images[0]
+                                                                                    .image ??
+                                                                                    "assets/images/default.png")
                                                                             }
                                                                             alt="cart-product"
                                                                         />
                                                                     </a>
-                                                                    <span class="product__thumbnail--quantity">
+                                                                    <span className="product__thumbnail--quantity">
                                                                         {
                                                                             cart.amount
                                                                         }
                                                                     </span>
                                                                 </div>
-                                                                <div class="product__description">
-                                                                    <h4 class="product__description--name">
+                                                                <div className="product__description text-2xl">
+                                                                    <h4 className="product__description--name">
                                                                         <a href="product-details.html">
-                                                                            {
-                                                                                cart
-                                                                                    .product
-                                                                                    .name
-                                                                            }
+                                                                            <p className="text-2xl">
+                                                                                {
+                                                                                    cart
+                                                                                        .product
+                                                                                        .name
+                                                                                }
+                                                                            </p>
                                                                         </a>
                                                                     </h4>
 
-                                                                    <h6>
+                                                                    <h6 className="text-xl">
                                                                         Rp{" "}
-                                                                        {
-                                                                            cart
-                                                                                .product
-                                                                                .price
-                                                                        }
+                                                                        {cart.product.price.toLocaleString()}
                                                                     </h6>
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td class="cart__table--body__list">
-                                                            <span class="cart__price">
+                                                        <td className="cart__table--body__list">
+                                                            <span className="cart__price">
                                                                 Rp{" "}
                                                                 {(
                                                                     cart.amount *
@@ -228,34 +241,37 @@ export default function Checkout(props) {
                                         </table>
                                     </div>
 
-                                    <div class="checkout__total">
-                                        <table class="checkout__total--table">
-                                            <tbody class="checkout__total--body">
-                                                <tr class="checkout__total--items">
-                                                    <td class="checkout__total--title text-left">
+                                    <div className="checkout__total">
+                                        <table className="checkout__total--table">
+                                            <tbody className="checkout__total--body">
+                                                <tr className="checkout__total--items">
+                                                    <td className="checkout__total--title text-left text-2xl">
                                                         Subtotal{" "}
                                                     </td>
-                                                    <td class="checkout__total--calculated__text text-right">
+                                                    <td className="checkout__total--calculated__text text-right text-2xl">
                                                         Rp{" "}
                                                         {subTotal.toLocaleString()}
                                                     </td>
                                                 </tr>
-                                                <tr class="checkout__total--items">
-                                                    <td class="checkout__total--title text-left">
-                                                        Shipping
+                                                <tr className="checkout__total--items">
+                                                    <td className="checkout__total--title text-left text-2xl">
+                                                        Biaya Pengiriman
                                                     </td>
-                                                    <td class="checkout__total--calculated__text text-right">
-                                                        Rp{" "}
-                                                        {shippingCost.toLocaleString()}
+                                                    <td className="checkout__total--calculated__text text-right text-2xl">
+                                                        {loadAddress
+                                                            ? "Sedang Mengambil Data....."
+                                                            : `Rp ${shippingCost.toLocaleString()}`}
                                                     </td>
                                                 </tr>
                                             </tbody>
-                                            <tfoot class="checkout__total--footer">
-                                                <tr class="checkout__total--footer__items">
-                                                    <td class="checkout__total--footer__title checkout__total--footer__list text-left">
-                                                        Total{" "}
+                                            <tfoot className="checkout__total--footer">
+                                                <tr className="checkout__total--footer__items">
+                                                    <td className="checkout__total--footer__title checkout__total--footer__list text-left text-3xl">
+                                                        <p className="text-3xl">
+                                                            Total{" "}
+                                                        </p>
                                                     </td>
-                                                    <td class="checkout__total--footer__amount checkout__total--footer__list text-right">
+                                                    <td className="checkout__total--footer__amount checkout__total--footer__list text-right">
                                                         Rp{" "}
                                                         {(
                                                             shippingCost +
@@ -268,7 +284,7 @@ export default function Checkout(props) {
                                     </div>
 
                                     <Link
-                                        class="checkout__now--btn primary__btn"
+                                        className="checkout__now--btn primary__btn"
                                         type="submit"
                                         style={{
                                             marginTop: "3rem",
@@ -280,6 +296,7 @@ export default function Checkout(props) {
                                             total_weight: weight,
                                             total_price: subTotal,
                                             shipping_cost: shippingCost,
+                                            note: note,
                                         }}
                                     >
                                         <p style={{ color: "white" }}>

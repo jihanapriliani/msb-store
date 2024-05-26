@@ -1,11 +1,17 @@
 import React from "react";
 
 import { Sidebar } from "flowbite-react";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 
 import { HiUser, HiMap, HiCash } from "react-icons/hi";
 
 export default function UserSidebar() {
+    const { url } = usePage();
+
+    const isActive = (href) => url.toString().includes(href);
+
+    console.log(isActive("/user-settings"));
+
     return (
         <Sidebar
             aria-label="Default sidebar example"
@@ -21,7 +27,11 @@ export default function UserSidebar() {
                     <Sidebar.Item href="#" className="text-2xl ">
                         <Link
                             href="/user-settings"
-                            className="flex items-center justify-start gap-3"
+                            className={`flex items-center justify-start gap-3 ${
+                                isActive("/user-settings")
+                                    ? ".active-user-sidebar"
+                                    : "text-gray-600"
+                            }`}
                         >
                             <HiUser className="ml-2 h-7 w-7 text-gray-500" />
                             <p className="text-gray-600">Profil</p>
@@ -31,7 +41,11 @@ export default function UserSidebar() {
                     <Sidebar.Item href="#" className="text-2xl ">
                         <Link
                             href="/user-transaction"
-                            className="flex items-center justify-start gap-3"
+                            className={`flex items-center justify-start gap-3 ${
+                                isActive("/user-settings")
+                                    ? ".active-user-sidebar"
+                                    : "text-gray-600"
+                            }`}
                         >
                             <HiCash className="ml-2 h-7 w-7 text-gray-500" />
                             <p className="text-gray-600">Pembelian</p>
@@ -41,7 +55,11 @@ export default function UserSidebar() {
                     <Sidebar.Item href="#" className="text-2xl ">
                         <Link
                             href="/user-address"
-                            className="flex items-center gap-3"
+                            className={`flex items-center justify-start gap-3 ${
+                                isActive("/user-settings")
+                                    ? ".active-user-sidebar"
+                                    : "text-gray-600"
+                            }`}
                         >
                             <HiMap className="ml-2 h-7 w-7 text-gray-500" />
                             <p className="text-gray-600"> Alamat</p>

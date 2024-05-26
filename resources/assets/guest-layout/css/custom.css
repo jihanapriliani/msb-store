@@ -19,3 +19,28 @@ footer a.copyright__content--link {
 .bg-gray-50 {
     background-color: white !important;
 }
+
+.bg-cyan-600 {
+    background-color: rgb(173, 29, 29) !important;
+    font-size: 1.5rem;
+}
+
+.ring-cyan-300 {
+    outline: none !important;
+} 
+
+main .class-tabs button {
+    font-size: 1.5rem;
+}
+
+main .class-tabs button:active {
+    outline: none;
+}
+
+.active-user-sidebar {
+    background-color: gray !important;
+}
+
+.bg-active-address {
+    background-color: pink ;
+}
