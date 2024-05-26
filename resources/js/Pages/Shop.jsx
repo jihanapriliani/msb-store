@@ -18,7 +18,6 @@ export default function LandingPage({ categories, products, user }) {
         ...(urlParams.getAll("categories").map((it) => parseInt(it)) ?? []),
     ]);
 
-    console.log(selectedCategories);
     const [startPrice, setStartPrice] = useState(
         urlParams.get("startPrice") ?? ""
     );
@@ -36,6 +35,20 @@ export default function LandingPage({ categories, products, user }) {
 
         const params = {};
 
+        if (
+            new URLSearchParams(window.location.search).get("search") !==
+                null &&
+            new URLSearchParams(window.location.search).get("search") !== ""
+        ) {
+            params.search = new URLSearchParams(window.location.search).get(
+                "search"
+            );
+            url.searchParams.set("search", params.search);
+        } else {
+            delete params.search;
+            url.searchParams.delete("search");
+        }
+
         const currentCategories = url.searchParams.get("categories");
         const selectedCategoriesString = selectedCategories.join(",");
 
@@ -45,13 +58,28 @@ export default function LandingPage({ categories, products, user }) {
         if (hasCategoryChanges) {
             if (selectedCategories.length > 0) {
                 // Perform reload only if URL has changed
-                console.log("Category Changes");
                 url.searchParams.set("categories", selectedCategoriesString);
                 params.categories = selectedCategoriesString;
             } else {
                 url.searchParams.delete("categories");
                 delete params.categories;
             }
+        }
+
+        if (startPrice && startPrice > 0) {
+            url.searchParams.set("startPrice", startPrice);
+            params.startPrice = startPrice;
+        } else {
+            url.searchParams.delete("startPrice");
+            delete params.startPrice;
+        }
+
+        if (endPrice && endPrice > 0) {
+            url.searchParams.set("endPrice", endPrice);
+            params.endPrice = endPrice;
+        } else {
+            url.searchParams.delete("endPrice");
+            delete params.endPrice;
         }
 
         // Update other URL parameters
@@ -65,10 +93,6 @@ export default function LandingPage({ categories, products, user }) {
         if (window.location.href !== url.toString()) {
             // Update the browser URL
             window.history.replaceState(null, "", url.toString());
-
-            console.log(url.toString(), window.location.href);
-            console.log(params);
-
             setIsLoading(true);
             router.reload({
                 replace: true,
@@ -90,8 +114,6 @@ export default function LandingPage({ categories, products, user }) {
         const categoryId = category.id;
         const isChecked = e.target.checked;
 
-        console.log(categoryId, isChecked);
-
         setSelectedCategories((prevCategories) => {
             if (isChecked && !prevCategories.includes(categoryId)) {
                 return [...prevCategories, categoryId]; // Tambahkan categoryId ke array
@@ -107,6 +129,7 @@ export default function LandingPage({ categories, products, user }) {
         e.preventDefault();
 
         const url = new URL(window.location.href);
+        const params = {};
 
         const setPriceFilters = () => {
             if (startPrice && endPrice && startPrice > 0 && endPrice > 0) {
@@ -120,6 +143,8 @@ export default function LandingPage({ categories, products, user }) {
                 } else {
                     url.searchParams.set("startPrice", startPrice);
                     url.searchParams.set("endPrice", endPrice);
+                    params.startPrice = startPrice;
+                    params.endPrice = endPrice;
                     return true;
                 }
             } else if (startPrice) {
@@ -133,6 +158,8 @@ export default function LandingPage({ categories, products, user }) {
                 } else {
                     url.searchParams.set("startPrice", startPrice);
                     url.searchParams.delete("endPrice");
+                    params.startPrice = startPrice;
+                    delete params.endPrice;
                     return true;
                 }
             } else if (endPrice) {
@@ -146,27 +173,27 @@ export default function LandingPage({ categories, products, user }) {
                 } else {
                     url.searchParams.delete("startPrice");
                     url.searchParams.set("endPrice", endPrice);
+                    delete params.startPrice;
+                    params.endPrice = endPrice;
                     return true;
                 }
             } else {
                 url.searchParams.delete("startPrice");
                 url.searchParams.delete("endPrice");
+                delete params.startPrice;
+                delete params.endPrice;
                 return true;
             }
         };
 
+        url.searchParams.sort();
+
         if (setPriceFilters()) {
-            console.log(
-                url.toString(),
-                window.location.href !== url.toString()
-            );
             if (window.location.href.toString() !== url.toString()) {
+                window.history.replaceState(null, "", url.toString());
                 setIsLoading(true);
                 router.reload({
-                    data: {
-                        startPrice: startPrice > 0 ? startPrice : null,
-                        endPrice: endPrice > 0 ? endPrice : null,
-                    },
+                    data: params,
                     only: ["products"],
                     onFinish: () => {
                         setIsLoading(false);
@@ -230,10 +257,6 @@ export default function LandingPage({ categories, products, user }) {
                                                         )}
                                                         type="checkbox"
                                                         onChange={(e) => {
-                                                            console.log(
-                                                                e.currentTarget
-                                                                    .value
-                                                            );
                                                             handleCategoryFilter(
                                                                 e,
                                                                 category
@@ -581,7 +604,7 @@ export default function LandingPage({ categories, products, user }) {
                                                                     }`}
                                                                 >
                                                                     <div
-                                                                        class="pagination__item link"
+                                                                        class="pagination__item link "
                                                                         onClick={(
                                                                             e
                                                                         ) => {

@@ -6,12 +6,14 @@ import { Link } from "@inertiajs/react";
 import Select from "react-select";
 
 export default function Create(props) {
+    const { roles } = props;
     const { data, setData, post, processing, errors, reset, setError } =
         useForm({
             fullname: "",
             username: "",
             email: "",
             phone: "",
+            role: "user",
         });
 
     const submit = (e) => {
@@ -147,7 +149,38 @@ export default function Create(props) {
                                         {errors.phone}
                                     </div>
                                 </div>
-
+                                {
+                                    props.auth.user.roles[0].name === 'super-admin' && (
+                                        <div class="mb-3">
+                                            <label
+                                                for="exampleInputEmail1"
+                                                class="form-label"
+                                            >
+                                                Role
+                                            </label>
+                                            <select
+                                    class="form-select"
+                                    aria-label="Default select example"
+                                    name="role"
+                                    value={data.role}
+                                    onChange={(e) =>
+                                        setData("role", e.target.value)
+                                    }
+                                >
+                                    <option selected>Pilih Role</option>
+                                    {roles.map((role) => (
+                                        <option value={role.name}>
+                                            {role.name}
+                                        </option>
+                                    ))}
+                                            </select>
+                                            <div class="form-text text-danger">
+                                                {errors.role}
+                                            </div>
+                                        </div>
+                                    
+                                )}
+                                
                                 <div class="mb-3">
                                     <label
                                         for="exampleInputEmail1"

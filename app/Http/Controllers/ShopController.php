@@ -62,7 +62,7 @@ class ShopController extends Controller
             }
         }
 
-        $products = $query->with('images')->paginate($request->perPage ?? 12);
+        $products = $query->with('images')->paginate($request->per_page ?? 12);
 
         // dd($products);
         $categories = Category::orderBy('id', 'asc')->get();
