@@ -5,6 +5,8 @@ import GuestLayout from "@/Layouts/GuestLayout/Index";
 export default function TransactionInvoice({ user, transaction }) {
     transaction = transaction[0];
 
+    console.log("ISI TRANSACTION", transaction);
+
     return (
         <>
             <section class="py-20 overflow-hidden relative">

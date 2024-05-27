@@ -82,6 +82,14 @@ class TransactionController extends Controller
                     Rule::unique('transactions')->ignore($transaction->id),
                 ],
             ]);
+
+            if($validatedData['status'] === 'canceled') {
+                foreach ($transaction->transaction_details as $transaction_detail) {
+                    $transaction_detail->product->update([
+                        'stock' => $transaction_detail->product->stock + $transaction_detail->amount,
+                    ]);
+                }
+            }
     
             $transaction->update($validatedData);
     
