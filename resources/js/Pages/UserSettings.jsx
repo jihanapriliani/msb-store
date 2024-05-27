@@ -63,7 +63,7 @@ export default function Index({ user, userAddress }) {
                 onError: (e) => {
                     console.log(e);
                     if (e.errors) {
-                        form.errors(e.errors);
+                        form.setError(e.errors);
                     }
                 },
             }
