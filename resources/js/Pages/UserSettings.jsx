@@ -19,11 +19,7 @@ import InputError from "@/Components/InputError";
 import { useForm } from "@inertiajs/react";
 
 export default function Index({ user, userAddress }) {
-    console.log("ISI ADDRESS", userAddress);
-
     const { flash } = usePage().props;
-
-    console.log("ISI FLASHNYA", flash);
 
     useEffect(() => {
         if (flash.error) {
@@ -43,11 +39,12 @@ export default function Index({ user, userAddress }) {
         }
     }, [user, flash]);
 
-    const { data, setData, post, processing, errors, reset } = useForm({
-        email: user.email,
-        fullname: user.fullname,
-        phone: user.phone,
-    });
+    const { data, setData, post, processing, errors, reset, setError } =
+        useForm({
+            email: user.email,
+            fullname: user.fullname,
+            phone: user.phone,
+        });
 
     const submit = (e) => {
         e.preventDefault();
@@ -62,8 +59,8 @@ export default function Index({ user, userAddress }) {
                 forceFormData: true,
                 onError: (e) => {
                     console.log(e);
-                    if (e.errors) {
-                        form.setError(e.errors);
+                    if (e) {
+                        setError(e);
                     }
                 },
             }
@@ -170,8 +167,8 @@ export default function Index({ user, userAddress }) {
                 },
                 onError: (e) => {
                     console.log(e);
-                    if (e.errors) {
-                        form.errors(e.errors);
+                    if (e) {
+                        setError(e);
                     }
                 },
             }
@@ -199,48 +196,61 @@ export default function Index({ user, userAddress }) {
                                 <tr>
                                     <td>Nama Lengkap</td>
                                     <td colSpan={2}>
-                                        <TextInput
-                                            id="fullname"
-                                            type="name"
-                                            placeholder=""
-                                            className="text-3xl"
-                                            style={{
-                                                fontSize: "1.5rem",
-                                                padding: "1rem",
-                                                color: "black",
-                                            }}
-                                            value={data.fullname}
-                                            onChange={(e) =>
-                                                setData(
-                                                    "fullname",
-                                                    e.target.value
-                                                )
-                                            }
-                                            required
-                                            shadow
-                                        />
+                                        <div>
+                                            <TextInput
+                                                id="fullname"
+                                                type="name"
+                                                placeholder=""
+                                                className="text-3xl"
+                                                style={{
+                                                    fontSize: "1.5rem",
+                                                    padding: "1rem",
+                                                    color: "black",
+                                                }}
+                                                value={data.fullname}
+                                                onChange={(e) =>
+                                                    setData(
+                                                        "fullname",
+                                                        e.target.value
+                                                    )
+                                                }
+                                                required
+                                                shadow
+                                            />
+                                            <p className="text-red-500">
+                                                {errors.fullname}
+                                            </p>
+                                        </div>
                                     </td>
                                 </tr>
 
                                 <tr>
                                     <td>Nomor Telepon</td>
                                     <td colSpan={2}>
-                                        <TextInput
-                                            id="phone"
-                                            type="phone"
-                                            placeholder=""
-                                            value={data.phone}
-                                            onChange={(e) =>
-                                                setData("phone", e.target.value)
-                                            }
-                                            style={{
-                                                fontSize: "1.5rem",
-                                                padding: "1rem",
-                                                color: "black",
-                                            }}
-                                            required
-                                            shadow
-                                        />
+                                        <div>
+                                            <TextInput
+                                                id="phone"
+                                                type="phone"
+                                                placeholder=""
+                                                value={data.phone}
+                                                onChange={(e) =>
+                                                    setData(
+                                                        "phone",
+                                                        e.target.value
+                                                    )
+                                                }
+                                                style={{
+                                                    fontSize: "1.5rem",
+                                                    padding: "1rem",
+                                                    color: "black",
+                                                }}
+                                                required
+                                                shadow
+                                            />
+                                            <p className="text-red-500">
+                                                {errors.phone}
+                                            </p>
+                                        </div>
                                     </td>
                                 </tr>
 
@@ -319,24 +329,32 @@ export default function Index({ user, userAddress }) {
                                             padding: "1rem 5px",
                                         }}
                                     >
-                                        <TextInput
-                                            id="fullname"
-                                            type="name"
-                                            placeholder=""
-                                            className="text-3xl"
-                                            style={{
-                                                fontSize: "1.5rem",
-                                                padding: "1rem",
-                                                color: "black",
-                                                width: "350px",
-                                            }}
-                                            value={data.email}
-                                            onChange={(e) =>
-                                                setData("email", e.target.value)
-                                            }
-                                            required
-                                            shadow
-                                        />
+                                        <div>
+                                            <TextInput
+                                                id="fullname"
+                                                type="name"
+                                                placeholder=""
+                                                className="text-3xl"
+                                                style={{
+                                                    fontSize: "1.5rem",
+                                                    padding: "1rem",
+                                                    color: "black",
+                                                    width: "350px",
+                                                }}
+                                                value={data.email}
+                                                onChange={(e) =>
+                                                    setData(
+                                                        "email",
+                                                        e.target.value
+                                                    )
+                                                }
+                                                required
+                                                shadow
+                                            />
+                                            <p className="text-red-500">
+                                                {errors.email}
+                                            </p>
+                                        </div>
                                     </td>
                                     <td>
                                         <button
