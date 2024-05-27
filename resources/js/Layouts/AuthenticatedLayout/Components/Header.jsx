@@ -74,7 +74,7 @@ export default function Header() {
                         <li>
                             <Link
                                 href="/logout"
-                                className="flex h-12 px-3 justify-center gap-1   rounded-lg bg-[#5483b1]"
+                                className="flex h-12 px-3 justify-center gap-1   rounded-lg bg-[#1C64F2]"
                             >
                                 <p className="text-white">Logout</p>
                                 <HiLogout className="h-7 w-7 text-white" />

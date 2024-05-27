@@ -17,6 +17,9 @@ use Midtrans\Notification;
 use Inertia\Inertia;
 use Carbon\Carbon;
 
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ProcessedNotification;
+
 class CheckoutController extends Controller
 {
     public function processPayment(Request $request) {
@@ -115,10 +118,14 @@ class CheckoutController extends Controller
         if($hashed == $request->signature_key) {
             if($request->transaction_status == 'capture') {
                 $transaction->update(['status' => 'processed']);
+
+                Mail::to($transaction->user->email)->send(new ProcessedNotification($transaction));
             }
     
             else if($request->transaction_status == 'settlement') {
                 $transaction->update(['status' => 'processed']);
+
+                Mail::to($transaction->user->email)->send(new ProcessedNotification($transaction));
             }
     
             else if($request->transaction_status == 'pending') {
