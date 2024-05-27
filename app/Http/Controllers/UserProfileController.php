@@ -152,14 +152,16 @@ class UserProfileController extends Controller
     {
         $user = Auth::user();
 
-        
+        $request->validate([
+            'fullname' => 'required|string|max:255',
+            'phone' => 'required|string|digits_between:10,12',
+        ]);
         try {
             $validatedData = $request->validate([
-                'fullname' => 'required|string',
-                'phone' => 'required|string', 
+                'fullname' => 'required|string|max:255',
+                'phone' => 'required|string|digits_between:10,12', 
             ]);
 
-           
             $user->update($validatedData);
     
             return redirect()->back()->with('success', 'Profil berhasil diperbarui!');
@@ -176,13 +178,12 @@ class UserProfileController extends Controller
 
     public function updateEmail(Request $request) {
         $user = Auth::user();
-
+        $request->validate([
+            'email' => "required|string|email|unique:users,email",
+        ]);
         try {
             $validatedData = $request->validate([
-                'email' => [
-                    'required',
-                    Rule::unique('users')->ignore($user->id),
-                ],
+                'email' => "required|string|email|not_in:$user->email",
             ]);
 
             $user->update([
