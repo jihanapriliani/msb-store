@@ -3,7 +3,7 @@ import React from "react";
 import { Sidebar } from "flowbite-react";
 import { Link, usePage } from "@inertiajs/react";
 
-import { HiUser, HiMap, HiCash } from "react-icons/hi";
+import { HiUser, HiMap, HiCash, HiLogout } from "react-icons/hi";
 
 export default function UserSidebar() {
     const { url } = usePage();
@@ -63,6 +63,20 @@ export default function UserSidebar() {
                         >
                             <HiMap className="ml-2 h-7 w-7 text-gray-500" />
                             <p className="text-gray-600"> Alamat</p>
+                        </Link>
+                    </Sidebar.Item>
+
+                    <Sidebar.Item href="#" className="text-2xl ">
+                        <Link
+                            href="/logout"
+                            className={`flex items-center justify-start gap-3 ${
+                                isActive("/logout")
+                                    ? ".active-user-sidebar"
+                                    : "text-gray-600"
+                            }`}
+                        >
+                            <HiLockClosed className="ml-2 h-7 w-7 text-gray-500" />
+                            <p className="text-gray-600"> Logout</p>
                         </Link>
                     </Sidebar.Item>
                 </Sidebar.ItemGroup>
