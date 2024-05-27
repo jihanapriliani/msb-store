@@ -22,11 +22,11 @@
         <span style="color: rgb(218, 30, 30); font-weight: 700;">
           {{ $transaction->code }}
         </span>
-        sedang diproses, MSB-Store akan segera mengirimkan pesananmu dalam 1-3 hari kerja, Mohon ditunggu.</p>
+        telah dibatalkan. Jika Anda memiliki pertanyaan atau memerlukan informasi lebih lanjut mengenai alasan pembatalan, silakan hubungi admin kami melalui tautan di bawah ini.</p>
 
-        <a href="{{ env("APP_MAIN_URL") . "/user-transaction/" . $transaction->code }}" target="_blank" style="display: block; padding: 0.7rem 1rem; background: rgb(201, 36, 36); color: white; margin: 2rem auto; text-align: center; border: 1px solid rgb(201, 36, 36);  border-radius: 5%; max-width: 150px; text-decoration: none;">
-          Lihat Pesanan
-        </a>
+      <a href="https://wa.me/6281770616509" target="_blank" style="display: block; padding: 0.7rem 1rem; background: rgb(201, 36, 36); color: white; margin: 2rem auto; text-align: center; border: 1px solid rgb(201, 36, 36);  border-radius: 5%; max-width: 150px; text-decoration: none;">
+        Hubungi Admin
+      </a>
       
       <p>
         Terima kasih telah berbelanja di MSB-Store. Kami berharap dapat melayani Anda kembali di masa mendatang. Jika ada hal lain yang dapat kami bantu, jangan ragu untuk menghubungi kami.

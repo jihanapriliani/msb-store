@@ -11,7 +11,7 @@ export default function Sidebar() {
             <ul className="list-unstyled accordion-menu">
                 <li className="sidebar-title">Main</li>
                 <li className={isUrlActive("/dashboard") ? "active-page" : ""}>
-                    <Link href="/dashboard/admin">
+                    <Link href="/dashboard">
                         <i data-feather="home"></i>Dashboard
                     </Link>
                 </li>

@@ -5,6 +5,7 @@ import { Tabs } from "flowbite-react";
 
 import TransactionCard from "@/Components/TransactionCard";
 import UserSidebar from "@/Components/UserSidebar";
+import { Link } from "@inertiajs/react";
 
 const customTheme = {
     color: {
@@ -49,8 +50,8 @@ export default function Index({ user, transactions }) {
                                 ))
                             ) : (
                                 <p className="text-3xl text-center mt-10 text-gray-500 dark:text-gray-400">
-                                    Tidak ada transaksi dengan status "
-                                    {selectedTab}"
+                                    Tidak ada transaksi dengan status{" "}
+                                    <Link href="/shop">Belanja Sekarang</Link>
                                 </p>
                             )}
                         </div>
