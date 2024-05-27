@@ -9,6 +9,10 @@ use Inertia\Inertia;
 
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Mail;
+
+use App\Mail\ShippedNotification;
+
 
 class TransactionController extends Controller
 {
@@ -92,6 +96,10 @@ class TransactionController extends Controller
             }
     
             $transaction->update($validatedData);
+
+            if($validatedData['status'] === "shipped") {
+                Mail::to($transaction->user->email)->send(new ShippedNotification($transaction));
+            }
     
             return redirect()->route('transaction.index')->with('success', 'Status transaksi berhasil diubah!');
         } catch (ValidationException $e) {
