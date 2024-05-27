@@ -102,7 +102,7 @@ export default function Index({
             </div>
 
             <div className="row">
-                <div className="col-md-12 col-lg-8">
+                <div className="col-md-12 col-lg-12">
                     <div className="card table-widget">
                         <div className="card-body">
                             <h5 className="card-title">Recent Orders</h5>
@@ -118,7 +118,7 @@ export default function Index({
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {/* {transactions.map(
+                                        {transactions.map(
                                             (transaction, index) => (
                                                 <tr>
                                                     <th scope="row">
@@ -144,7 +144,7 @@ export default function Index({
                                                     </td>
                                                 </tr>
                                             )
-                                        )} */}
+                                        )}
                                     </tbody>
                                 </table>
                             </div>

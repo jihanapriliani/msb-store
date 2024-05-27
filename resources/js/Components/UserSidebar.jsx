@@ -75,7 +75,7 @@ export default function UserSidebar() {
                                     : "text-gray-600"
                             }`}
                         >
-                            <HiLockClosed className="ml-2 h-7 w-7 text-gray-500" />
+                            <HiLogout className="ml-2 h-7 w-7 text-gray-500" />
                             <p className="text-gray-600"> Logout</p>
                         </Link>
                     </Sidebar.Item>
