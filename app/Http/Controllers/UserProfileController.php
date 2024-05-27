@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Province;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\UserAddress;
@@ -31,7 +32,7 @@ class UserProfileController extends Controller
 
 
     public function createAddress(Request $request) {
-        return Inertia::render('User/Profile/CreateAddress');
+        return Inertia::render('UserAddressCreate');
     }
 
     public function storeAddress(Request $request)
@@ -42,12 +43,9 @@ class UserProfileController extends Controller
             'city_id' => 'required|integer',
             'district_id' => 'required|integer',
             'village_id' => 'required|integer',
-            'phone' => 'required|string',
             'zipcode' => 'required|integer',
             'country' => 'required|string',
             'address' => 'required|string',
-            'lat' => 'required|integer',
-            'long' => 'required|integer',
         ]);
 
 
@@ -61,12 +59,9 @@ class UserProfileController extends Controller
             'city_id' => $validatedData['city_id'],
             'district_id' =>  $validatedData['district_id'],
             'village_id' => $validatedData['village_id'],
-            'phone' => $validatedData['phone'],
             'zipcode' => $validatedData['zipcode'],
             'country' => $validatedData['country'],
             'address' => $validatedData['address'],
-            'lat' => $validatedData['lat'],
-            'long' => $validatedData['long'],
         ]);
 
      
@@ -84,26 +79,23 @@ class UserProfileController extends Controller
 
         $address =  UserAddress::findOrFail($id);
 
-        return Inertia::render('User/Profile/EditAddress', [
-            'address' => $address
+        return Inertia::render('UserAddressEdit', [
+            'address' => $address,
         ]);
     }
 
 
     public function updateAddress(Request $request, string $id) {
-       
+    
         $validatedData = $request->validate([
             'alias' => 'required|string',
             'province_id' => 'required|integer',
             'city_id' => 'required|integer',
             'district_id' => 'required|integer',
             'village_id' => 'required|integer',
-            'phone' => 'required|string',
             'zipcode' => 'required|integer',
             'country' => 'required|string',
             'address' => 'required|string',
-            'lat' => 'required|integer',
-            'long' => 'required|integer',
         ]);
 
         $address =  UserAddress::findOrFail($id);

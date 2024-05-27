@@ -54,8 +54,11 @@ export default function Index({ user, addresses }) {
                                     {address.village_id}, {address.zipcode}.
                                 </p>
                                 <div className="items-center justify-center space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
-                                    <a
-                                        href="#"
+                                    <Link
+                                        href={route(
+                                            "profile.address.edit",
+                                            address.id
+                                        )}
                                         className="inline-flex w-full items-center justify-center rounded-lg bg-gray-800 px-4 py-2.5 text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 sm:w-auto"
                                     >
                                         <div className="text-left">
@@ -63,10 +66,15 @@ export default function Index({ user, addresses }) {
                                                 Ubah
                                             </div>
                                         </div>
-                                    </a>
+                                    </Link>
 
-                                    <a
-                                        href="#"
+                                    <Link
+                                        href={route(
+                                            "profile.address.delete",
+                                            address.id
+                                        )}
+                                        method="delete"
+                                        as="button"
                                         className="inline-flex w-full items-center justify-center rounded-lg bg-gray-800 px-4 py-2.5 text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 sm:w-auto"
                                     >
                                         <div className="text-left">
@@ -74,7 +82,7 @@ export default function Index({ user, addresses }) {
                                                 Hapus
                                             </div>
                                         </div>
-                                    </a>
+                                    </Link>
                                 </div>
                             </div>
                         </Card>

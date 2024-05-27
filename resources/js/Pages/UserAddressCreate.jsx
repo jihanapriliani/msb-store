@@ -15,7 +15,7 @@ import Select from "react-select";
 import { useForm } from "@inertiajs/react";
 
 export default function UserAddressCreate() {
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const { data, setData, post, processing, errors, reset, setError } = useForm({
         alias: "",
         province_id: "",
         city_id: "",
@@ -37,7 +37,7 @@ export default function UserAddressCreate() {
             onError: (e) => {
                 console.log(e);
                 if (e.errors) {
-                    errors(e.errors);
+                    setError(e.errors);
                 }
             },
             onSuccess: () => {
@@ -123,6 +123,9 @@ export default function UserAddressCreate() {
                                     }
                                     placeholder="example: Rumah Utama, Kantor"
                                 />
+                                <p className="text-red-500">
+                                    {errors.alias}
+                                </p>
                             </div>
 
                             <div className="mb-3">
@@ -156,6 +159,9 @@ export default function UserAddressCreate() {
                                         );
                                     }}
                                 />
+                                <p className="text-red-500">
+                                    {errors.province_id}
+                                </p>
                             </div>
 
                             <div className="mb-3">
@@ -186,6 +192,9 @@ export default function UserAddressCreate() {
                                         setData("city_id", city.city_id);
                                     }}
                                 />
+                                <p className="text-red-500">
+                                    {errors.city_id}
+                                </p>
                             </div>
 
                             <div className="flex gap-3">
@@ -216,6 +225,9 @@ export default function UserAddressCreate() {
                                         }
                                         placeholder=""
                                     />
+                                    <p className="text-red-500">
+                                        {errors.district_id}
+                                    </p>
                                 </div>
 
                                 <div className="mb-3 flex-1">
@@ -245,6 +257,9 @@ export default function UserAddressCreate() {
                                         }
                                         placeholder=""
                                     />
+                                    <p className="text-red-500">
+                                        {errors.village_id}
+                                    </p>
                                 </div>
 
                                 <div className="mb-3 flex-1">
@@ -271,10 +286,11 @@ export default function UserAddressCreate() {
                                         }
                                         placeholder=""
                                     />
+                                    <p className="text-red-500">
+                                        {errors.zipcode}
+                                    </p>
                                 </div>
                             </div>
-
-                            <div className="flex gap-3"></div>
 
                             <div className="mb-3">
                                 <label
@@ -298,6 +314,9 @@ export default function UserAddressCreate() {
                                     }
                                     placeholder="example: Jl.Marsma R. Iswahyudi"
                                 ></textarea>
+                                <p className="text-red-500">
+                                    {errors.address}
+                                </p>
                             </div>
 
                             <button
