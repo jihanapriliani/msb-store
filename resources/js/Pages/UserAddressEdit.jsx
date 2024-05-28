@@ -5,7 +5,7 @@ import { Tabs } from "flowbite-react";
 
 import TransactionCard from "@/Components/TransactionCard";
 import UserSidebar from "@/Components/UserSidebar";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 
 import { Button, Timeline } from "flowbite-react";
 import { HiArrowNarrowLeft, HiCalendar, HiPhone } from "react-icons/hi";
@@ -14,71 +14,99 @@ import { useEffect } from "react";
 import Select from "react-select";
 import { useForm } from "@inertiajs/react";
 
-export default function UserAddressEdit() {
-    const { data, setData, post, processing, errors, reset } = useForm({
-        alias: "",
-        province_id: "",
-        city_id: "",
-        district_id: "",
-        village_id: "",
-        phone: "",
-        zipcode: "",
-        country: "Indonesia",
-        address: "",
-        lat: "0",
-        long: "0",
-    });
+export default function UserAddressEdit({ address }) {
+    const { data, setData, post, processing, errors, reset, setError } =
+        useForm({
+            alias: address.alias,
+            province_id: address.province_id,
+            city_id: address.city_id,
+            district_id: address.district_id,
+            village_id: address.village_id,
+            zipcode: address.zipcode,
+            country: address.country,
+            address: address.address,
+        });
 
     const submit = (e) => {
         e.preventDefault();
 
-        post(route("profile.address.store", data), {
-            forceFormData: true,
-            onError: (e) => {
-                console.log(e);
-                if (e.errors) {
-                    errors(e.errors);
-                }
+        router.post(
+            route("profile.address.update", address.id),
+            {
+                _method: "put",
+                ...data,
             },
-            onSuccess: () => {
-                reset();
-            },
-        });
+            {
+                forceFormData: true,
+                onError: (e) => {
+                    console.log(e);
+                    if (e.errors) {
+                        setError(e.errors);
+                    }
+                },
+            }
+        );
     };
 
-    const [isClearable, setIsClearable] = useState(true);
-    const [isSearchable, setIsSearchable] = useState(true);
-    const [isDisabled, setIsDisabled] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [isRtl, setIsRtl] = useState(false);
-
     const [provinces, setProvinces] = useState([]);
-    const [selectedProvince, setSelectedProvince] = useState({});
 
     const [cities, setCities] = useState([]);
-    const [selectedCity, setSelectedCity] = useState([]);
+
+    const [districts, setDistricts] = useState([]);
 
     useEffect(() => {
         axios
-            .get("/api/get-provinces")
-            .then((res) => setProvinces(res.data))
-            .catch((err) => console.log(err));
+            .get(route("api.get_provinces"))
+            .then((res) => {
+                setProvinces(res.data);
+                if (address.province_id) {
+                    fetchCities();
+                    if (address.city_id) {
+                        fetchDistricts();
+                    }
+                }
+            })
+            .catch(console.error);
     }, []);
 
     useEffect(() => {
+        if (data.province_id) {
+            fetchCities(data.province_id);
+        } else {
+            setCities([]);
+            setDistricts([]);
+        }
+    }, [data.province_id]);
+
+    useEffect(() => {
+        if (data.city_id) {
+            fetchDistricts(data.city_id);
+        } else {
+            setDistricts([]);
+        }
+    }, [data.city_id]);
+
+    const fetchCities = () => {
         axios
-            .get("/api/get-cities", {
+            .get(route("api.get_cities"), {
                 params: {
-                    province_id: selectedProvince
-                        ? selectedProvince.province_id
-                        : 0,
+                    province_id: data.province_id,
                 },
             })
             .then((res) => setCities(res.data))
             .catch((err) => console.log(err));
-    }, [selectedProvince]);
+    };
 
-    console.log("ISI CITIES", cities);
+    const fetchDistricts = () => {
+        axios
+            .get(route("api.get_districts"), {
+                params: {
+                    city_id: data.city_id,
+                },
+            })
+            .then((res) => setDistricts(res.data))
+            .catch((err) => console.log(err));
+    };
 
     return (
         <GuestLayout>
@@ -110,6 +138,7 @@ export default function UserAddressEdit() {
                                 <input
                                     type="text"
                                     className="form-control"
+                                    value={data.alias}
                                     style={{
                                         fontSize: "1.5rem",
                                         color: "gray",
@@ -123,6 +152,7 @@ export default function UserAddressEdit() {
                                     }
                                     placeholder="example: Rumah Utama, Kantor"
                                 />
+                                <p className="text-red-500">{errors.alias}</p>
                             </div>
 
                             <div className="mb-3">
@@ -136,26 +166,37 @@ export default function UserAddressEdit() {
                                 <Select
                                     className="basic-single"
                                     classNamePrefix="select"
-                                    isDisabled={isDisabled}
-                                    isLoading={isLoading}
-                                    isClearable={isClearable}
-                                    isRtl={isRtl}
-                                    isSearchable={isSearchable}
+                                    isClearable
+                                    isSearchable
                                     name="province"
+                                    value={
+                                        provinces.find(
+                                            (province) =>
+                                                province.province_id ==
+                                                data.province_id
+                                        ) || null
+                                    }
                                     options={provinces ?? []}
                                     getOptionLabel={(option) => option.province}
                                     getOptionValue={(option) =>
                                         option.province_id
                                     }
                                     onChange={(province) => {
-                                        setSelectedProvince(province);
-
-                                        setData(
-                                            "province_id",
-                                            province.province_id
-                                        );
+                                        setData({
+                                            ...data,
+                                            province_id: province
+                                                ? province.province_id
+                                                : "",
+                                            city_id: "",
+                                            district_id: "",
+                                        });
+                                        setCities([]); // Reset cities when province changes
+                                        setDistricts([]); // Reset districts when province changes
                                     }}
                                 />
+                                <p className="text-red-500">
+                                    {errors.province_id}
+                                </p>
                             </div>
 
                             <div className="mb-3">
@@ -169,23 +210,30 @@ export default function UserAddressEdit() {
                                 <Select
                                     className="basic-single"
                                     classNamePrefix="select"
-                                    isDisabled={isDisabled}
-                                    isLoading={isLoading}
-                                    isClearable={isClearable}
-                                    isRtl={isRtl}
-                                    isSearchable={isSearchable}
+                                    isClearable
+                                    isSearchable
                                     name="province"
+                                    value={
+                                        cities.find(
+                                            (city) =>
+                                                city.city_id == data.city_id
+                                        ) || null
+                                    }
                                     options={cities ?? []}
                                     getOptionLabel={(option) =>
                                         option.city_name
                                     }
                                     getOptionValue={(option) => option.city_id}
                                     onChange={(city) => {
-                                        setSelectedCity(city);
-
-                                        setData("city_id", city.city_id);
+                                        setData({
+                                            ...data,
+                                            city_id: city ? city.city_id : "",
+                                            district_id: "",
+                                        });
+                                        setDistricts([]); // Reset districts when city changes
                                     }}
                                 />
+                                <p className="text-red-500">{errors.city_id}</p>
                             </div>
 
                             <div className="flex gap-3">
@@ -197,25 +245,39 @@ export default function UserAddressEdit() {
                                         Kecamatan
                                     </label>
 
-                                    <input
-                                        type="number"
-                                        className="form-control"
-                                        id=""
-                                        aria-describedby=""
-                                        name="username"
-                                        style={{
-                                            fontSize: "1.5rem",
-                                            color: "gray",
-                                            padding: "0.7rem",
-                                        }}
-                                        onChange={(e) =>
-                                            setData(
-                                                "district_id",
-                                                e.target.value
-                                            )
+                                    <Select
+                                        className="basic-single"
+                                        classNamePrefix="select"
+                                        isClearable
+                                        isSearchable
+                                        name="province"
+                                        value={
+                                            districts.find(
+                                                (district) =>
+                                                    district.district_id ===
+                                                    data.district_id
+                                            ) || null
                                         }
-                                        placeholder=""
+                                        options={districts ?? []}
+                                        getOptionLabel={(option) =>
+                                            option.district_name
+                                        }
+                                        getOptionValue={(option) =>
+                                            option.district_id
+                                        }
+                                        onChange={(district) => {
+                                            setData({
+                                                ...data,
+                                                district_id: district
+                                                    ? district.district_id
+                                                    : "",
+                                            });
+                                        }}
                                     />
+
+                                    <p className="text-red-500">
+                                        {errors.district_id}
+                                    </p>
                                 </div>
 
                                 <div className="mb-3 flex-1">
@@ -231,6 +293,7 @@ export default function UserAddressEdit() {
                                         className="form-control"
                                         id=""
                                         aria-describedby=""
+                                        value={data.village_id}
                                         name="username"
                                         style={{
                                             fontSize: "1.5rem",
@@ -245,6 +308,9 @@ export default function UserAddressEdit() {
                                         }
                                         placeholder=""
                                     />
+                                    <p className="text-red-500">
+                                        {errors.village_id}
+                                    </p>
                                 </div>
 
                                 <div className="mb-3 flex-1">
@@ -261,6 +327,7 @@ export default function UserAddressEdit() {
                                         id=""
                                         aria-describedby=""
                                         name="username"
+                                        value={data.zipcode}
                                         style={{
                                             fontSize: "1.5rem",
                                             color: "gray",
@@ -271,10 +338,11 @@ export default function UserAddressEdit() {
                                         }
                                         placeholder=""
                                     />
+                                    <p className="text-red-500">
+                                        {errors.zipcode}
+                                    </p>
                                 </div>
                             </div>
-
-                            <div className="flex gap-3"></div>
 
                             <div className="mb-3">
                                 <label
@@ -285,9 +353,10 @@ export default function UserAddressEdit() {
                                 </label>
 
                                 <textarea
-                                    class="form-control"
+                                    className="form-control"
                                     id="exampleFormControlTextarea1"
                                     rows="3"
+                                    value={data.address}
                                     style={{
                                         fontSize: "1.5rem",
                                         color: "gray",
@@ -298,6 +367,7 @@ export default function UserAddressEdit() {
                                     }
                                     placeholder="example: Jl.Marsma R. Iswahyudi"
                                 ></textarea>
+                                <p className="text-red-500">{errors.address}</p>
                             </div>
 
                             <button

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Province;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\UserAddress;
@@ -31,7 +32,7 @@ class UserProfileController extends Controller
 
 
     public function createAddress(Request $request) {
-        return Inertia::render('User/Profile/CreateAddress');
+        return Inertia::render('UserAddressCreate');
     }
 
     public function storeAddress(Request $request)
@@ -42,12 +43,9 @@ class UserProfileController extends Controller
             'city_id' => 'required|integer',
             'district_id' => 'required|integer',
             'village_id' => 'required|integer',
-            'phone' => 'required|string',
             'zipcode' => 'required|integer',
             'country' => 'required|string',
             'address' => 'required|string',
-            'lat' => 'required|integer',
-            'long' => 'required|integer',
         ]);
 
 
@@ -61,12 +59,9 @@ class UserProfileController extends Controller
             'city_id' => $validatedData['city_id'],
             'district_id' =>  $validatedData['district_id'],
             'village_id' => $validatedData['village_id'],
-            'phone' => $validatedData['phone'],
             'zipcode' => $validatedData['zipcode'],
             'country' => $validatedData['country'],
             'address' => $validatedData['address'],
-            'lat' => $validatedData['lat'],
-            'long' => $validatedData['long'],
         ]);
 
      
@@ -84,26 +79,23 @@ class UserProfileController extends Controller
 
         $address =  UserAddress::findOrFail($id);
 
-        return Inertia::render('User/Profile/EditAddress', [
-            'address' => $address
+        return Inertia::render('UserAddressEdit', [
+            'address' => $address,
         ]);
     }
 
 
     public function updateAddress(Request $request, string $id) {
-       
+    
         $validatedData = $request->validate([
             'alias' => 'required|string',
             'province_id' => 'required|integer',
             'city_id' => 'required|integer',
             'district_id' => 'required|integer',
             'village_id' => 'required|integer',
-            'phone' => 'required|string',
             'zipcode' => 'required|integer',
             'country' => 'required|string',
             'address' => 'required|string',
-            'lat' => 'required|integer',
-            'long' => 'required|integer',
         ]);
 
         $address =  UserAddress::findOrFail($id);
@@ -160,14 +152,16 @@ class UserProfileController extends Controller
     {
         $user = Auth::user();
 
-        
+        $request->validate([
+            'fullname' => 'required|string|max:255',
+            'phone' => 'required|string|digits_between:10,12',
+        ]);
         try {
             $validatedData = $request->validate([
-                'fullname' => 'required|string',
-                'phone' => 'required|string', 
+                'fullname' => 'required|string|max:255',
+                'phone' => 'required|string|digits_between:10,12', 
             ]);
 
-           
             $user->update($validatedData);
     
             return redirect()->back()->with('success', 'Profil berhasil diperbarui!');
@@ -184,13 +178,12 @@ class UserProfileController extends Controller
 
     public function updateEmail(Request $request) {
         $user = Auth::user();
-
+        $request->validate([
+            'email' => "required|string|email|unique:users,email",
+        ]);
         try {
             $validatedData = $request->validate([
-                'email' => [
-                    'required',
-                    Rule::unique('users')->ignore($user->id),
-                ],
+                'email' => "required|string|email|not_in:$user->email",
             ]);
 
             $user->update([
