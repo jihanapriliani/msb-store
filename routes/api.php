@@ -217,6 +217,6 @@ Route::post('/change-password', function(Request $request) {
 // });
 
 Route::post('/midtrans-callback', [CheckoutController::class, 'callback'])->name('midtrans.callback');
-Route::get('/invoice/{id}', [CheckoutController::class, 'invoice'])->name('midtrans.invoice');
+
 
 

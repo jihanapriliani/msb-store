@@ -20,6 +20,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ProcessedNotification;
 
+
 class CheckoutController extends Controller
 {
     public function processPayment(Request $request) {
@@ -80,6 +81,9 @@ class CheckoutController extends Controller
             'transaction_details' => [
                 'order_id' => $transaction->code,
                 'gross_amount' => (int) $request->total_price + $request->shipping_cost,
+            ],
+            'callbacks' => [
+                'finish' => "https://mandirisejatiborneo.store/invoice/" . $transaction->code,
             ],
             'customer_details' => [
                 'first_name' => $user->fullname,
@@ -168,7 +172,12 @@ class CheckoutController extends Controller
     }
 
 
-    public function invoice() {
+    public function invoice(string $id) {
+        $transaction = Transaction::where('code', $id)->with(['transaction_details.product', 'user'])->first();
+
+        return Inertia::render('Invoice', [
+            'transaction' => $transaction
+        ]);
 
     }
 }

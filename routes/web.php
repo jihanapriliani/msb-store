@@ -206,6 +206,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::post('/checkout', [CheckoutController::class, 'processPayment'])->name('checkout');
+Route::get('/invoice/{id}', [CheckoutController::class, 'invoice'])->name('invoice');
 
 
 // Route::get('/send-email', [TestSendEmailController::class, 'index']);
