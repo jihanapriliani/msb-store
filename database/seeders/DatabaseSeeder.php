@@ -10,7 +10,7 @@ use Database\Seeders\TransactionSeeder;
 use Database\Seeders\UserAddressSeeder;
 use Database\Seeders\TransactionSDetailSeeder;
 use Database\Seeders\LocationSeeder;
-use Database\Seeders\DisctrictSeeder;
+use Database\Seeders\DistrictSeeder;
 
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
         $this->call(UserAddressSeeder::class);
         $this->call(LocationSeeder::class);
         $this->call(LocationSeeder::class);
-        $this->call(DisctrictSeeder::class);
+        $this->call(DistrictSeeder::class);
 
         // $this->call(TransactionSeeder::class);
         // $this->call(TransactionDetailSeeder::class);
