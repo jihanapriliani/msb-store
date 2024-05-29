@@ -191,7 +191,10 @@ export default function Index({ user, userAddress }) {
                     <hr className="h-4 my-16 bg-gray-300" />
 
                     <form className="flex flex-col gap-4" onSubmit={submit}>
-                        <table className="table table-borderless w-[50%]">
+                        <table
+                            className="table table-borderless w-[70%]"
+                            style={{ margin: "0 auto" }}
+                        >
                             <tbody className="text-2xl text-gray-500">
                                 <tr>
                                     <td>Nama Lengkap</td>

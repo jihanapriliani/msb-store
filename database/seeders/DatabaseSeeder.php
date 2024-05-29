@@ -10,6 +10,8 @@ use Database\Seeders\TransactionSeeder;
 use Database\Seeders\UserAddressSeeder;
 use Database\Seeders\TransactionSDetailSeeder;
 use Database\Seeders\LocationSeeder;
+use Database\Seeders\DisctrictSeeder;
+
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -27,7 +29,9 @@ class DatabaseSeeder extends Seeder
         $this->call(ProductSeeder::class);
         $this->call(ProductImageSeeder::class);
         $this->call(UserAddressSeeder::class);
-        // $this->call(LocationSeeder::class);
+        $this->call(LocationSeeder::class);
+        $this->call(LocationSeeder::class);
+        $this->call(DisctrictSeeder::class);
 
         // $this->call(TransactionSeeder::class);
         // $this->call(TransactionDetailSeeder::class);

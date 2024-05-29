@@ -205,12 +205,17 @@ export default function Guest({ children, setIsLoading }) {
                             <div className="main__logo">
                                 <h1 className="main__logo--title">
                                     <Link className="main__logo--link" href="/">
-                                        <p className="text-3xl font-bold">
+                                        <h3
+                                            style={{
+                                                fontSize: "2rem",
+                                                fontWeight: "bold",
+                                            }}
+                                        >
                                             MSB
-                                            <span className="text-red-500">
+                                            <span style={{ color: "red" }}>
                                                 STORE
                                             </span>
-                                        </p>
+                                        </h3>
                                     </Link>
                                 </h1>
                             </div>
