@@ -205,7 +205,12 @@ export default function Guest({ children, setIsLoading }) {
                             <div className="main__logo">
                                 <h1 className="main__logo--title">
                                     <Link className="main__logo--link" href="/">
-                                        MSB-STORE
+                                        <p className="text-3xl font-bold">
+                                            MSB
+                                            <span className="text-red-500">
+                                                STORE
+                                            </span>
+                                        </p>
                                     </Link>
                                 </h1>
                             </div>
