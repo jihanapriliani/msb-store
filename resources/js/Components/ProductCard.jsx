@@ -7,42 +7,21 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 export default function ProductCard({ product, user }) {
-    const handleAddProductToCart = (productId) => {
-        if (user) {
-            axios
-                .post(`/api/add-product-to-cart`, {
-                    product_id: productId,
-                    user_id: user.id,
-                })
-                .then((res) => {
-                    Swal.fire({
-                        icon: "success",
-                        title: "Produk berhasil masuk keranjang",
-                    });
-                })
-                .catch((err) => console.log(err));
-        } else {
-            Swal.fire({
-                icon: "error",
-                title: "Login untuk menambahkan barang ke keranjang",
-            });
-        }
-    };
-
     return (
         <div>
             <article className="product__card">
                 <div className="product__card--thumbnail">
                     <a
                         className="product__card--thumbnail__link display-block"
-                        href="product-details.html"
+                        href="#"
                     >
                         <img
                             className="product__card--thumbnail__img product__primary--img w-[300px] h-[200px] object-cover"
                             src={
                                 window.location.origin +
-                                "/" +
-                                product.images[0].image
+                                    "/" +
+                                    (product.images[0].image ??
+                                "assets/images/default.png")
                             }
                             alt="product-img"
                         />
@@ -50,8 +29,9 @@ export default function ProductCard({ product, user }) {
                             className="product__card--thumbnail__img product__secondary--img"
                             src={
                                 window.location.origin +
-                                "/" +
-                                product.images[0].image
+                                    "/" +
+                                    (product.images[0].image ??
+                                "assets/images/default.png")
                             }
                             alt="product-img"
                         />
@@ -64,6 +44,7 @@ export default function ProductCard({ product, user }) {
                         <a
                             style={{
                                 fontSize: "2rem",
+                                fontWeight: "600",
                             }}
                             href="product-details.html"
                         >
@@ -73,7 +54,7 @@ export default function ProductCard({ product, user }) {
                     <div
                         className="product__card--price"
                         style={{
-                            fontSize: "1.2rem",
+                            fontSize: "1.5rem",
                         }}
                     >
                         Rp {product.price.toLocaleString()}
@@ -82,9 +63,9 @@ export default function ProductCard({ product, user }) {
                         <Link
                             className="product__card--btn primary__btn text-white"
                             type="button"
-                            onClick={() => handleAddProductToCart(product.id)}
+                            href={`/detail-product/${product.id}`}
                         >
-                            Add to cart
+                            Detail Product
                         </Link>
                     </div>
                 </div>

@@ -11,7 +11,7 @@ export default function Edit(props) {
     const [images, setImages] = useState([]);
     const [dataProductImages, setDataProductImages] = useState(product_images);
 
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const { data, setData, post, processing, errors, reset, setError } = useForm({
         name: product.name,
         description: product.description,
         category: product.category_id,
@@ -36,10 +36,7 @@ export default function Edit(props) {
             {
                 forceFormData: true,
                 onError: (e) => {
-                    console.log(e);
-                    if (e.errors) {
-                        form.errors(e.errors);
-                    }
+                    setError(e);
                 },
             }
         );
@@ -101,6 +98,9 @@ export default function Edit(props) {
                                         }
                                         placeholder="example: Bolts.."
                                     />
+                                    <div class="form-text text-danger">
+                                        {errors.name}
+                                    </div>
                                 </div>
 
                                 <div className="mb-3">
@@ -124,6 +124,9 @@ export default function Edit(props) {
                                         }
                                         placeholder="example: Bolts.."
                                     ></textarea>
+                                    <div className="form-text text-danger">
+                                        {errors.description}
+                                    </div>
                                 </div>
 
                                 <div className="mb-3">
@@ -146,6 +149,9 @@ export default function Edit(props) {
                                             setData("price", value);
                                         }}
                                     />
+                                    <div className="form-text text-danger">
+                                        {errors.price}
+                                    </div>
                                 </div>
 
                                 <div className="mb-3">
@@ -179,6 +185,9 @@ export default function Edit(props) {
                                             </option>
                                         ))}
                                     </select>
+                                    <div className="form-text text-danger">
+                                        {errors.category}
+                                    </div>
                                 </div>
 
                                 <div className="row">
@@ -202,6 +211,9 @@ export default function Edit(props) {
                                             }
                                             placeholder="0"
                                         />
+                                        <div className="form-text text-danger">
+                                            {errors.stock}
+                                        </div>
                                     </div>
 
                                     <div className="mb-3 col-md-6">
@@ -228,6 +240,9 @@ export default function Edit(props) {
                                             }
                                             placeholder="0"
                                         />
+                                        <div className="form-text text-danger">
+                                            {errors.unit_weight}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -277,6 +292,9 @@ export default function Edit(props) {
                                                 onChange={handleImageChange}
                                                 multiple
                                             />
+                                            <div className="form-text text-danger">
+                                                {errors.product_images}
+                                            </div>
                                         </label>
                                     </div>
 
@@ -289,7 +307,8 @@ export default function Edit(props) {
                                                             window.location
                                                                 .origin +
                                                             "/" +
-                                                            image.image
+                                                            (image.image ??
+                                                                "assets/images/default.png")
                                                         }
                                                         alt={`Uploaded Image ${index}`}
                                                         className=" object-cover rounded-lg mr-2 w-[300px] h-[220px]"

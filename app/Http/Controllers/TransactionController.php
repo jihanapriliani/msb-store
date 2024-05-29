@@ -9,6 +9,11 @@ use Inertia\Inertia;
 
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Mail;
+
+use App\Mail\ShippedNotification;
+use App\Mail\CanceledNotification;
+use App\Mail\ProcessedNotification;
 
 class TransactionController extends Controller
 {
@@ -82,9 +87,29 @@ class TransactionController extends Controller
                     Rule::unique('transactions')->ignore($transaction->id),
                 ],
             ]);
+
+            if($validatedData['status'] === 'canceled') {
+                foreach ($transaction->transaction_details as $transaction_detail) {
+                    $transaction_detail->product->update([
+                        'stock' => $transaction_detail->product->stock + $transaction_detail->amount,
+                    ]);
+                }
+            }
     
             $transaction->update($validatedData);
+
+            if($validatedData['status'] === "processed") {
+                Mail::to($transaction->user->email)->send(new ProcessedNotification($transaction));
+            }
+
+            if($validatedData['status'] === "shipped") {
+                Mail::to($transaction->user->email)->send(new ShippedNotification($transaction));
+            }
     
+            if($validatedData['status'] === "canceled") {
+                Mail::to($transaction->user->email)->send(new CanceledNotification($transaction));
+            }
+
             return redirect()->route('transaction.index')->with('success', 'Status transaksi berhasil diubah!');
         } catch (ValidationException $e) {
             if ($e->validator->errors()->has('delivery_code')) {

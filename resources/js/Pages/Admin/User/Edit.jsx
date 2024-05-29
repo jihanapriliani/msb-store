@@ -7,14 +7,16 @@ import { Link, router } from "@inertiajs/react";
 import Select from "react-select";
 
 export default function Edit(props) {
-    const { user } = props;
+    const { user, roles } = props;
 
-    const { data, setData, post, processing, errors, reset } = useForm({
-        fullname: user.fullname,
-        username: user.username,
-        email: user.email,
-        phone: user.phone,
-    });
+    const { data, setData, post, processing, errors, reset, setError } =
+        useForm({
+            fullname: user.fullname,
+            username: user.username,
+            email: user.email,
+            phone: user.phone,
+            role: user.role,
+        });
 
     const submit = (e) => {
         e.preventDefault();
@@ -31,9 +33,7 @@ export default function Edit(props) {
                 forceFormData: true,
                 onError: (e) => {
                     console.log(e);
-                    if (e.errors) {
-                        errors(e.errors);
-                    }
+                    setError(e);
                 },
                 onSuccess: () => {
                     reset();
@@ -74,6 +74,9 @@ export default function Edit(props) {
                                         }
                                         placeholder="example: Bolts.."
                                     />
+                                    <div class="form-text text-danger">
+                                        {errors.fullname}
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
@@ -95,6 +98,9 @@ export default function Edit(props) {
                                         }
                                         placeholder="example: Bolts.."
                                     />
+                                    <div class="form-text text-danger">
+                                        {errors.username}
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
@@ -116,6 +122,9 @@ export default function Edit(props) {
                                         }
                                         placeholder="example: bolts..."
                                     />
+                                    <div class="form-text text-danger">
+                                        {errors.email}
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
@@ -137,8 +146,40 @@ export default function Edit(props) {
                                         }
                                         placeholder="example: bolts..."
                                     />
+                                    <div class="form-text text-danger">
+                                        {errors.phone}
+                                    </div>
                                 </div>
-
+                                {props.auth.user.roles[0].name ===
+                                    "super-admin" && (
+                                    <div class="mb-3">
+                                        <label
+                                            for="exampleInputEmail1"
+                                            class="form-label"
+                                        >
+                                            Role
+                                        </label>
+                                        <select
+                                            class="form-select"
+                                            aria-label="Default select example"
+                                            name="role"
+                                            value={data.role}
+                                            onChange={(e) =>
+                                                setData("role", e.target.value)
+                                            }
+                                        >
+                                            <option selected>Pilih Role</option>
+                                            {roles.map((role) => (
+                                                <option value={role.name}>
+                                                    {role.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <div class="form-text text-danger">
+                                            {errors.role}
+                                        </div>
+                                    </div>
+                                )}
                                 <div class="mb-3">
                                     <label
                                         for="exampleInputEmail1"
@@ -157,6 +198,9 @@ export default function Edit(props) {
                                         }
                                         placeholder="******"
                                     />
+                                    <div class="form-text text-danger">
+                                        {errors.password}
+                                    </div>
                                 </div>
 
                                 <button

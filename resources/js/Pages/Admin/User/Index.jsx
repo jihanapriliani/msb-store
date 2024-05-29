@@ -41,7 +41,7 @@ export default function Index(props) {
 
                 <div>
                     <Link
-                        href="/user/create"
+                        href={route("user.create")}
                         className="bg-blue-600 text-white p-3 rounded-xl"
                     >
                         Tambah Data

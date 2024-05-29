@@ -1,12 +1,13 @@
 <?php
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\CartController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ShopController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TransactionDetailController;
+use App\Http\Controllers\UserController;
 
 use App\Http\Controllers\UserTransactionController;
 use App\Http\Controllers\UserProfileController;
@@ -20,8 +21,13 @@ use Inertia\Inertia;
 
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Cart;
+use App\Models\UserAddress;
+use App\Models\Transaction;
+
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
+// use App\Http\Controllers\Email\TestSendEmailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,9 +40,13 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 |
 */
 
+// Route::get('/ship', function () {
+//     return view('emails.notification.shipped');
+// });
+
 Route::get('/', function () {
     $user = Auth::user();    
-    $products = Product::with('images')->get();
+    $products = Product::with('images')->take(8)->get();
     $categories = Category::take(10)->get();
     return Inertia::render('LandingPage', [
         'products' => $products,
@@ -45,21 +55,27 @@ Route::get('/', function () {
     ]);
 })->name('landing-page');
 
-Route::get('/shop', function () {
-    $products = Product::with('images')->get();
-    $categories = Category::all();
-    return Inertia::render('Shop', [
-        'products' => $products,
-        'categories' => $categories
-    ]);
-})->name("shop");
+// Route::get('/', [ShopController::class, "landing"])->name('landing-page');
+Route::get('/shop', [ShopController::class, "shop"])->name("shop");
 
-Route::get('/detail-product', function () {
+
+Route::get('/detail-product/{id}', function (string $id) {
+    $user = Auth::user();
+    $product = Product::with(['images', 'category'])->findOrFail($id);
+
+
+    if($user !== null) {
+        $product_cart = Cart::where('user_id', $user->id)
+                        ->where('product_id', $id)
+                        ->first();
+    }
+
+    $product_cart = $product_cart ?? 0;
     
-    $product = Product::with('images')->first();
-
     return Inertia::render('DetailProduct', [
-        'product' => $product
+        'product' => $product,
+        'user' => $user,
+        'productCart' => $product_cart
     ]);
 })->name("detail.product");
 
@@ -77,7 +93,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::group(['middleware' => ['role:admin']], function() {
+    Route::group(['middleware' => ['role:admin|super-admin']], function() {
         Route::prefix('dashboard')->group(function () {
             Route::prefix('admin')->group(function () {
                 Route::get('/', function() {
@@ -102,29 +118,102 @@ Route::middleware('auth')->group(function () {
                 })->name('dashboard.user');  
 
                 Route::resource('transactions', UserTransactionController::class);
+                Route::put('/transactions/{id}/cancel', [UserTransactionController::class, 'cancel'])->name('transactions.cancel');
+                
             
 
                 Route::prefix('profile')->name('profile.')->group(function() {
                     Route::get('/', [UserProfileController::class, 'index'])->name('index');
-                    Route::get('/create-address', [UserProfileController::class,'createAddress'])->name('address.create');
-                    Route::post('/store-address', [UserProfileController::class,'storeAddress'])->name('address.store');
-                    Route::get('/edit-address/{id}', [UserProfileController::class,'editAddress'])->name('address.edit');
-                    Route::put('/update-address/{id}', [UserProfileController::class,'updateAddress'])->name('address.update');
-                    Route::delete('/delete-address/{id}', [UserProfileController::class,'deleteAddress'])->name('address.delete');
+                    Route::get('/address/create', [UserProfileController::class,'createAddress'])->name('address.create');
+                    Route::post('/address/store', [UserProfileController::class,'storeAddress'])->name('address.store');
+                    Route::get('/address/edit/{id}', [UserProfileController::class,'editAddress'])->name('address.edit');
+                    Route::put('/address/update/{id}', [UserProfileController::class,'updateAddress'])->name('address.update');
+                    Route::delete('/address/delete/{id}', [UserProfileController::class,'deleteAddress'])->name('address.delete');
 
                     Route::get('/edit-profile', [UserProfileController::class,'edit'])->name('edit');
                     Route::put('/update-profile', [UserProfileController::class,'update'])->name('update');
+                    Route::put('/update-email', [UserProfileController::class,'updateEmail'])->name('update.email');
                 });    
             });
         });
 
         Route::get('/cart', [UserCartController::class, 'index'])->name('user.cart');
         Route::delete('/cart/{id}', [UserCartController::class, 'destroy'])->name('user.cart.destroy');
+        Route::delete('/cart', [UserCartController::class, 'clear'])->name('user.cart.clear');
 
         Route::get('/checkout', [UserCartController::class, 'checkout'])->name('user.cart.checkout');
+
+        Route::get('/transactions/{id}/invoice', [UserTransactionController::class, 'invoice'])->name('transactions.invoice');
+
+
+        Route::get('/user-settings', function() {
+            $user = Auth::user();
+            
+            $user_address = UserAddress::where('user_id', $user->id)->get();
+        
+            return Inertia::render('UserSettings', [
+                'user' => $user,
+                'userAddress' => $user_address
+            ]);
+        });
+        
+        Route::get('/user-transaction', function() {
+            $user = Auth::user();
+            
+            $transactions = Transaction::where('user_id', $user->id)->with('transaction_details.product.images')->get();
+           
+        
+            return Inertia::render('UserTransaction', [
+                'user' => $user,
+                'transactions' => $transactions
+            ]);
+        });
+        
+        Route::get('/user-transaction/{id}', function(string $id) {
+            $user = Auth::user();
+            
+            $transaction = Transaction::where('code', $id)->with('transaction_details.product.images', 'user_address')->first();
+        
+           
+            return Inertia::render('UserTransactionDetail', [
+                'user' => $user,
+                'transaction' => $transaction
+            ]);
+        });
+        
+        Route::get('/user-address', function() {
+            $user = Auth::user();
+            
+            $addresses = UserAddress::where('user_id', $user->id)->get();
+        
+           
+            return Inertia::render('UserAddress', [
+                'user' => $user,
+                'addresses' => $addresses
+            ]);
+        })->name('user.address');
+        
+        Route::get('/user-address/create', function() {
+            return Inertia::render('UserAddressCreate');
+        });
+        
+        Route::get('/user-address/edit', function() {
+            return Inertia::render('UserAddressEdit');
+        });
+        
+       
     });
 });
 
 Route::post('/checkout', [CheckoutController::class, 'processPayment'])->name('checkout');
+Route::get('/invoice/{id}', [CheckoutController::class, 'invoice'])->name('invoice');
+
+
+// Route::get('/send-email', [TestSendEmailController::class, 'index']);
+// Route::get('/send-newsletter', [TestSendEmailController::class, 'newsletter']);
+// Route::get('/superadmin', [SuperadminController::class, 'index']);
+
+
+
 
 require __DIR__.'/auth.php';

@@ -3,9 +3,10 @@ import React, { useState } from "react";
 
 import { useForm } from "@inertiajs/react";
 import { Link } from "@inertiajs/react";
+import { router } from "@inertiajs/react";
 
 export default function Create() {
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const form = useForm({
         display_name: "",
         image: null,
     });
@@ -13,13 +14,17 @@ export default function Create() {
     const submit = (e) => {
         e.preventDefault();
 
-        post(
-            route("category.store", data, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            })
-        );
+        form.post(route("category.store"), {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+            onSuccess: () => {
+                form.reset();
+            },
+            onError: () => {
+                form.setError(errors);
+            },
+        });
     };
 
     const handleImageRemove = () => {
@@ -51,15 +56,18 @@ export default function Create() {
                                         class="form-control"
                                         id=""
                                         aria-describedby=""
-                                        name={data.display_name}
+                                        name={form.data.display_name}
                                         onChange={(e) =>
-                                            setData(
+                                            form.setData(
                                                 "display_name",
                                                 e.target.value
                                             )
                                         }
                                         placeholder="example: Bolts.."
                                     />
+                                    <div class="form-text text-danger">
+                                        {form.errors.display_name}
+                                    </div>
                                 </div>
 
                                 <div>
@@ -74,11 +82,14 @@ export default function Create() {
                                     </div>
 
                                     <div className="flex items-center flex-wrap gap-3">
-                                        {data.image ? (
+                                        <div class="form-text text-danger">
+                                            {form.errors.image}
+                                        </div>
+                                        {form.data.image ? (
                                             <div className=" pt-3">
                                                 <img
                                                     src={URL.createObjectURL(
-                                                        data.image
+                                                        form.data.image
                                                     )}
                                                     alt={`Uploaded Image`}
                                                     className=" object-cover rounded-lg mr-2 w-[300px] h-[220px]"
@@ -129,7 +140,7 @@ export default function Create() {
                                                         type="file"
                                                         className="hidden"
                                                         onChange={(e) =>
-                                                            setData(
+                                                            form.setData(
                                                                 "image",
                                                                 e.target
                                                                     .files[0]
@@ -144,10 +155,12 @@ export default function Create() {
 
                                 <button
                                     type="submit"
-                                    disabled={processing}
+                                    disabled={form.processing}
                                     className="bg-primary text-white py-2 px-4 rounded mt-6"
                                 >
-                                    {processing ? "Menyimpan..." : "Simpan"}
+                                    {form.processing
+                                        ? "Menyimpan..."
+                                        : "Simpan"}
                                 </button>
                             </form>
                         </div>

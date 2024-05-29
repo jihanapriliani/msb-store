@@ -21,7 +21,7 @@ class ProductImageSeeder extends Seeder
             ProductImage::create([
                 'product_id' => $product->id,
                 'is_thumbnail' => 0, 
-                'image' => 'storage/images/category/' . $imageName,
+                // 'image' => 'storage/images/category/' . $imageName,
             ]);
         }
     }

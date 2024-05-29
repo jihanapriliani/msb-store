@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -14,9 +15,13 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::whereHas('roles', function ($query) {
-            $query->where('name', 'user');
-        })->get();
+        if (Auth::user()->hasRole('super-admin')) {
+            $users = User::with('roles')->get();
+        } else {
+            $users = User::whereHas('roles', function ($query) {
+                $query->where('name', 'user');
+            })->get();
+        }
 
         return Inertia::render('Admin/User/Index', [
             'users' => $users
@@ -47,11 +52,21 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string',
             'phone' => 'required|string',
+            'role' => 'required|string|exists:roles,name'
         ]);
 
-        $user = User::create($validatedData);
+        // dd($validatedData);
 
-        $user->assignRole('user');
+        $user = User::create([
+            'username' => $validatedData['username'],
+            'fullname' => $validatedData['fullname'],
+            'email' => $validatedData['email'],
+            'password' => bcrypt($validatedData['password']),
+            'phone' => $validatedData['phone']
+
+        ]);
+
+        $user->assignRole($validatedData['role']);
 
         return redirect()->route('user.index')->with('success', 'User berhasil ditambahkan!');
     }
@@ -76,6 +91,8 @@ class UserController extends Controller
         $user = User::findOrFail($id)->load('roles');
         $roles = Role::all();
 
+        $user->role = $user->roles->first()->name;
+
         return Inertia::render('Admin/User/Edit', [
             'user' => $user,
             'roles' => $roles
@@ -87,24 +104,25 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-       
+
         $validatedData = $request->validate([
             'username' => 'required|string|unique:users,username,' . $id,
             'fullname' => 'required|string',
             'email' => 'required|email|unique:users,email,' . $id,
             'password' => 'nullable|string',
+            'phone' => 'required|string',
+            'role' => 'required|string|exists:roles,name'
         ]);
 
         $user = User::findOrFail($id);
 
-        if ($request->password)
-        {
+        if ($request->password) {
             $validatedData['password'] = bcrypt($request->password);
-        }
-        else
-        {
+        } else {
             unset($validatedData['password']);
         }
+
+        $user->syncRoles([$validatedData['role']]);
 
         $user->update($validatedData);
 
@@ -121,17 +139,14 @@ class UserController extends Controller
         try {
             $user = User::findOrFail($id);
             $hasUnpaidTransactions = $user->transactions()->whereIn('status', ['unpaid', 'processed', 'shipped'])->exists();
-            
-            if($hasUnpaidTransactions) {
+
+            if ($hasUnpaidTransactions) {
                 return redirect()->route('user.index')->with('error', 'User memiliki transaksi aktif!');
             }
-    
+
             $user->delete();
             return redirect()->route('user.index')->with('success', 'User berhasil dihapus!');
-
-        } catch(e) {
-
+        } catch (e) {
         }
-
     }
 }

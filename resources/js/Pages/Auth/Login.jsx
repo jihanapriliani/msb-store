@@ -101,7 +101,10 @@ export default function Login({ status, canResetPassword }) {
                 </div>
             </form> */}
 
-            <form className="max-w-5xl mx-auto my-20" onSubmit={submit}>
+            <form
+                className="max-w-5xl mx-auto my-20 flex flex-col "
+                onSubmit={submit}
+            >
                 <div className="my-5">
                     <label
                         htmlFor="email"
@@ -126,10 +129,10 @@ export default function Login({ status, canResetPassword }) {
                     <InputError message={errors.email} className="mt-2" />
                 </div>
 
-                <div className="mb-5">
+                <div className="">
                     <label
                         htmlFor="password"
-                        className="block mb-2 font-medium text-gray-700 dark:text-white text-3xl"
+                        className="block font-medium text-gray-700 dark:text-white text-3xl"
                     >
                         Password
                     </label>
@@ -148,12 +151,25 @@ export default function Login({ status, canResetPassword }) {
                     <InputError message={errors.password} className="mt-2" />
                 </div>
 
+                <p className="text-[1.5rem]  mt-2 text-end text-underline">
+                    <Link href="/forgot-password">Lupa password?</Link>
+                </p>
+
                 <button
                     type="submit"
-                    className="px-12 py-4 rounded-lg bg-black text-white text-3xl"
+                    className="px-12 mt-12 py-4 rounded-xl bg-black text-white text-3xl"
                 >
                     Log In
                 </button>
+
+                <Link
+                    href={route("register")}
+                    className="mt-10 underline text-sm mx-auto mr-5 text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                    <p className="text-2xl">
+                        Belum punya akun? Register disini.
+                    </p>
+                </Link>
             </form>
         </GuestLayout>
     );

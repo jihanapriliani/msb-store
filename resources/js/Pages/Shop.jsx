@@ -1,89 +1,217 @@
-import { Link, Head } from "@inertiajs/react";
+import { Link, Head, router } from "@inertiajs/react";
 
 import GuestLayout from "@/Layouts/GuestLayout/Index";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
+import { route } from "ziggy-js";
+
+import ProductCard from "@/Components/ProductCard";
 
 import Swal from "sweetalert2";
 
-export default function LandingPage({ categories, products }) {
-    const [renderedProducts, setRenderedProducts] = useState([]);
-    const [selectedCategories, setSelectedCategories] = useState([]);
-    const [startPrice, setStartPrice] = useState([]);
-    const [endPrice, setEndPrice] = useState([]);
+export default function LandingPage({ categories, products, user }) {
+    // get Query Params
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const [selectedCategories, setSelectedCategories] = useState([
+        ...(urlParams.getAll("categories").map((it) => parseInt(it)) ?? []),
+    ]);
+
+    const [startPrice, setStartPrice] = useState(
+        urlParams.get("startPrice") ?? ""
+    );
+    const [endPrice, setEndPrice] = useState(urlParams.get("endPrice") ?? "");
+    const [isLoading, setIsLoading] = useState(false);
+    const [orderBy, setOrderBy] = useState(1);
+
+    const [pagination, setPagination] = useState({
+        pageIndex: products.current_page - 1,
+        pageSize: products.per_page,
+    });
 
     useEffect(() => {
-        setRenderedProducts(products);
-    }, []);
+        const url = new URL(route(route().current()).toString());
 
-    useEffect(() => {
-        if (selectedCategories.length === 0) {
-            setRenderedProducts(products);
-        } else {
-            axios
-                .post("/api/get-products-by-category", {
-                    selected_categories: selectedCategories,
-                })
-                .then((res) => {
-                    const { data } = res;
+        const params = {};
 
-                    setRenderedProducts(data.data.products);
-                });
-        }
-    }, [selectedCategories]);
-
-    const handleCategoryCBClicked = (data) => {
-        const categoryExist = selectedCategories.find(
-            (category) => category.id === data.id
-        );
-
-        if (categoryExist) {
-            const filteredCategories = selectedCategories.filter(
-                (category) => category.id !== data.id
+        if (
+            new URLSearchParams(window.location.search).get("search") !==
+                null &&
+            new URLSearchParams(window.location.search).get("search") !== ""
+        ) {
+            params.search = new URLSearchParams(window.location.search).get(
+                "search"
             );
-            setSelectedCategories(filteredCategories);
+            url.searchParams.set("search", params.search);
         } else {
-            setSelectedCategories([...selectedCategories, data]);
+            delete params.search;
+            url.searchParams.delete("search");
         }
+
+        const currentCategories = url.searchParams.get("categories");
+        const selectedCategoriesString = selectedCategories.join(",");
+
+        const hasCategoryChanges =
+            selectedCategoriesString !== currentCategories;
+
+        if (hasCategoryChanges) {
+            if (selectedCategories.length > 0) {
+                // Perform reload only if URL has changed
+                url.searchParams.set("categories", selectedCategoriesString);
+                params.categories = selectedCategoriesString;
+            } else {
+                url.searchParams.delete("categories");
+                delete params.categories;
+            }
+        }
+
+        if (startPrice && startPrice > 0) {
+            url.searchParams.set("startPrice", startPrice);
+            params.startPrice = startPrice;
+        } else {
+            url.searchParams.delete("startPrice");
+            delete params.startPrice;
+        }
+
+        if (endPrice && endPrice > 0) {
+            url.searchParams.set("endPrice", endPrice);
+            params.endPrice = endPrice;
+        } else {
+            url.searchParams.delete("endPrice");
+            delete params.endPrice;
+        }
+
+        // Update other URL parameters
+        url.searchParams.set("page", pagination.pageIndex + 1);
+        url.searchParams.set("per_page", pagination.pageSize);
+        url.searchParams.set("orderBy", orderBy);
+
+        url.searchParams.sort();
+
+        // Check if the URL has actually changed
+        if (window.location.href !== url.toString()) {
+            // Update the browser URL
+            window.history.replaceState(null, "", url.toString());
+            setIsLoading(true);
+            router.reload({
+                replace: true,
+                data: params,
+                only: ["products"],
+                onFinish: () => {
+                    setIsLoading(false);
+                },
+            });
+        }
+    }, [
+        selectedCategories.toString(),
+        pagination.pageIndex,
+        pagination.pageSize,
+        orderBy,
+    ]);
+
+    const handleCategoryFilter = (e, category) => {
+        const categoryId = category.id;
+        const isChecked = e.target.checked;
+
+        setSelectedCategories((prevCategories) => {
+            if (isChecked && !prevCategories.includes(categoryId)) {
+                return [...prevCategories, categoryId]; // Tambahkan categoryId ke array
+            } else if (!isChecked && prevCategories.includes(categoryId)) {
+                return prevCategories.filter((id) => id !== categoryId); // Hapus categoryId dari array
+            } else {
+                return prevCategories; // Kembalikan array tanpa perubahan
+            }
+        });
     };
 
-    const handleFilterWithPrice = () => {
-        if (parseInt(startPrice) > parseInt(endPrice)) {
-            Swal.fire({
-                icon: "error",
-                title: "Tidak Bisa Filter Harga",
-                text: "Harga Mulai Tidak Boleh Lebih Besar dari Batas Harga Akhir!",
-            });
-        } else if (parseInt(startPrice) < 0 || parseInt(endPrice) < 0) {
-            Swal.fire({
-                icon: "error",
-                title: "Tidak Bisa Filter Harga",
-                text: "Harga tidak boleh minus!",
-            });
-        } else {
-            axios
-                .post("/api/get-products-with-price-range", {
-                    start_price: startPrice,
-                    end_price: endPrice,
-                    selected_categories: selectedCategories,
-                })
-                .then((res) => {
-                    const { data } = res;
-                    setRenderedProducts(data.data.products);
+    const handlePriceFilter = (e) => {
+        e.preventDefault();
+
+        const url = new URL(window.location.href);
+        const params = {};
+
+        const setPriceFilters = () => {
+            if (startPrice && endPrice && startPrice > 0 && endPrice > 0) {
+                if (startPrice > endPrice) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Tidak Bisa Filter Harga",
+                        text: "Harga Mulai Tidak Boleh Lebih Besar dari Batas Harga Akhir!",
+                    });
+                    return false;
+                } else {
+                    url.searchParams.set("startPrice", startPrice);
+                    url.searchParams.set("endPrice", endPrice);
+                    params.startPrice = startPrice;
+                    params.endPrice = endPrice;
+                    return true;
+                }
+            } else if (startPrice) {
+                if (startPrice < 0) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Tidak Bisa Filter Harga",
+                        text: "Harga tidak boleh minus!",
+                    });
+                    return false;
+                } else {
+                    url.searchParams.set("startPrice", startPrice);
+                    url.searchParams.delete("endPrice");
+                    params.startPrice = startPrice;
+                    delete params.endPrice;
+                    return true;
+                }
+            } else if (endPrice) {
+                if (endPrice < 0) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Tidak Bisa Filter Harga",
+                        text: "Harga tidak boleh minus!",
+                    });
+                    return false;
+                } else {
+                    url.searchParams.delete("startPrice");
+                    url.searchParams.set("endPrice", endPrice);
+                    delete params.startPrice;
+                    params.endPrice = endPrice;
+                    return true;
+                }
+            } else {
+                url.searchParams.delete("startPrice");
+                url.searchParams.delete("endPrice");
+                delete params.startPrice;
+                delete params.endPrice;
+                return true;
+            }
+        };
+
+        url.searchParams.sort();
+
+        if (setPriceFilters()) {
+            if (window.location.href.toString() !== url.toString()) {
+                window.history.replaceState(null, "", url.toString());
+                setIsLoading(true);
+                router.reload({
+                    data: params,
+                    only: ["products"],
+                    onFinish: () => {
+                        setIsLoading(false);
+                    },
                 });
+            }
         }
     };
 
     return (
-        <GuestLayout>
-            <main className="main__content_wrapper">
-                <section className="breadcrumb__section breadcrumb__bg">
-                    <div className="container">
-                        <div className="row row-cols-1">
-                            <div className="col">
-                                <div className="breadcrumb__content text-center">
-                                    <h1 className="breadcrumb__content--title">
+        <GuestLayout setIsLoading={setIsLoading}>
+            <main class="main__content_wrapper">
+                <section class="breadcrumb__section breadcrumb__bg">
+                    <div class="container">
+                        <div class="row row-cols-1">
+                            <div class="col">
+                                <div class="breadcrumb__content text-center">
+                                    <h1 class="breadcrumb__content--title">
                                         Product
                                     </h1>
                                     <ul className="breadcrumb__content--menu d-flex justify-content-center">
@@ -109,35 +237,35 @@ export default function LandingPage({ categories, products }) {
                                         <h2 className="widget__title h3">
                                             Categories
                                         </h2>
-                                        <ul className="widget__form--check">
-                                            {categories.map(
-                                                (category, index) => (
-                                                    <li
-                                                        className="widget__form--check__list"
-                                                        key={index}
+                                        <ul class="widget__form--check">
+                                            {categories.map((category) => (
+                                                <li
+                                                    class="widget__form--check__list"
+                                                    key={category.id}
+                                                >
+                                                    <label
+                                                        class="widget__form--check__label"
+                                                        for={`check+${category.id}`}
                                                     >
-                                                        <label
-                                                            className="widget__form--check__label"
-                                                            htmlFor="check1"
-                                                        >
-                                                            {
-                                                                category.display_name
-                                                            }
-                                                        </label>
-                                                        <input
-                                                            className="widget__form--check__input"
-                                                            id="check1"
-                                                            type="checkbox"
-                                                            onClick={() =>
-                                                                handleCategoryCBClicked(
-                                                                    category
-                                                                )
-                                                            }
-                                                        />
-                                                        <span className="widget__form--checkmark"></span>
-                                                    </li>
-                                                )
-                                            )}
+                                                        {category.display_name}
+                                                    </label>
+                                                    <input
+                                                        class="widget__form--check__input"
+                                                        id={`check+${category.id}`}
+                                                        checked={selectedCategories.includes(
+                                                            category.id
+                                                        )}
+                                                        type="checkbox"
+                                                        onChange={(e) => {
+                                                            handleCategoryFilter(
+                                                                e,
+                                                                category
+                                                            );
+                                                        }}
+                                                    />
+                                                    <span class="widget__form--checkmark"></span>
+                                                </li>
+                                            ))}
                                         </ul>
                                     </div>
                                     <div className="single__widget price__filter widget__bg">
@@ -158,7 +286,7 @@ export default function LandingPage({ categories, products }) {
                                                             Rp
                                                         </span>
                                                         <input
-                                                            className="price__filter--input__field border-0"
+                                                            className="price__filter--input__field border-0 w-100"
                                                             name="filter.v.price.gte"
                                                             id="Filter-Price-GTE2"
                                                             type="number"
@@ -167,8 +295,10 @@ export default function LandingPage({ categories, products }) {
                                                             value={startPrice}
                                                             onChange={(e) =>
                                                                 setStartPrice(
-                                                                    e.target
-                                                                        .value
+                                                                    parseInt(
+                                                                        e.target
+                                                                            .value
+                                                                    )
                                                                 )
                                                             }
                                                         />
@@ -189,17 +319,20 @@ export default function LandingPage({ categories, products }) {
                                                             Rp
                                                         </span>
                                                         <input
-                                                            className="price__filter--input__field border-0"
+                                                            className="price__filter--input__field border-0 w-100"
                                                             name="filter.v.price.lte"
                                                             id="Filter-Price-LTE2"
                                                             type="number"
                                                             min={0}
                                                             placeholder="0"
                                                             value={endPrice}
+                                                            // change the value of endPrice state after user input done
                                                             onChange={(e) =>
                                                                 setEndPrice(
-                                                                    e.target
-                                                                        .value
+                                                                    parseInt(
+                                                                        e.target
+                                                                            .value
+                                                                    )
                                                                 )
                                                             }
                                                         />
@@ -209,7 +342,7 @@ export default function LandingPage({ categories, products }) {
                                             <button
                                                 className="primary__btn price__filter--btn"
                                                 type="button"
-                                                onClick={handleFilterWithPrice}
+                                                onClick={handlePriceFilter}
                                             >
                                                 Filter
                                             </button>
@@ -274,29 +407,41 @@ export default function LandingPage({ categories, products }) {
                                                         Filter
                                                     </span>
                                                 </button>
-                                                <div className="product__view--mode__list product__short--by align-items-center d-flex ">
-                                                    <label className="product__view--label">
-                                                        Prev Page :
+                                                <div class="product__view--mode__list product__short--by align-items-center d-flex ">
+                                                    <label class="product__view--label">
+                                                        Per Page :
                                                     </label>
-                                                    <div className="select shop__header--select">
-                                                        <select className="product__view--select">
-                                                            <option
-                                                                defaultValue={1}
-                                                            >
-                                                                65
-                                                            </option>
-                                                            <option value="2">
-                                                                40
-                                                            </option>
-                                                            <option value="3">
-                                                                42
-                                                            </option>
-                                                            <option value="4">
-                                                                57{" "}
-                                                            </option>
-                                                            <option value="5">
-                                                                60{" "}
-                                                            </option>
+                                                    <div class="select shop__header--select">
+                                                        <select
+                                                            class="product__view--select"
+                                                            onChange={(e) => {
+                                                                setPagination({
+                                                                    ...pagination,
+                                                                    pageSize:
+                                                                        e.target
+                                                                            .value,
+                                                                });
+                                                            }}
+                                                        >
+                                                            {[
+                                                                5, 10, 12, 15,
+                                                                20, 25, 50, 100,
+                                                            ].map((perPage) => (
+                                                                <option
+                                                                    key={
+                                                                        perPage
+                                                                    }
+                                                                    selected={
+                                                                        products.per_page ===
+                                                                        perPage
+                                                                    }
+                                                                    value={
+                                                                        perPage
+                                                                    }
+                                                                >
+                                                                    {perPage}
+                                                                </option>
+                                                            ))}
                                                         </select>
                                                     </div>
                                                 </div>
@@ -304,29 +449,43 @@ export default function LandingPage({ categories, products }) {
                                                     <label className="product__view--label">
                                                         Sort By :
                                                     </label>
-                                                    <div className="select shop__header--select">
-                                                        <select className="product__view--select">
+                                                    <div class="select shop__header--select">
+                                                        <select
+                                                            class="product__view--select"
+                                                            onChange={(e) => {
+                                                                setOrderBy(
+                                                                    e.target
+                                                                        .value
+                                                                );
+                                                            }}
+                                                        >
                                                             <option
                                                                 defaultValue={1}
                                                             >
-                                                                Sort by latest
+                                                                Sort by newest
                                                             </option>
                                                             <option value="2">
-                                                                Sort by
-                                                                popularity
+                                                                Sort by highest
+                                                                price
                                                             </option>
                                                             <option value="3">
-                                                                Sort by newness
+                                                                Sort by lowest
+                                                                price
                                                             </option>
                                                             <option value="4">
-                                                                Sort by rating{" "}
+                                                                Sort by a to z
+                                                            </option>
+                                                            <option value="5">
+                                                                Sort by z to a
                                                             </option>
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <p className="product__showing--count">
-                                                Showing 1–9 of 21 results
+                                            <p class="product__showing--count">
+                                                Showing {products.from}–
+                                                {products.to} of{" "}
+                                                {products.total} results
                                             </p>
                                         </div>
                                         <div className="tab_content">
@@ -334,10 +493,11 @@ export default function LandingPage({ categories, products }) {
                                                 id="product_grid"
                                                 className="tab_pane active show"
                                             >
-                                                <div className="product__section--inner">
-                                                    <div className="row mb--n30">
-                                                        {renderedProducts &&
-                                                            renderedProducts.map(
+                                                <div class="product__section--inner">
+                                                    <div class="row mb--n30">
+                                                        {!isLoading ? (
+                                                            products.data &&
+                                                            products.data.map(
                                                                 (
                                                                     product,
                                                                     index
@@ -348,80 +508,64 @@ export default function LandingPage({ categories, products }) {
                                                                         }
                                                                         className="col-lg-3 col-md-4 col-sm-6 col-6 custom-col mb-30"
                                                                     >
-                                                                        <article className="product__card">
-                                                                            <div className="product__card--thumbnail">
-                                                                                <a
-                                                                                    className="product__card--thumbnail__link display-block"
-                                                                                    href="product-details.html"
-                                                                                >
-                                                                                    <img
-                                                                                        className="product__card--thumbnail__img product__primary--img w-[300px] h-[200px] object-cover"
-                                                                                        src={
-                                                                                            window
-                                                                                                .location
-                                                                                                .origin +
-                                                                                            "/" +
-                                                                                            product
-                                                                                                .images[0]
-                                                                                                .image
-                                                                                        }
-                                                                                        alt="product-img"
-                                                                                    />
-                                                                                    <img
-                                                                                        className="product__card--thumbnail__img product__secondary--img"
-                                                                                        src={
-                                                                                            window
-                                                                                                .location
-                                                                                                .origin +
-                                                                                            "/" +
-                                                                                            product
-                                                                                                .images[0]
-                                                                                                .image
-                                                                                        }
-                                                                                        alt="product-img"
-                                                                                    />
-                                                                                </a>
-                                                                            </div>
-                                                                            <div className="product__card--content">
-                                                                                <h3 className="product__card--title">
-                                                                                    <a href="product-details.html">
-                                                                                        {
-                                                                                            product.name
-                                                                                        }{" "}
-                                                                                    </a>
-                                                                                </h3>
-                                                                                <div className="product__card--price">
-                                                                                    <span className="current__price">
-                                                                                        Rp{" "}
-                                                                                        {product.price.toLocaleString()}
-                                                                                    </span>
-                                                                                </div>
-                                                                                <div className="product__card--footer">
-                                                                                    <a
-                                                                                        className="product__card--btn primary__btn text-white"
-                                                                                        href="cart.html"
-                                                                                    >
-                                                                                        Add
-                                                                                        to
-                                                                                        cart
-                                                                                    </a>
-                                                                                </div>
-                                                                            </div>
-                                                                        </article>
+                                                                        <ProductCard
+                                                                            product={
+                                                                                product
+                                                                            }
+                                                                            user={
+                                                                                user
+                                                                            }
+                                                                        />
                                                                     </div>
                                                                 )
-                                                            )}
+                                                            )
+                                                        ) : (
+                                                            <div class="col-lg-12">
+                                                                <div class="d-flex justify-content-center align-items-center">
+                                                                    <div
+                                                                        class="spinner-border text-primary"
+                                                                        role="status"
+                                                                    >
+                                                                        <span class="visually-hidden">
+                                                                            Loading...
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        )}
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="pagination__area">
-                                            <nav className="pagination justify-content-center">
-                                                <ul className="pagination__wrapper d-flex align-items-center justify-content-center">
-                                                    <li className="pagination__list">
-                                                        <a
+                                        <div class="pagination__area">
+                                            <nav class="pagination justify-content-center">
+                                                <ul class="pagination__wrapper d-flex align-items-center justify-content-center">
+                                                    <li class="pagination__list">
+                                                        <button
                                                             href="shop.html"
-                                                            className="pagination__item--arrow  link "
+                                                            class="pagination__item--arrow  link "
+                                                            disabled={
+                                                                products.current_page ===
+                                                                1
+                                                            }
+                                                            onClick={
+                                                                products.current_page ===
+                                                                1
+                                                                    ? (e) => {
+                                                                          e.preventDefault();
+                                                                      }
+                                                                    : (e) => {
+                                                                          e.preventDefault();
+                                                                          setPagination(
+                                                                              {
+                                                                                  ...pagination,
+                                                                                  pageIndex:
+                                                                                      pagination.pageIndex -
+                                                                                      1,
+                                                                              }
+                                                                          );
+                                                                      }
+                                                            }
                                                         >
                                                             <svg
                                                                 xmlns="http://www.w3.org/2000/svg"
@@ -441,41 +585,71 @@ export default function LandingPage({ categories, products }) {
                                                             <span className="visually-hidden">
                                                                 page left arrow
                                                             </span>
-                                                        </a>
+                                                        </button>
                                                     </li>
-                                                    <li className="pagination__list">
-                                                        <span className="pagination__item pagination__item--current">
-                                                            1
-                                                        </span>
-                                                    </li>
-                                                    <li className="pagination__list">
-                                                        <a
+                                                    {Array.from(
+                                                        Array(
+                                                            products.last_page
+                                                        ),
+                                                        (e, i) => {
+                                                            return (
+                                                                <li
+                                                                    key={i}
+                                                                    class={`pagination__list ${
+                                                                        i ===
+                                                                        products.current_page -
+                                                                            1
+                                                                            ? "active"
+                                                                            : ""
+                                                                    }`}
+                                                                >
+                                                                    <div
+                                                                        class="pagination__item link "
+                                                                        onClick={(
+                                                                            e
+                                                                        ) => {
+                                                                            e.preventDefault();
+                                                                            setPagination(
+                                                                                {
+                                                                                    ...pagination,
+                                                                                    pageIndex:
+                                                                                        i,
+                                                                                }
+                                                                            );
+                                                                        }}
+                                                                    >
+                                                                        {i + 1}
+                                                                    </div>
+                                                                </li>
+                                                            );
+                                                        }
+                                                    )}
+                                                    <li class="pagination__list">
+                                                        <button
                                                             href="shop.html"
-                                                            className="pagination__item link"
-                                                        >
-                                                            2
-                                                        </a>
-                                                    </li>
-                                                    <li className="pagination__list">
-                                                        <a
-                                                            href="shop.html"
-                                                            className="pagination__item link"
-                                                        >
-                                                            3
-                                                        </a>
-                                                    </li>
-                                                    <li className="pagination__list">
-                                                        <a
-                                                            href="shop.html"
-                                                            className="pagination__item link"
-                                                        >
-                                                            4
-                                                        </a>
-                                                    </li>
-                                                    <li className="pagination__list">
-                                                        <a
-                                                            href="shop.html"
-                                                            className="pagination__item--arrow  link "
+                                                            class="pagination__item--arrow  link "
+                                                            disabled={
+                                                                products.current_page ===
+                                                                products.last_page
+                                                            }
+                                                            onClick={
+                                                                products.current_page ===
+                                                                products.last_page
+                                                                    ? (e) => {
+                                                                          e.preventDefault();
+                                                                      }
+                                                                    : (e) => {
+                                                                          e.preventDefault();
+                                                                          setPagination(
+                                                                              {
+                                                                                  ...pagination,
+                                                                                  pageIndex:
+                                                                                      pagination.pageIndex +
+                                                                                      1,
+                                                                              }
+                                                                          );
+                                                                      }
+                                                            }
                                                         >
                                                             <svg
                                                                 xmlns="http://www.w3.org/2000/svg"
@@ -495,7 +669,7 @@ export default function LandingPage({ categories, products }) {
                                                             <span className="visually-hidden">
                                                                 page right arrow
                                                             </span>
-                                                        </a>
+                                                        </button>
                                                     </li>
                                                 </ul>
                                             </nav>

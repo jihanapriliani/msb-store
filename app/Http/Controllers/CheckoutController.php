@@ -17,6 +17,10 @@ use Midtrans\Notification;
 use Inertia\Inertia;
 use Carbon\Carbon;
 
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ProcessedNotification;
+
+
 class CheckoutController extends Controller
 {
     public function processPayment(Request $request) {
@@ -39,7 +43,8 @@ class CheckoutController extends Controller
             'delivery_code' => "-",
             'code' => $code,
             'status' => 'unpaid',
-            'created_at'=> Carbon::now()
+            'note' => $request->note,
+            'created_at'=> Carbon::now(),
         ]);
 
         // create transaction detail
@@ -77,6 +82,9 @@ class CheckoutController extends Controller
                 'order_id' => $transaction->code,
                 'gross_amount' => (int) $request->total_price + $request->shipping_cost,
             ],
+            'callbacks' => [
+                'finish' => "https://mandirisejatiborneo.store/invoice/" . $transaction->code,
+            ],
             'customer_details' => [
                 'first_name' => $user->fullname,
                 'email' => $user->email,
@@ -91,7 +99,11 @@ class CheckoutController extends Controller
         
         try {
                 $paymentUrl = Snap::createTransaction($midtrans)->redirect_url;
-            
+                
+                $transaction->update([
+                    'payment_url' => $paymentUrl
+                ]);
+
                 return Inertia::location($paymentUrl);
         }
         catch (Exception $e) {
@@ -110,10 +122,14 @@ class CheckoutController extends Controller
         if($hashed == $request->signature_key) {
             if($request->transaction_status == 'capture') {
                 $transaction->update(['status' => 'processed']);
+
+                Mail::to($transaction->user->email)->send(new ProcessedNotification($transaction));
             }
     
             else if($request->transaction_status == 'settlement') {
                 $transaction->update(['status' => 'processed']);
+
+                Mail::to($transaction->user->email)->send(new ProcessedNotification($transaction));
             }
     
             else if($request->transaction_status == 'pending') {
@@ -122,14 +138,33 @@ class CheckoutController extends Controller
     
             else if($request->transaction_status == 'deny') {
                 $transaction->update(['status' => 'canceled']);
+
+                foreach ($transaction->transaction_details as $transaction_detail) {
+                    $transaction_detail->product->update([
+                        'stock' => $transaction_detail->product->stock + $transaction_detail->amount,
+                    ]);
+                }
+
             }
     
             else if($request->transaction_status == 'expire') {
                 $transaction->update(['status' => 'canceled']);
+
+                foreach ($transaction->transaction_details as $transaction_detail) {
+                    $transaction_detail->product->update([
+                        'stock' => $transaction_detail->product->stock + $transaction_detail->amount,
+                    ]);
+                }
             }
     
             else if($request->transaction_status == 'cancel') {
                  $transaction->update(['status' => 'canceled']);
+
+                 foreach ($transaction->transaction_details as $transaction_detail) {
+                    $transaction_detail->product->update([
+                        'stock' => $transaction_detail->product->stock + $transaction_detail->amount,
+                    ]);
+                }
             }
         }
        
@@ -137,7 +172,12 @@ class CheckoutController extends Controller
     }
 
 
-    public function invoice() {
+    public function invoice(string $id) {
+        $transaction = Transaction::where('code', $id)->with(['transaction_details.product', 'user'])->first();
+
+        return Inertia::render('Invoice', [
+            'transaction' => $transaction
+        ]);
 
     }
 }

@@ -88,7 +88,7 @@ export default function Index(props) {
                                 src={
                                     window.location.origin +
                                     "/" +
-                                    category.image
+                                    (category.image ?? "assets/images/default.png")
                                 }
                                 alt={category.name}
                                 className="w-[150px] h-[100px] object-cover"

@@ -14,7 +14,6 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         User::updateOrCreate([
-            'username' => 'Superadmin',
             'fullname' => 'Superadmin',
             'email' => 'superadmin@gmail.com',
             'password' => bcrypt('test'),
@@ -24,7 +23,6 @@ class UserSeeder extends Seeder
 
 
         User::updateOrCreate([
-            'username' => 'admin',
             'fullname' => 'admin',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('test'),
@@ -35,7 +33,6 @@ class UserSeeder extends Seeder
 
                
         User::updateOrCreate([
-            'username' => 'jihan',
             'fullname' => 'Jihan',
             'email' => 'jihan@gmail.com',
             'password' => bcrypt('test'),
@@ -44,7 +41,6 @@ class UserSeeder extends Seeder
         ])->assignRole('user');
 
         User::updateOrCreate([
-            'username' => 'nisa',
             'fullname' => 'Nisa',
             'email' => 'nisa@gmail.com',
             'password' => bcrypt('test'),
@@ -53,7 +49,6 @@ class UserSeeder extends Seeder
         ])->assignRole('user');
 
         User::updateOrCreate([
-            'username' => 'diba',
             'fullname' => 'Diba',
             'email' => 'diba@gmail.com',
             'password' => bcrypt('test'),
@@ -62,7 +57,6 @@ class UserSeeder extends Seeder
         ])->assignRole('user');
 
         User::updateOrCreate([
-            'username' => 'bijar',
             'fullname' => 'Bijar',
             'email' => 'bijar@gmail.com',
             'password' => bcrypt('test'),
@@ -71,7 +65,6 @@ class UserSeeder extends Seeder
         ])->assignRole('user');
 
         User::updateOrCreate([
-            'username' => 'ikhsan',
             'fullname' => 'Ikhsan',
             'email' => 'ikhsan@gmail.com',
             'password' => bcrypt('test'),

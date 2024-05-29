@@ -3,17 +3,11 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\UserCartController;
-
 use App\Models\Cart;
-use App\Models\Province;
-use App\Models\City;
 use App\Models\User;
-use App\Models\Category;
-use App\Models\Product;
-use App\Http\Controllers\CheckoutController;
 
-use Kavist\RajaOngkir\Facades\RajaOngkir;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\LocationController;
 use Illuminate\Support\Facades\Http;
 
 use Illuminate\Support\Facades\Hash;
@@ -53,30 +47,29 @@ Route::delete('/user/cart/{id}', function(string $id) {
 
 
 Route::post('/add-product-to-cart', function(Request $request) {
-    $response = Cart::create([
-        'user_id' => $request->user_id,
-        'product_id' => $request->product_id,
-        'amount' => 1
+    $validated = $request->validate([
+        'user_id' => 'required|exists:users,id',
+        'product_id' => 'required|exists:products,id',
+        'amount' => 'required|integer|min:1'
     ]);
+
+    $response = Cart::updateOrCreate(
+        [
+            'user_id' => $validated['user_id'],
+            'product_id' => $validated['product_id']
+        ],
+        [
+            'amount' => $validated['amount']
+        ]
+    );
+
     return response()->json($response);
 })->name('api.add-product_to_cart');
 
 
-Route::get('/get-provinces', function(Request $request) {
-    $provinces = Province::all();
-    return response()->json($provinces);
-});
-
-
-Route::get('/get-cities', function(Request $request) {
-    $province_id = $request->input('province_id');
-    $province = Province::find($province_id); 
-    if (!$province) {
-        return response()->json(['error' => 'Province not found'], 404); 
-    }
-    $cities = $province->cities; 
-    return response()->json($cities);
-});
+Route::get('/get-provinces', [LocationController::class, 'getProvincesApi'])->name('api.get_provinces');
+Route::get('/get-cities',[LocationController::class, 'getCitiesApi'])->name('api.get_cities');
+Route::get('/get-districts',[LocationController::class, 'getDistrictsApi'])->name('api.get_districts');
 
 Route::post('/get-shipping-cost', function(Request $request) {
     try {
@@ -158,54 +151,54 @@ Route::post('/change-password', function(Request $request) {
     }
 });
 
-Route::post('/get-products-by-category', function(Request $request) {
-    $selectedCategoryIds = array_map(function($category) {
-        return $category['id'];
-    }, $request->selected_categories);
+// Route::post('/get-products-by-category', function(Request $request) {
+//     $selectedCategoryIds = array_map(function($category) {
+//         return $category['id'];
+//     }, $request->selected_categories);
 
 
-    $products = Product::whereIn('category_id', $selectedCategoryIds)->with('images')->get();
+//     $products = Product::whereIn('category_id', $selectedCategoryIds)->with('images')->get();
 
-    return response()->json([
-        'success' => true,
-        'message' => 'success load data',
-        'data'    => [
-            'products' => $products
-        ]
-    ]);
+//     return response()->json([
+//         'success' => true,
+//         'message' => 'success load data',
+//         'data'    => [
+//             'products' => $products
+//         ]
+//     ]);
 
     
 
-});
+// });
 
 
-Route::post('/get-products-with-price-range', function (Request $request) {
+// Route::post('/get-products-with-price-range', function (Request $request) {
    
-    $startPrice = $request->start_price;
-    $endPrice = $request->end_price;
+//     $startPrice = $request->start_price;
+//     $endPrice = $request->end_price;
 
     
-    if(empty($request->selected_categories)) {
-        $products = Product::whereBetween('price', [$startPrice, $endPrice])->with('images')->get();
-    } else {
-        $selectedCategoryIds = array_map(function($category) {
-            return $category['id'];
-        }, $request->selected_categories);
+//     if(empty($request->selected_categories)) {
+//         $products = Product::whereBetween('price', [$startPrice, $endPrice])->with('images')->get();
+//     } else {
+//         $selectedCategoryIds = array_map(function($category) {
+//             return $category['id'];
+//         }, $request->selected_categories);
 
-        $products = Product::whereIn('category_id', $selectedCategoryIds)->whereBetween('price', [$startPrice, $endPrice])->with('images')->get();
-    } 
+//         $products = Product::whereIn('category_id', $selectedCategoryIds)->whereBetween('price', [$startPrice, $endPrice])->with('images')->get();
+//     } 
 
-    return response()->json([
-        'success' => true,
-        'message' => "success load data",
-        'data'    => [
-            'products' => $products
-        ]
-    ]);
+//     return response()->json([
+//         'success' => true,
+//         'message' => "success load data",
+//         'data'    => [
+//             'products' => $products
+//         ]
+//     ]);
 
-});
+// });
 
 Route::post('/midtrans-callback', [CheckoutController::class, 'callback'])->name('midtrans.callback');
-Route::get('/invoice/{id}', [CheckoutController::class, 'invoice'])->name('midtrans.invoice');
+
 
 

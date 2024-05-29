@@ -15,10 +15,10 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::orderBy('created_at', 'desc')->get();
+        $categories = Category::orderBy('created_at', 'asc')->orderBy('id', 'asc')->get();
 
         return Inertia::render('Admin/Category/Index', [
-           'categories' => $categories
+            'categories' => $categories
         ]);
     }
 
@@ -35,25 +35,26 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-         $validatedData = $request->validate([
-            'display_name' => 'required|string', 
-            'image' => 'nullable|image|mimes:jpeg,png,jpg', 
+        $validatedData = $request->validate([
+            'display_name' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg',
         ]);
-        
+
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '_' . $image->getClientOriginalName();
             $image->move(public_path('storage/images/category/'), $imageName);
             $validatedData['image'] = 'storage/images/category/' . $imageName;
         } else {
-            $validatedData['image'] = 'storage/images/category/bolt.jpg';
+            $validatedData['image'] = null;
         }
 
         $validatedData['slug'] = Str::slug($validatedData['display_name'], '-');
-        
+
         Category::create($validatedData);
 
-        return redirect()->route('category.index')->with('success', 'Kategori baru berhasil ditambahkan!');
+        return to_route('category.index')
+            ->with('success', 'Kategori baru berhasil ditambahkan!');
     }
 
     /**
@@ -72,7 +73,7 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
 
         return Inertia::render('Admin/Category/Edit', [
-           'category' => $category
+            'category' => $category
         ]);
     }
 
@@ -83,20 +84,21 @@ class CategoryController extends Controller
     {
         $validatedData = $request->validate([
             'display_name' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg', 
+            'image_file' => 'nullable|image|mimes:jpeg,png,jpg',
+            'image' => 'nullable|string',
         ]);
 
         $validatedData['slug'] = Str::slug($validatedData['display_name'], '-');
 
         $category = Category::findOrFail($id);
 
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
+        if ($request->hasFile('image_file') ) {
+            $image = $request->file('image_file');
             $imageName = time() . '_' . $image->getClientOriginalName();
             $image->move(public_path('storage/images/category/'), $imageName);
             $validatedData['image'] = 'storage/images/category/' . $imageName;
         } else {
-            $validatedData['image'] = 'storage/images/category/bolt.jpg';
+            $validatedData['image_file'] = $category->image;
         }
 
         $category->update($validatedData);

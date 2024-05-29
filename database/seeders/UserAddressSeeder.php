@@ -18,7 +18,7 @@ class UserAddressSeeder extends Seeder
     {
           // Superadmin Address
           UserAddress::create([
-            'user_id' => User::where('username', 'Superadmin')->first()->id,
+            'user_id' => User::where('fullname', 'Superadmin')->first()->id,
             'province_id' => 1, 
             'city_id' => 1, 
             'district_id' => 1, 
@@ -33,7 +33,7 @@ class UserAddressSeeder extends Seeder
 
         // Admin Address
         UserAddress::create([
-            'user_id' => User::where('username', 'admin')->first()->id,
+            'user_id' => User::where('fullname', 'admin')->first()->id,
             'province_id' => 1, 
             'city_id' => 1, 
             'district_id' => 1, 
@@ -48,7 +48,7 @@ class UserAddressSeeder extends Seeder
 
         // Jihan Address
         UserAddress::create([
-            'user_id' => User::where('username', 'jihan')->first()->id,
+            'user_id' => User::where('fullname', 'Jihan')->first()->id,
             'province_id' => 1, 
             'city_id' => 1, 
             'district_id' => 1, 
@@ -63,7 +63,7 @@ class UserAddressSeeder extends Seeder
 
         // Nisa Address
         UserAddress::create([
-            'user_id' => User::where('username', 'nisa')->first()->id,
+            'user_id' => User::where('fullname', 'Nisa')->first()->id,
             'province_id' => 1, 
             'city_id' => 1, 
             'district_id' => 1, 
@@ -78,7 +78,7 @@ class UserAddressSeeder extends Seeder
 
         // Diba Address
         UserAddress::create([
-            'user_id' => User::where('username', 'diba')->first()->id,
+            'user_id' => User::where('fullname', 'Diba')->first()->id,
             'province_id' => 1, 
             'city_id' => 1, 
             'district_id' => 1, 
@@ -93,7 +93,7 @@ class UserAddressSeeder extends Seeder
 
         // Bijar Address
         UserAddress::create([
-            'user_id' => User::where('username', 'bijar')->first()->id,
+            'user_id' => User::where('fullname', 'Bijar')->first()->id,
             'province_id' => 1, 
             'city_id' => 1, 
             'district_id' => 1, 
@@ -108,7 +108,7 @@ class UserAddressSeeder extends Seeder
 
         // Ikhsan Address
         UserAddress::create([
-            'user_id' => User::where('username', 'ikhsan')->first()->id,
+            'user_id' => User::where('fullname', 'Ikhsan')->first()->id,
             'province_id' => 1, 
             'city_id' => 1, 
             'district_id' => 1, 

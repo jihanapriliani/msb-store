@@ -27,7 +27,9 @@ class Transaction extends Model
         'processed_at',
         'shipped_at',
         'accepted_at',
-        'rejected_at'
+        'canceled_at',
+        'payment_url',
+        'note'
     ];
 
 

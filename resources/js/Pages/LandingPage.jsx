@@ -3,12 +3,42 @@ import { Link } from "@inertiajs/react";
 import GuestLayout from "@/Layouts/GuestLayout/Index";
 import ProductCard from "@/Components/ProductCard";
 
+import { Carousel } from "flowbite-react";
+
 export default function LandingPage({ categories, products, user }) {
     return (
         <GuestLayout>
             <main className="main__content_wrapper">
                 {/* START SECTION 1 */}
-
+                <div className="h-56 sm:h-64 xl:h-80 2xl:h-[50vh] container">
+                    <Carousel>
+                        <img
+                            src="/assets/images/banner-1.png"
+                            className="object-fit object-center"
+                            alt="..."
+                        />
+                        <img
+                            src="/assets/images/banner-2.png"
+                            className="object-fit object-center"
+                            alt="..."
+                        />
+                        <img
+                            src="/assets/images/banner-1.png"
+                            className="object-fit object-center"
+                            alt="..."
+                        />
+                        <img
+                            src="/assets/images/banner-2.png"
+                            className="object-fit object-center"
+                            alt="..."
+                        />
+                        <img
+                            src="/assets/images/banner-1.png"
+                            className="object-fit object-center"
+                            alt="..."
+                        />
+                    </Carousel>
+                </div>
                 {/* END SECTION 1 */}
 
                 {/* START SECTION 2 */}
@@ -25,9 +55,11 @@ export default function LandingPage({ categories, products, user }) {
                                     className="categories__card--style3 text-center"
                                     key={index}
                                 >
-                                    <a
+                                    <Link
                                         className="categories__card--link"
-                                        href="shop.html"
+                                        href={route("shop", {
+                                            categories: category.id,
+                                        })}
                                     >
                                         <div className="categories__thumbnail">
                                             <img
@@ -35,7 +67,8 @@ export default function LandingPage({ categories, products, user }) {
                                                 src={
                                                     window.location.origin +
                                                     "/" +
-                                                    category.image
+                                                    (category.image ??
+                                                        "assets/images/default.png")
                                                 }
                                                 alt="categories-img"
                                             />
@@ -48,7 +81,7 @@ export default function LandingPage({ categories, products, user }) {
                                                 Tyres Sensor
                                             </span>
                                         </div>
-                                    </a>
+                                    </Link>
                                 </div>
                             ))}
                         </div>

@@ -33,8 +33,12 @@ export default function Create(props) {
                 onError: (e) => {
                     console.log(e);
                     if (e.errors) {
+                        console.log(e.errors);
                         form.errors(e.errors);
                     }
+                },
+                onSuccess: () => {
+                    reset();
                 },
             }
         );
@@ -85,6 +89,9 @@ export default function Create(props) {
                                         }
                                         placeholder="example: New Bolts.."
                                     />
+                                    <div className="form-text text-danger">
+                                        {errors.name}
+                                    </div>
                                 </div>
                                 <div className="mb-3">
                                     <label
@@ -106,6 +113,9 @@ export default function Create(props) {
                                         }
                                         placeholder="example: This is a new bolts made from.."
                                     ></textarea>
+                                    <div className="form-text text-danger">
+                                        {errors.description}
+                                    </div>
                                 </div>
 
                                 <div className="mb-3">
@@ -128,6 +138,9 @@ export default function Create(props) {
                                             setData("price", value);
                                         }}
                                     />
+                                    <div className="form-text text-danger">
+                                        {errors.price}
+                                    </div>
                                 </div>
 
                                 <div className="mb-3">
@@ -156,6 +169,9 @@ export default function Create(props) {
                                             </option>
                                         ))}
                                     </select>
+                                    <div className="form-text text-danger">
+                                        {errors.category}
+                                    </div>
                                 </div>
                                 <div className="row">
                                     <div className="mb-3 col-md-6">
@@ -177,6 +193,9 @@ export default function Create(props) {
                                             }
                                             placeholder="0"
                                         />
+                                        <div className="form-text text-danger">
+                                            {errors.stock}
+                                        </div>
                                     </div>
 
                                     <div className="mb-3 col-md-6">
@@ -202,6 +221,9 @@ export default function Create(props) {
                                             }
                                             placeholder="0"
                                         />
+                                        <div className="form-text text-danger">
+                                            {errors.unit_weight}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -251,6 +273,9 @@ export default function Create(props) {
                                                 onChange={handleImageChange}
                                                 multiple
                                             />
+                                            <div className="form-text text-danger">
+                                                {errors.product_images}
+                                            </div>
                                         </label>
                                     </div>
 
