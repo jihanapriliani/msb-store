@@ -15,7 +15,7 @@ class DistrictSeeder extends Seeder
     public function run()
     {
         // Baca isi file JSON
-        $json = File::get(database_path('seeders/json/cities_grouped_by_province_transformed_with_subdistricts.json'));
+        $json = File::get(database_path('seeders/json/district.json'));
         $data = json_decode($json, true);
 
         foreach ($data as $province) {
