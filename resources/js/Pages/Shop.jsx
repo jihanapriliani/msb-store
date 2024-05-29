@@ -216,10 +216,10 @@ export default function LandingPage({ categories, products, user }) {
                                     </h1>
                                     <ul className="breadcrumb__content--menu d-flex justify-content-center">
                                         <li className="breadcrumb__content--menu__items">
-                                            <a href="index.html">Home</a>
+                                            <Link href="/">Home</Link>
                                         </li>
                                         <li className="breadcrumb__content--menu__items">
-                                            <span>Product</span>
+                                            <Link href="/shop">Product</Link>
                                         </li>
                                     </ul>
                                 </div>

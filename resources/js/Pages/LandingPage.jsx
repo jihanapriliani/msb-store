@@ -45,8 +45,14 @@ export default function LandingPage({ categories, products, user }) {
                 <section className="categories__section section--padding">
                     <div className="container">
                         <div className="section__heading border-bottom mb-30">
-                            <h2 className="section__heading--maintitle">
-                                Shop by <span>Categories</span>
+                            <h2
+                                className="section__heading--maintitle"
+                                style={{ fontSize: "2rem", fontWeight: "bold" }}
+                            >
+                                Shop by{" "}
+                                <span style={{ fontWeight: "500" }}>
+                                    Categories
+                                </span>
                             </h2>
                         </div>
                         <div className="categories__inner--style3 d-flex">
@@ -93,8 +99,14 @@ export default function LandingPage({ categories, products, user }) {
                 <section className="product__section section--padding  pt-0">
                     <div className="container">
                         <div className="section__heading section__heading--flex border-bottom d-flex justify-content-between mb-30">
-                            <h2 className="section__heading--maintitle">
-                                Populer <span>Products</span>
+                            <h2
+                                className="section__heading--maintitle"
+                                style={{ fontSize: "2rem", fontWeight: "bold" }}
+                            >
+                                Populer{" "}
+                                <span style={{ fontWeight: "500" }}>
+                                    Products
+                                </span>
                             </h2>
                         </div>
 
