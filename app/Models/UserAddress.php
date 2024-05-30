@@ -21,8 +21,6 @@ class UserAddress extends Model
         'zipcode',
         'country',
         'address',
-        'lat',
-        'long',
     ];
 
 
