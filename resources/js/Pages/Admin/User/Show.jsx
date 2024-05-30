@@ -13,7 +13,6 @@ export default function Edit(props) {
 
     const { data, setData, post, processing, errors, reset } = useForm({
         fullname: user.fullname,
-        username: user.username,
         email: user.email,
         phone: user.phone,
     });
@@ -78,13 +77,6 @@ export default function Edit(props) {
                                     <h5 class="card-title">Detail Pengguna</h5>
 
                                     <ul class="list-unstyled profile-about-list">
-                                        <li>
-                                            <i class="far fa-edit m-r-xxs"></i>
-                                            <span>
-                                                Username :
-                                                <a href="#"> {user.username}</a>
-                                            </span>
-                                        </li>
                                         <li>
                                             <i class="far fa-building m-r-xxs"></i>
                                             <span>

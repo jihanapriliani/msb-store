@@ -47,7 +47,6 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'username' => 'required|string|unique:users,username',
             'fullname' => 'required|string',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string',
@@ -58,7 +57,6 @@ class UserController extends Controller
         // dd($validatedData);
 
         $user = User::create([
-            'username' => $validatedData['username'],
             'fullname' => $validatedData['fullname'],
             'email' => $validatedData['email'],
             'password' => bcrypt($validatedData['password']),
@@ -106,7 +104,6 @@ class UserController extends Controller
     {
 
         $validatedData = $request->validate([
-            'username' => 'required|string|unique:users,username,' . $id,
             'fullname' => 'required|string',
             'email' => 'required|email|unique:users,email,' . $id,
             'password' => 'nullable|string',
