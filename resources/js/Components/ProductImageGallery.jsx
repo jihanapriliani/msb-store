@@ -11,7 +11,11 @@ const ProductImages = ({ images }) => {
         <div className="product-images">
             <div className="product-display">
                 <img
-                    src={window.location.origin + "/" + selectedImage.image}
+                    src={
+                        window.location.origin +
+                        "/" +
+                        (selectedImage.image ?? "assets/images/default.png")
+                    }
                     className="h-[30rem] w-[100%] object-cover rounded-xl"
                     alt="Product Display"
                 />
@@ -20,7 +24,11 @@ const ProductImages = ({ images }) => {
                 {images.map((image, index) => (
                     <img
                         key={index}
-                        src={window.location.origin + "/" + image.image}
+                        src={
+                            window.location.origin +
+                            "/" +
+                            (image.image ?? "assets/images/default.png")
+                        }
                         alt={`Thumbnail ${index}`}
                         className={
                             selectedImage === image
