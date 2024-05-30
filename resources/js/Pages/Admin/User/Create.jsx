@@ -10,7 +10,6 @@ export default function Create(props) {
     const { data, setData, post, processing, errors, reset, setError } =
         useForm({
             fullname: "",
-            username: "",
             email: "",
             phone: "",
             role: "user",
@@ -86,29 +85,6 @@ export default function Create(props) {
                                         for="exampleInputEmail1"
                                         class="form-label"
                                     >
-                                        Username
-                                    </label>
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        id=""
-                                        aria-describedby=""
-                                        name="username"
-                                        onChange={(e) =>
-                                            setData("username", e.target.value)
-                                        }
-                                        placeholder="example: johndoe"
-                                    />
-                                    <div class="form-text text-danger">
-                                        {errors.username}
-                                    </div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label
-                                        for="exampleInputEmail1"
-                                        class="form-label"
-                                    >
                                         Email
                                     </label>
                                     <input
@@ -149,38 +125,37 @@ export default function Create(props) {
                                         {errors.phone}
                                     </div>
                                 </div>
-                                {
-                                    props.auth.user.roles[0].name === 'super-admin' && (
-                                        <div class="mb-3">
-                                            <label
-                                                for="exampleInputEmail1"
-                                                class="form-label"
-                                            >
-                                                Role
-                                            </label>
-                                            <select
-                                    class="form-select"
-                                    aria-label="Default select example"
-                                    name="role"
-                                    value={data.role}
-                                    onChange={(e) =>
-                                        setData("role", e.target.value)
-                                    }
-                                >
-                                    <option selected>Pilih Role</option>
-                                    {roles.map((role) => (
-                                        <option value={role.name}>
-                                            {role.name}
-                                        </option>
-                                    ))}
-                                            </select>
-                                            <div class="form-text text-danger">
-                                                {errors.role}
-                                            </div>
+                                {props.auth.user.roles[0].name ===
+                                    "super-admin" && (
+                                    <div class="mb-3">
+                                        <label
+                                            for="exampleInputEmail1"
+                                            class="form-label"
+                                        >
+                                            Role
+                                        </label>
+                                        <select
+                                            class="form-select"
+                                            aria-label="Default select example"
+                                            name="role"
+                                            value={data.role}
+                                            onChange={(e) =>
+                                                setData("role", e.target.value)
+                                            }
+                                        >
+                                            <option selected>Pilih Role</option>
+                                            {roles.map((role) => (
+                                                <option value={role.name}>
+                                                    {role.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <div class="form-text text-danger">
+                                            {errors.role}
                                         </div>
-                                    
+                                    </div>
                                 )}
-                                
+
                                 <div class="mb-3">
                                     <label
                                         for="exampleInputEmail1"

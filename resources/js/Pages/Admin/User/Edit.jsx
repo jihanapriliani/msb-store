@@ -12,7 +12,6 @@ export default function Edit(props) {
     const { data, setData, post, processing, errors, reset, setError } =
         useForm({
             fullname: user.fullname,
-            username: user.username,
             email: user.email,
             phone: user.phone,
             role: user.role,
@@ -76,30 +75,6 @@ export default function Edit(props) {
                                     />
                                     <div class="form-text text-danger">
                                         {errors.fullname}
-                                    </div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label
-                                        for="exampleInputEmail1"
-                                        class="form-label"
-                                    >
-                                        Username
-                                    </label>
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        id=""
-                                        aria-describedby=""
-                                        name="username"
-                                        value={data.username}
-                                        onChange={(e) =>
-                                            setData("username", e.target.value)
-                                        }
-                                        placeholder="example: Bolts.."
-                                    />
-                                    <div class="form-text text-danger">
-                                        {errors.username}
                                     </div>
                                 </div>
 

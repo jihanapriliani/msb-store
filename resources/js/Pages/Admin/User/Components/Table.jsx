@@ -40,10 +40,6 @@ const Example = (props) => {
                 header: "Nama Lengkap",
             },
             {
-                accessorKey: "username",
-                header: "Username",
-            },
-            {
                 accessorKey: "phone",
                 header: "No Telp",
             },
