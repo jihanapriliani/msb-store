@@ -289,7 +289,7 @@ export default function UserAddressEdit({ address }) {
                                     </label>
 
                                     <input
-                                        type="number"
+                                        type="text"
                                         className="form-control"
                                         id=""
                                         aria-describedby=""

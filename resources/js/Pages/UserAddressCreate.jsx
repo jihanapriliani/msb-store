@@ -26,8 +26,6 @@ export default function UserAddressCreate() {
             zipcode: "",
             country: "Indonesia",
             address: "",
-            lat: "0",
-            long: "0",
         });
 
     const submit = (e) => {
@@ -287,7 +285,7 @@ export default function UserAddressCreate() {
                                     </label>
 
                                     <input
-                                        type="number"
+                                        type="text"
                                         className="form-control"
                                         id=""
                                         aria-describedby=""
