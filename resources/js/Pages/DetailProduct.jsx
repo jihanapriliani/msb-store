@@ -8,8 +8,25 @@ import axios from "axios";
 
 import ImageGallery from "@/Components/ProductImageGallery";
 
+import {
+    EmailIcon,
+    EmailShareButton,
+    FacebookIcon,
+    FacebookShareButton,
+    LineIcon,
+    LineShareButton,
+    TelegramIcon,
+    TelegramShareButton,
+    TwitterShareButton,
+    WhatsappIcon,
+    WhatsappShareButton,
+    XIcon,
+} from "react-share";
+
 export default function DetailProduct({ product, user, productCart }) {
     const [amount, setAmount] = useState(1);
+
+    const shareUrl = `https://mandirisejatiborneo.store/detail-product/${product.id}`;
 
     useEffect(() => {
         if (productCart && productCart !== 0) {
@@ -148,7 +165,84 @@ export default function DetailProduct({ product, user, productCart }) {
                                             </div>
                                         </div>
 
-                                        <div className="product__variant mt-16">
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                justifyContent: "space-between",
+
+                                                maxWidth: "37%",
+                                            }}
+                                        >
+                                            <div>
+                                                <FacebookShareButton
+                                                    url={shareUrl}
+                                                    title={product.name}
+                                                >
+                                                    <FacebookIcon
+                                                        size={32}
+                                                        round
+                                                    />
+                                                </FacebookShareButton>
+                                            </div>
+
+                                            <div>
+                                                <TwitterShareButton
+                                                    url={shareUrl}
+                                                    title={product.name}
+                                                >
+                                                    <XIcon size={32} round />
+                                                </TwitterShareButton>
+                                            </div>
+
+                                            <div>
+                                                <TelegramShareButton
+                                                    url={shareUrl}
+                                                    title={product.name}
+                                                >
+                                                    <TelegramIcon
+                                                        size={32}
+                                                        round
+                                                    />
+                                                </TelegramShareButton>
+                                            </div>
+
+                                            <div>
+                                                <WhatsappShareButton
+                                                    url={shareUrl}
+                                                    separator=":: "
+                                                    title={product.name}
+                                                >
+                                                    <WhatsappIcon
+                                                        size={32}
+                                                        round
+                                                    />
+                                                </WhatsappShareButton>
+                                            </div>
+
+                                            <div>
+                                                <EmailShareButton
+                                                    url={shareUrl}
+                                                    subject={product.name}
+                                                    body="body"
+                                                >
+                                                    <EmailIcon
+                                                        size={32}
+                                                        round
+                                                    />
+                                                </EmailShareButton>
+                                            </div>
+
+                                            <div>
+                                                <LineShareButton
+                                                    url={shareUrl}
+                                                    title={product.name}
+                                                >
+                                                    <LineIcon size={32} round />
+                                                </LineShareButton>
+                                            </div>
+                                        </div>
+
+                                        <div className="product__variant mt-8">
                                             <div className="product__variant--list quantity d-flex align-items-center mb-20">
                                                 <div className="quantity__box">
                                                     <button

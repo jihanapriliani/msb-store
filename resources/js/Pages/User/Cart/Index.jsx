@@ -179,7 +179,9 @@ export default function Index(props) {
                                                                                 </svg>
                                                                             </button>
                                                                             <div className="cart__thumbnail">
-                                                                                <a href="product-details.html">
+                                                                                <Link
+                                                                                    href={`/detail-product/${cart.product.id}`}
+                                                                                >
                                                                                     <img
                                                                                         className="border-radius-5"
                                                                                         src={
@@ -195,17 +197,19 @@ export default function Index(props) {
                                                                                         }
                                                                                         alt="cart-product"
                                                                                     />
-                                                                                </a>
+                                                                                </Link>
                                                                             </div>
                                                                             <div className="cart__content">
                                                                                 <h3 className="cart__content--title h4">
-                                                                                    <a href="product-details.html">
+                                                                                    <Link
+                                                                                        href={`/detail-product/${cart.product.id}`}
+                                                                                    >
                                                                                         {
                                                                                             cart
                                                                                                 .product
                                                                                                 .name
                                                                                         }
-                                                                                    </a>
+                                                                                    </Link>
                                                                                 </h3>
 
                                                                                 <span className="cart__content--variant">
