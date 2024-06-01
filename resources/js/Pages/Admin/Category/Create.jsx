@@ -13,7 +13,7 @@ export default function Create() {
 
     const submit = (e) => {
         e.preventDefault();
-
+        form.clearErrors();
         form.post(route("category.store"), {
             headers: {
                 "Content-Type": "multipart/form-data",
@@ -21,7 +21,7 @@ export default function Create() {
             onSuccess: () => {
                 form.reset();
             },
-            onError: () => {
+            onError: (errors) => {
                 form.setError(errors);
             },
         });

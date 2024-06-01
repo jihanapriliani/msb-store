@@ -6,13 +6,17 @@ import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
+import { useState } from "react";
+
+import { HiEye, HiEyeOff } from "react-icons/hi";
 
 export default function Login({ status, canResetPassword }) {
-    const { data, setData, post, processing, errors, reset } = useForm({
-        email: "",
-        password: "",
-        remember: false,
-    });
+    const { data, setData, post, processing, errors, reset, clearErrors } =
+        useForm({
+            email: "",
+            password: "",
+            remember: false,
+        });
 
     useEffect(() => {
         return () => {
@@ -22,8 +26,14 @@ export default function Login({ status, canResetPassword }) {
 
     const submit = (e) => {
         e.preventDefault();
-
+        clearErrors();
         post(route("login"));
+    };
+
+    const [passwordVisible, setPasswordVisible] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setPasswordVisible(!passwordVisible);
     };
 
     return (
@@ -104,6 +114,7 @@ export default function Login({ status, canResetPassword }) {
             <form
                 className="max-w-5xl mx-auto my-20 flex flex-col "
                 onSubmit={submit}
+                style={{ minHeight: "40vh" }}
             >
                 <div className="my-5">
                     <label
@@ -136,17 +147,52 @@ export default function Login({ status, canResetPassword }) {
                     >
                         Password
                     </label>
-                    <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
-                        className="h-[50px]  bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="*****"
-                        style={{ fontSize: "2rem" }}
-                        autoComplete="current-password"
-                        onChange={(e) => setData("password", e.target.value)}
-                        required
-                    />
+
+                    <div style={{ position: "relative" }}>
+                        <TextInput
+                            id="password"
+                            type={passwordVisible ? "text" : "password"}
+                            name="password"
+                            className="h-[50px]  bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="*****"
+                            style={{ fontSize: "2rem" }}
+                            autoComplete="current-password"
+                            onChange={(e) =>
+                                setData("password", e.target.value)
+                            }
+                            required
+                        />
+
+                        <button
+                            type="button"
+                            onClick={togglePasswordVisibility}
+                            className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+                        >
+                            {passwordVisible ? (
+                                <HiEyeOff
+                                    className="ml-2 h-6 w-6"
+                                    style={{
+                                        color: "gray",
+                                        fontSize: "2rem",
+                                        width: "2rem",
+                                        height: "2rem",
+                                        margin: "2rem 1rem",
+                                    }}
+                                />
+                            ) : (
+                                <HiEye
+                                    className="ml-2 h-6 w-6"
+                                    style={{
+                                        color: "gray",
+                                        fontSize: "2rem",
+                                        width: "2rem",
+                                        height: "2rem",
+                                        margin: "2rem 1rem",
+                                    }}
+                                />
+                            )}
+                        </button>
+                    </div>
 
                     <InputError message={errors.password} className="mt-2" />
                 </div>

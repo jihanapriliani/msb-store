@@ -11,7 +11,16 @@ export default function Edit(props) {
     const [images, setImages] = useState([]);
     const [dataProductImages, setDataProductImages] = useState(product_images);
 
-    const { data, setData, post, processing, errors, reset, setError } = useForm({
+    const {
+        data,
+        setData,
+        post,
+        processing,
+        errors,
+        reset,
+        setError,
+        clearErrors,
+    } = useForm({
         name: product.name,
         description: product.description,
         category: product.category_id,
@@ -24,7 +33,7 @@ export default function Edit(props) {
 
     const submit = (e) => {
         e.preventDefault();
-
+        clearErrors();
         router.post(
             route("product.update", product.id, {
                 headers: { "Content-Type": "multipart/form-data" },

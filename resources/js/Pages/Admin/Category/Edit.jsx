@@ -7,18 +7,26 @@ import { Link } from "@inertiajs/react";
 export default function Edit(props) {
     const { category } = props;
 
-    const { data, setData, put, processing, errors, reset, setError } = useForm(
-        {
-            display_name: category.display_name,
-            image_file: null,
-            image : category.image
-        }
-    );
+    const {
+        data,
+        setData,
+        put,
+        processing,
+        errors,
+        reset,
+        setError,
+        clearErrors,
+    } = useForm({
+        display_name: category.display_name,
+        image_file: null,
+        image: category.image,
+    });
 
     console.log(errors);
 
     const submit = (e) => {
         e.preventDefault();
+        clearErrors();
 
         router.post(
             route("category.update", category.id, {

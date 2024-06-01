@@ -12,7 +12,16 @@ import "react-toastify/dist/ReactToastify.css";
 export default function Edit(props) {
     const { transaction } = props;
 
-    const { data, setData, put, processing, errors, reset } = useForm({
+    const {
+        data,
+        setData,
+        put,
+        processing,
+        errors,
+        reset,
+        clearErrors,
+        setError,
+    } = useForm({
         code: transaction.code,
         status: transaction.status,
         delivery_code: transaction.delivery_code,
@@ -31,6 +40,7 @@ export default function Edit(props) {
 
     const submit = (e) => {
         e.preventDefault();
+        clearErrors();
 
         router.post(
             route("transaction.update", transaction.id, {
@@ -44,9 +54,7 @@ export default function Edit(props) {
                 forceFormData: true,
                 onError: (e) => {
                     console.log(e);
-                    if (e.errors) {
-                        form.errors(e.errors);
-                    }
+                    setError(e);
                 },
             }
         );
@@ -109,6 +117,9 @@ export default function Edit(props) {
                                             Canceled
                                         </option>
                                     </select>
+                                    <p className="text-red-500">
+                                        {errors.status}
+                                    </p>
                                 </div>
 
                                 <div className="mb-3">
@@ -154,6 +165,9 @@ export default function Edit(props) {
                                             )}
                                         </div>
                                     </div>
+                                    <p className="text-red-500">
+                                        {errors.delivery_code}
+                                    </p>
                                 </div>
 
                                 <button

@@ -135,6 +135,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('/edit-profile', [UserProfileController::class,'edit'])->name('edit');
                     Route::put('/update-profile', [UserProfileController::class,'update'])->name('update');
                     Route::put('/update-email', [UserProfileController::class,'updateEmail'])->name('update.email');
+                    Route::put('/resend-email', [UserProfileController::class,'resendEmail'])->name('resend.email');
                 });    
             });
         });

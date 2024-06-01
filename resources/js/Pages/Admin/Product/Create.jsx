@@ -9,7 +9,16 @@ export default function Create(props) {
     const { categories } = props;
     const [images, setImages] = useState([]);
 
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const {
+        data,
+        setData,
+        post,
+        processing,
+        errors,
+        reset,
+        clearErrors,
+        setError,
+    } = useForm({
         name: "",
         description: "",
         category: "",
@@ -21,7 +30,7 @@ export default function Create(props) {
 
     const submit = (e) => {
         e.preventDefault();
-
+        clearErrors();
         post(
             route("product.store", data, {
                 headers: {
@@ -32,10 +41,7 @@ export default function Create(props) {
                 forceFormData: true,
                 onError: (e) => {
                     console.log(e);
-                    if (e.errors) {
-                        console.log(e.errors);
-                        form.errors(e.errors);
-                    }
+                    setError(e);
                 },
                 onSuccess: () => {
                     reset();

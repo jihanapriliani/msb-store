@@ -21,12 +21,20 @@ import { useForm } from "@inertiajs/react";
 export default function Index({ user, userAddress }) {
     const { flash } = usePage().props;
 
-    const { data, setData, post, processing, errors, reset, setError } =
-        useForm({
-            email: user.email,
-            fullname: user.fullname,
-            phone: user.phone,
-        });
+    const {
+        data,
+        setData,
+        post,
+        processing,
+        errors,
+        reset,
+        setError,
+        clearErrors,
+    } = useForm({
+        email: user.email,
+        fullname: user.fullname,
+        phone: user.phone,
+    });
 
     useEffect(() => {
         if (flash.error) {
@@ -48,7 +56,7 @@ export default function Index({ user, userAddress }) {
 
     const submit = (e) => {
         e.preventDefault();
-
+        clearErrors();
         router.post(
             route("profile.update"),
             {
@@ -110,6 +118,7 @@ export default function Index({ user, userAddress }) {
                                 },
                                 preConfirm: async (password) => {
                                     console.log("ISI PASSWORD", password);
+                                    clearErrors();
                                     axios
                                         .post("/api/change-password", {
                                             params: {
@@ -146,6 +155,7 @@ export default function Index({ user, userAddress }) {
     };
 
     const handleEmailUpdate = () => {
+        clearErrors("email");
         router.post(
             route("profile.update.email"),
             {
@@ -158,6 +168,36 @@ export default function Index({ user, userAddress }) {
                     Swal.fire({
                         icon: "success",
                         title: "Email berhasil diperbarui!",
+                        text: "Silakan buka email Anda untuk verifikasi.",
+                        confirmButtonText: "Oke",
+                        customClass: {
+                            confirmButton: "swal2-confirm",
+                        },
+                    });
+                },
+                onError: (e) => {
+                    console.log(e);
+                    if (e) {
+                        setError(e);
+                    }
+                },
+            }
+        );
+    };
+
+    const handleVerify = () => {
+        router.post(
+            route("profile.resend.email"),
+            {
+                _method: "put",
+                ...data,
+            },
+            {
+                forceFormData: true,
+                onSuccess: () => {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Email Verfikasi Berhasil Dikirim!",
                         text: "Silakan buka email Anda untuk verifikasi.",
                         confirmButtonText: "Oke",
                         customClass: {
@@ -324,9 +364,14 @@ export default function Index({ user, userAddress }) {
                                                 Terverifikasi
                                             </span>
                                         ) : (
-                                            <span className="ml-2 p-2 text-sm rounded-full bg-yellow-500 text-white">
+                                            <button
+                                                type="button"
+                                                className="ml-2 p-2 text-sm rounded-full bg-yellow-500 text-white cursor-pointer"
+                                                style={{ fontSize: "1rem" }}
+                                                onClick={handleVerify}
+                                            >
                                                 Belum Verifikasi
-                                            </span>
+                                            </button>
                                         )}
                                     </td>
                                     <td

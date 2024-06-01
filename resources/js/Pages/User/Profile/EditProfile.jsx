@@ -24,7 +24,16 @@ export default function Edit(props) {
         }
     }, [user]);
 
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const {
+        data,
+        setData,
+        post,
+        processing,
+        errors,
+        reset,
+        clearErrors,
+        setError,
+    } = useForm({
         username: user.username,
         email: user.email,
         fullname: user.fullname,
@@ -33,7 +42,7 @@ export default function Edit(props) {
 
     const submit = (e) => {
         e.preventDefault();
-
+        clearErrors();
         router.post(
             route("profile.update"),
             {
@@ -44,9 +53,7 @@ export default function Edit(props) {
                 forceFormData: true,
                 onError: (e) => {
                     console.log(e);
-                    if (e.errors) {
-                        form.errors(e.errors);
-                    }
+                    setError(e);
                 },
             }
         );

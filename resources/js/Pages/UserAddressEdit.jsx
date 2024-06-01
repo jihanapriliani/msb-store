@@ -53,10 +53,11 @@ export default function UserAddressEdit({ address }) {
 
             flash.success = null;
         }
-    }, [user, flash]);
+    }, [flash]);
 
     const submit = (e) => {
         e.preventDefault();
+        clearErrors();
 
         router.post(
             route("profile.address.update", address.id),
@@ -67,14 +68,10 @@ export default function UserAddressEdit({ address }) {
             {
                 forceFormData: true,
                 onError: (e) => {
-                    console.log(e);
-                    if (e.errors) {
-                        setError(e.errors);
-                    }
+                    setError(e);
                 },
                 onSuccess: () => {
                     console.log("success");
-                    clearErrors();
                     reset();
                 },
             }

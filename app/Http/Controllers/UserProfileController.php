@@ -205,6 +205,12 @@ class UserProfileController extends Controller
     } 
 
 
+    public function resendEmail(Request $request) {
+        $request->user()->sendEmailVerificationNotification();
+        return redirect()->back();
+    }
+
+
     /**
      * Remove the specified resource from storage.
      */

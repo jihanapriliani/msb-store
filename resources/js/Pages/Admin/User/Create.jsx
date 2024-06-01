@@ -7,17 +7,25 @@ import Select from "react-select";
 
 export default function Create(props) {
     const { roles } = props;
-    const { data, setData, post, processing, errors, reset, setError } =
-        useForm({
-            fullname: "",
-            email: "",
-            phone: "",
-            role: "user",
-        });
+    const {
+        data,
+        setData,
+        post,
+        processing,
+        errors,
+        reset,
+        setError,
+        clearErrors,
+    } = useForm({
+        fullname: "",
+        email: "",
+        phone: "",
+        role: "user",
+    });
 
     const submit = (e) => {
         e.preventDefault();
-
+        clearErrors();
         post(
             route("user.store", data, {
                 headers: {

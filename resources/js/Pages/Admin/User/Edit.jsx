@@ -9,17 +9,25 @@ import Select from "react-select";
 export default function Edit(props) {
     const { user, roles } = props;
 
-    const { data, setData, post, processing, errors, reset, setError } =
-        useForm({
-            fullname: user.fullname,
-            email: user.email,
-            phone: user.phone,
-            role: user.role,
-        });
+    const {
+        data,
+        setData,
+        post,
+        processing,
+        errors,
+        reset,
+        setError,
+        clearErrors,
+    } = useForm({
+        fullname: user.fullname,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+    });
 
     const submit = (e) => {
         e.preventDefault();
-
+        clearErrors();
         router.post(
             route("user.update", user.id, {
                 headers: { "Content-Type": "multipart/form-data" },

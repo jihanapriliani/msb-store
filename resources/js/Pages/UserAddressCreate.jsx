@@ -33,7 +33,7 @@ export default function UserAddressCreate() {
 
             flash.success = null;
         }
-    }, [user, flash]);
+    }, [flash]);
     const {
         data,
         setData,
@@ -57,6 +57,7 @@ export default function UserAddressCreate() {
 
     const submit = (e) => {
         e.preventDefault();
+        clearErrors();
 
         post(route("profile.address.store", data), {
             forceFormData: true,
@@ -66,7 +67,6 @@ export default function UserAddressCreate() {
             },
             onSuccess: () => {
                 reset();
-                clearErrors();
             },
         });
     };
