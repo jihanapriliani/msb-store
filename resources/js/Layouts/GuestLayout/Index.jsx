@@ -253,7 +253,7 @@ export default function Guest({ children, setIsLoading }) {
                                         <label>
                                             <input
                                                 className="header__search--input"
-                                                placeholder="Search For Products..."
+                                                placeholder="Cari produk..."
                                                 type="text"
                                                 defaultValue={""}
                                                 style={{

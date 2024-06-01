@@ -60,6 +60,10 @@ export default function LandingPage({ categories, products, user }) {
                 // Perform reload only if URL has changed
                 url.searchParams.set("categories", selectedCategoriesString);
                 params.categories = selectedCategoriesString;
+                setPagination({
+                    ...pagination,
+                    pageIndex: 0,
+                });
             } else {
                 url.searchParams.delete("categories");
                 delete params.categories;
@@ -69,6 +73,10 @@ export default function LandingPage({ categories, products, user }) {
         if (startPrice && startPrice > 0) {
             url.searchParams.set("startPrice", startPrice);
             params.startPrice = startPrice;
+            setPagination({
+                ...pagination,
+                pageIndex: 0,
+            });
         } else {
             url.searchParams.delete("startPrice");
             delete params.startPrice;
@@ -77,6 +85,10 @@ export default function LandingPage({ categories, products, user }) {
         if (endPrice && endPrice > 0) {
             url.searchParams.set("endPrice", endPrice);
             params.endPrice = endPrice;
+            setPagination({
+                ...pagination,
+                pageIndex: 0,
+            });
         } else {
             url.searchParams.delete("endPrice");
             delete params.endPrice;
@@ -86,6 +98,10 @@ export default function LandingPage({ categories, products, user }) {
         url.searchParams.set("page", pagination.pageIndex + 1);
         url.searchParams.set("per_page", pagination.pageSize);
         url.searchParams.set("orderBy", orderBy);
+
+        params.page = pagination.pageIndex + 1;
+        params.per_page = pagination.pageSize;
+        params.orderBy = orderBy;
 
         url.searchParams.sort();
 
@@ -186,6 +202,14 @@ export default function LandingPage({ categories, products, user }) {
             }
         };
 
+        setPagination({
+            ...pagination,
+            pageIndex: 0,
+        });
+        params.page = pagination.pageIndex + 1;
+        params.per_page = pagination.pageSize;
+        params.orderBy = orderBy;
+
         url.searchParams.sort();
 
         if (setPriceFilters()) {
@@ -206,20 +230,49 @@ export default function LandingPage({ categories, products, user }) {
     return (
         <GuestLayout setIsLoading={setIsLoading}>
             <main class="main__content_wrapper">
-                <section class="breadcrumb__section breadcrumb__bg">
+                <section
+                    class="breadcrumb__section breadcrumb__bg"
+                    style={{
+                        position: "relative",
+                        backgroundImage:
+                            "url(https://karrep.com/wp-content/uploads/2022/12/ASDC-01-scaled.jpg)",
+                    }}
+                >
+                    <div
+                        style={{
+                            position: "absolute",
+                            top: "0",
+                            left: "0",
+                            right: "0",
+                            bottom: "0",
+                            background: "black",
+                            opacity: "0.7",
+                        }}
+                    ></div>
                     <div class="container">
                         <div class="row row-cols-1">
                             <div class="col">
                                 <div class="breadcrumb__content text-center">
-                                    <h1 class="breadcrumb__content--title">
+                                    <h1
+                                        class="breadcrumb__content--title"
+                                        style={{ color: "white" }}
+                                    >
                                         Product
                                     </h1>
                                     <ul className="breadcrumb__content--menu d-flex justify-content-center">
                                         <li className="breadcrumb__content--menu__items">
-                                            <Link href="/">Home</Link>
+                                            <Link href="/">
+                                                <p style={{ color: "white" }}>
+                                                    Home
+                                                </p>
+                                            </Link>
                                         </li>
                                         <li className="breadcrumb__content--menu__items">
-                                            <Link href="/shop">Product</Link>
+                                            <Link href="/shop">
+                                                <p style={{ color: "white" }}>
+                                                    Product
+                                                </p>
+                                            </Link>
                                         </li>
                                     </ul>
                                 </div>
@@ -235,7 +288,7 @@ export default function LandingPage({ categories, products, user }) {
                                 <div className="shop__sidebar--widget widget__area d-none d-lg-block">
                                     <div className="single__widget widget__bg">
                                         <h2 className="widget__title h3">
-                                            Categories
+                                            Filter Kategori
                                         </h2>
                                         <ul class="widget__form--check">
                                             {categories.map((category) => (
@@ -246,6 +299,9 @@ export default function LandingPage({ categories, products, user }) {
                                                     <label
                                                         class="widget__form--check__label"
                                                         for={`check+${category.id}`}
+                                                        style={{
+                                                            fontSize: "1.5rem",
+                                                        }}
                                                     >
                                                         {category.display_name}
                                                     </label>
@@ -270,7 +326,7 @@ export default function LandingPage({ categories, products, user }) {
                                     </div>
                                     <div className="single__widget price__filter widget__bg">
                                         <h2 className="widget__title h3">
-                                            Filter By Price
+                                            Filter Harga
                                         </h2>
                                         <form className="price__filter--form">
                                             <div className="price__filter--form__inner mb-15 d-flex align-items-center">
@@ -286,6 +342,10 @@ export default function LandingPage({ categories, products, user }) {
                                                             Rp
                                                         </span>
                                                         <input
+                                                            style={{
+                                                                fontSize:
+                                                                    "1.5rem",
+                                                            }}
                                                             className="price__filter--input__field border-0 w-100"
                                                             name="filter.v.price.gte"
                                                             id="Filter-Price-GTE2"
@@ -319,6 +379,10 @@ export default function LandingPage({ categories, products, user }) {
                                                             Rp
                                                         </span>
                                                         <input
+                                                            style={{
+                                                                fontSize:
+                                                                    "1.5rem",
+                                                            }}
                                                             className="price__filter--input__field border-0 w-100"
                                                             name="filter.v.price.lte"
                                                             id="Filter-Price-LTE2"
@@ -346,6 +410,18 @@ export default function LandingPage({ categories, products, user }) {
                                             >
                                                 Filter
                                             </button>
+
+                                            {/* <button
+                                                className="primary__btn price__filter--btn"
+                                                style={{
+                                                    backgroundColor: "black",
+                                                    marginLeft: "1rem",
+                                                }}
+                                                type="button"
+                                                onClick={handlePriceFilter}
+                                            >
+                                                Reset
+                                            </button> */}
                                         </form>
                                     </div>
                                 </div>
@@ -408,12 +484,22 @@ export default function LandingPage({ categories, products, user }) {
                                                     </span>
                                                 </button>
                                                 <div class="product__view--mode__list product__short--by align-items-center d-flex ">
-                                                    <label class="product__view--label">
-                                                        Per Page :
+                                                    <label
+                                                        class="product__view--label"
+                                                        style={{
+                                                            fontSize: "1.5rem",
+                                                        }}
+                                                    >
+                                                        Per Hal :
                                                     </label>
-                                                    <div class="select shop__header--select">
+                                                    <div>
                                                         <select
-                                                            class="product__view--select"
+                                                            style={{
+                                                                fontSize:
+                                                                    "1.5rem",
+                                                                borderRadius:
+                                                                    "5px",
+                                                            }}
                                                             onChange={(e) => {
                                                                 setPagination({
                                                                     ...pagination,
@@ -446,12 +532,22 @@ export default function LandingPage({ categories, products, user }) {
                                                     </div>
                                                 </div>
                                                 <div className="product__view--mode__list product__short--by align-items-center d-flex">
-                                                    <label className="product__view--label">
-                                                        Sort By :
+                                                    <label
+                                                        className="product__view--label"
+                                                        style={{
+                                                            fontSize: "1.5rem",
+                                                        }}
+                                                    >
+                                                        urutkan :
                                                     </label>
-                                                    <div class="select shop__header--select">
+                                                    <div>
                                                         <select
-                                                            class="product__view--select"
+                                                            style={{
+                                                                fontSize:
+                                                                    "1.5rem",
+                                                                borderRadius:
+                                                                    "5px",
+                                                            }}
                                                             onChange={(e) => {
                                                                 setOrderBy(
                                                                     e.target
@@ -482,10 +578,15 @@ export default function LandingPage({ categories, products, user }) {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <p class="product__showing--count">
-                                                Showing {products.from}–
+                                            <p
+                                                style={{
+                                                    fontSize: "1.5rem",
+                                                    color: "gray",
+                                                }}
+                                            >
+                                                Menampilkan {products.from}–
                                                 {products.to} of{" "}
-                                                {products.total} results
+                                                {products.total} Hasil
                                             </p>
                                         </div>
                                         <div className="tab_content">

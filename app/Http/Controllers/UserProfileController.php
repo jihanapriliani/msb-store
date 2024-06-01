@@ -42,7 +42,7 @@ class UserProfileController extends Controller
             'province_id' => 'required|integer',
             'city_id' => 'required|integer',
             'district_id' => 'required|integer',
-            'village_id' => 'required|string',
+            'village' => 'required|string',
             'zipcode' => 'required|integer',
             'country' => 'required|string',
             'address' => 'required|string',
@@ -65,14 +65,14 @@ class UserProfileController extends Controller
         ]);
 
      
-        return redirect()->route('profile.index')->with('success', 'Alamat berhasil ditambahkan!');
+        return redirect()->route('user.address')->with('success', 'Alamat berhasil ditambahkan!');
     }
 
     public function deleteAddress(string $id) {
         $address = UserAddress::findOrFail($id);
 
         $address->delete();
-        return redirect()->route('profile.index')->with('success', 'Alamat berhasil dihapus!');
+        return redirect()->route('user.address')->with('success', 'Alamat berhasil dihapus!');
     }
 
     public function editAddress(string $id) {
@@ -103,7 +103,7 @@ class UserProfileController extends Controller
 
         $address->update($validatedData);
 
-        return redirect()->route('profile.index')->with('success', 'Alamat berhasil diperbarui!');
+        return redirect()->route('user.address')->with('success', 'Alamat berhasil diperbarui!');
     }
 
 
@@ -154,12 +154,12 @@ class UserProfileController extends Controller
 
         $request->validate([
             'fullname' => 'required|string|max:255',
-            'phone' => 'required|string|digits_between:10,12',
+            'phone' => 'required|string|digits_between:10,14',
         ]);
         try {
             $validatedData = $request->validate([
                 'fullname' => 'required|string|max:255',
-                'phone' => 'required|string|digits_between:10,12', 
+                'phone' => 'required|string|digits_between:10,14', 
             ]);
 
             $user->update($validatedData);

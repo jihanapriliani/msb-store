@@ -5,7 +5,7 @@ import { Tabs } from "flowbite-react";
 
 import TransactionCard from "@/Components/TransactionCard";
 import UserSidebar from "@/Components/UserSidebar";
-import { Link, router } from "@inertiajs/react";
+import { Link, router, usePage } from "@inertiajs/react";
 
 import { Button, Timeline } from "flowbite-react";
 import { HiArrowNarrowLeft, HiCalendar, HiPhone } from "react-icons/hi";
@@ -13,19 +13,47 @@ import { useEffect } from "react";
 
 import Select from "react-select";
 import { useForm } from "@inertiajs/react";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function UserAddressEdit({ address }) {
-    const { data, setData, post, processing, errors, reset, setError } =
-        useForm({
-            alias: address.alias,
-            province_id: address.province_id,
-            city_id: address.city_id,
-            district_id: address.district_id,
-            village_id: address.village_id,
-            zipcode: address.zipcode,
-            country: address.country,
-            address: address.address,
-        });
+    const {
+        data,
+        setData,
+        post,
+        processing,
+        errors,
+        reset,
+        setError,
+        clearErrors,
+    } = useForm({
+        alias: address.alias,
+        province_id: address.province_id,
+        city_id: address.city_id,
+        district_id: address.district_id,
+        village: address.village,
+        zipcode: address.zipcode,
+        country: address.country,
+        address: address.address,
+    });
+
+    const { flash } = usePage().props;
+    useEffect(() => {
+        if (flash.error) {
+            toast.error(flash.error, {
+                position: "top-right",
+            });
+
+            flash.error = null;
+        }
+
+        if (flash.success) {
+            toast.success(flash.success, {
+                position: "top-right",
+            });
+
+            flash.success = null;
+        }
+    }, [user, flash]);
 
     const submit = (e) => {
         e.preventDefault();
@@ -43,6 +71,11 @@ export default function UserAddressEdit({ address }) {
                     if (e.errors) {
                         setError(e.errors);
                     }
+                },
+                onSuccess: () => {
+                    console.log("success");
+                    clearErrors();
+                    reset();
                 },
             }
         );
@@ -110,6 +143,7 @@ export default function UserAddressEdit({ address }) {
 
     return (
         <GuestLayout>
+            <ToastContainer />
             <main className="container flex gap-10 my-36 min-h-[20vh]">
                 <UserSidebar />
 
@@ -164,6 +198,12 @@ export default function UserAddressEdit({ address }) {
                                 </label>
 
                                 <Select
+                                    styles={{
+                                        control: (baseStyles, state) => ({
+                                            ...baseStyles,
+                                            fontSize: "1.5rem",
+                                        }),
+                                    }}
                                     className="basic-single"
                                     classNamePrefix="select"
                                     isClearable
@@ -208,6 +248,12 @@ export default function UserAddressEdit({ address }) {
                                 </label>
 
                                 <Select
+                                    styles={{
+                                        control: (baseStyles, state) => ({
+                                            ...baseStyles,
+                                            fontSize: "1.5rem",
+                                        }),
+                                    }}
                                     className="basic-single"
                                     classNamePrefix="select"
                                     isClearable
@@ -246,6 +292,12 @@ export default function UserAddressEdit({ address }) {
                                     </label>
 
                                     <Select
+                                        styles={{
+                                            control: (baseStyles, state) => ({
+                                                ...baseStyles,
+                                                fontSize: "1.5rem",
+                                            }),
+                                        }}
                                         className="basic-single"
                                         classNamePrefix="select"
                                         isClearable
@@ -293,7 +345,7 @@ export default function UserAddressEdit({ address }) {
                                         className="form-control"
                                         id=""
                                         aria-describedby=""
-                                        value={data.village_id}
+                                        value={data.village}
                                         name="username"
                                         style={{
                                             fontSize: "1.5rem",
@@ -301,15 +353,12 @@ export default function UserAddressEdit({ address }) {
                                             padding: "0.7rem",
                                         }}
                                         onChange={(e) =>
-                                            setData(
-                                                "village_id",
-                                                e.target.value
-                                            )
+                                            setData("village", e.target.value)
                                         }
                                         placeholder=""
                                     />
                                     <p className="text-red-500">
-                                        {errors.village_id}
+                                        {errors.village}
                                     </p>
                                 </div>
 

@@ -17,7 +17,7 @@ class UserAddress extends Model
         'province_id',
         'city_id',
         'district_id',
-        'village_id',
+        'village',
         'zipcode',
         'country',
         'address',

@@ -21,6 +21,13 @@ import { useForm } from "@inertiajs/react";
 export default function Index({ user, userAddress }) {
     const { flash } = usePage().props;
 
+    const { data, setData, post, processing, errors, reset, setError } =
+        useForm({
+            email: user.email,
+            fullname: user.fullname,
+            phone: user.phone,
+        });
+
     useEffect(() => {
         if (flash.error) {
             toast.error(flash.error, {
@@ -38,13 +45,6 @@ export default function Index({ user, userAddress }) {
             flash.success = null;
         }
     }, [user, flash]);
-
-    const { data, setData, post, processing, errors, reset, setError } =
-        useForm({
-            email: user.email,
-            fullname: user.fullname,
-            phone: user.phone,
-        });
 
     const submit = (e) => {
         e.preventDefault();
@@ -183,7 +183,10 @@ export default function Index({ user, userAddress }) {
 
                 <div className="shadow-md p-6 rounded-xl w-[100%]">
                     <h3 className="text-4xl">Profil Saya</h3>
-                    <p className="text-xl text-gray-500 mt-4">
+                    <p
+                        className="text-xl text-gray-500 mt-4"
+                        style={{ fontSize: "1.75rem" }}
+                    >
                         Kelola informasi profil Anda untuk mengontrol,
                         melindungi dan mengamankan akun.
                     </p>

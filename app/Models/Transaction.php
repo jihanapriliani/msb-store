@@ -29,6 +29,7 @@ class Transaction extends Model
         'accepted_at',
         'canceled_at',
         'payment_url',
+        'address',
         'note'
     ];
 

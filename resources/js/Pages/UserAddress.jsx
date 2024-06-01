@@ -5,16 +5,35 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 import Swal from "sweetalert2";
-import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { Card, Sidebar } from "flowbite-react";
+import { toast, ToastContainer } from "react-toastify";
 
 import UserSidebar from "@/Components/UserSidebar";
 
 export default function Index({ user, addresses }) {
+    const { flash } = usePage().props;
+    useEffect(() => {
+        if (flash.error) {
+            toast.error(flash.error, {
+                position: "top-right",
+            });
+
+            flash.error = null;
+        }
+
+        if (flash.success) {
+            toast.success(flash.success, {
+                position: "top-right",
+            });
+
+            flash.success = null;
+        }
+    }, [user, flash]);
     return (
         <GuestLayout>
+            <ToastContainer />
             <main className="container flex justify-center gap-10  my-36">
                 <UserSidebar />
 
@@ -77,13 +96,29 @@ export default function Index({ user, addresses }) {
                                         </div>
                                     </Link>
 
-                                    <Link
-                                        href={route(
-                                            "profile.address.delete",
-                                            address.id
-                                        )}
-                                        method="delete"
-                                        as="button"
+                                    <button
+                                        onClick={() => {
+                                            Swal.fire({
+                                                title: "Yakin ingin menghapus alamat?",
+                                                text: "Aksi berikut tidak bisa mengembalikan data!",
+                                                icon: "warning",
+                                                showCancelButton: true,
+                                                confirmButtonColor: "#d33",
+                                                cancelButtonColor: "gray",
+                                                confirmButtonText: "Hapus!",
+                                                cancelButtonText: "Batal",
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    router.delete(
+                                                        route(
+                                                            "profile.address.delete",
+                                                            address.id
+                                                        )
+                                                    );
+                                                }
+                                            });
+                                        }}
+                                        type="button"
                                         className="inline-flex w-full items-center justify-center rounded-lg bg-gray-800 px-4 py-2.5 text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 sm:w-auto"
                                     >
                                         <div className="text-left">
@@ -94,7 +129,7 @@ export default function Index({ user, addresses }) {
                                                 Hapus
                                             </div>
                                         </div>
-                                    </Link>
+                                    </button>
                                 </div>
                             </div>
                         </Card>

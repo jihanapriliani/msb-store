@@ -2,33 +2,55 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+use Midtrans\Snap;
 
-use App\Models\Product;
 use App\Models\Cart;
+use Inertia\Inertia;
+use Midtrans\Config;
+use App\Models\Product;
+use App\Models\District;
+
+use Midtrans\Notification;
 use App\Models\Transaction;
+use App\Models\UserAddress;
+
+use Illuminate\Http\Request;
 use App\Models\TransactionDetail;
 
-use Midtrans\Config;
-use Midtrans\Snap;
-use Midtrans\Notification;
-
-use Inertia\Inertia;
-use Carbon\Carbon;
-
-use Illuminate\Support\Facades\Mail;
 use App\Mail\ProcessedNotification;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 
 class CheckoutController extends Controller
 {
     public function processPayment(Request $request) {
-
-
-        
         $user = Auth::user();
+
         
+        $address = UserAddress::findOrFail($request->user_address_id);
+        $data = District::where('district_id', $address->district_id)->first();
+        
+         $addressWithNewData = (object) [
+                    'id' => $address->id,
+                    'user_id' => $address->user_id,
+                    'province_id' => $address->province_id,
+                    'city_id' => $address->city_id,
+                    'district_id' => $address->district_id,
+                    'alias' => $address->alias,
+                    'zipcode' => $address->zipcode,
+                    'country' => $address->country,
+                    'address' => $address->address,
+                    'province' => $data["province"],
+                    'city' => $data["city"],
+                    'district' => $data["district_name"],
+                    'village' => $address->village,
+        ];
+
+        $textAddress = $address->address . ", " . $address->village . ", " . $data["district_name"] . ", " . $data["city"] . ", " . $data["province"] . ", " . $address->country . ", " . $address->zipcode;
+
+     
         // proses checkout
         $code = 'TRX'. mt_rand(0000000, 9999999);
         $carts = Cart::with(['product', 'user'])->where('user_id', Auth::user()->id)->get();
@@ -44,6 +66,7 @@ class CheckoutController extends Controller
             'code' => $code,
             'status' => 'unpaid',
             'note' => $request->note,
+            'address' => $textAddress,
             'created_at'=> Carbon::now(),
         ]);
 

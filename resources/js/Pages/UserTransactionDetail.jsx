@@ -148,12 +148,15 @@ export default function Index({ user, transaction }) {
 
                     <div className="mt-24 mb-12  w-100 p-8 px-10 border border-gray-200 shadow-sm rounded-xl">
                         <div className="text-end">
-                            <h4 className="text-3xl">JNE Express</h4>
+                            <h4 className="text-3xl">
+                                Jalur Nugraha Ekakurir (JNE)
+                            </h4>
                             <h5 className="text-2xl text-gray-600">
                                 No. Resi : {"  "}
-                                {transaction.delivery_code
+                                {transaction.delivery_code !== "-" ||
+                                !transaction.delivery_code
                                     ? transaction.delivery_code
-                                    : "Belum Ada"}
+                                    : "(Belum Ada)"}
                             </h5>
                         </div>
                         <div className="flex w-100 gap-6">
@@ -171,12 +174,7 @@ export default function Index({ user, transaction }) {
                                     {transaction.user_address.alias}
                                 </p>
                                 <p className="text-2xl text-gray-600 max-w-2xl">
-                                    {transaction.user_address.address},{" "}
-                                    {transaction.user_address.province_id},{" "}
-                                    {transaction.user_address.city_id},{" "}
-                                    {transaction.user_address.district_id},{" "}
-                                    {transaction.user_address.village_id},{" "}
-                                    {transaction.user_address.zipcode}.
+                                    {transaction.address}
                                 </p>
 
                                 <h2 className="mt-20 flex gap-2 items-center text-red-500">
@@ -194,77 +192,151 @@ export default function Index({ user, transaction }) {
                                     <Timeline.Item>
                                         <Timeline.Point icon={HiCalendar} />
                                         <Timeline.Content>
-                                            <Timeline.Title className="text-3xl">
-                                                Pesanan Dibuat
-                                            </Timeline.Title>
-                                            <Timeline.Time className="text-xl text-gray-600">
-                                                {formatDate(
-                                                    transaction.created_at
-                                                )}
-                                            </Timeline.Time>
-                                            <Timeline.Body className="text-2xl">
-                                                Pesanan Dibuat
-                                            </Timeline.Body>
+                                            {transaction.created_at ? (
+                                                <>
+                                                    <Timeline.Title className="text-3xl">
+                                                        Pesanan Dibuat
+                                                    </Timeline.Title>
+
+                                                    <Timeline.Time className="text-xl text-gray-600">
+                                                        {formatDate(
+                                                            transaction.created_at
+                                                        )}
+                                                    </Timeline.Time>
+                                                    <Timeline.Body className="text-2xl">
+                                                        Pesanan Dibuat
+                                                    </Timeline.Body>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <Timeline.Title
+                                                        className="text-3xl"
+                                                        style={{
+                                                            color: "gray",
+                                                        }}
+                                                    >
+                                                        Pesanan Dibuat
+                                                    </Timeline.Title>
+
+                                                    <Timeline.Time className="text-xl text-gray-600">
+                                                        -
+                                                    </Timeline.Time>
+                                                </>
+                                            )}
                                         </Timeline.Content>
                                     </Timeline.Item>
 
                                     <Timeline.Item>
                                         <Timeline.Point icon={HiCalendar} />
-                                        <Timeline.Content>
-                                            <Timeline.Title className="text-3xl">
-                                                Pesanan Dibayar
-                                            </Timeline.Title>
-                                            <Timeline.Time className="text-xl text-gray-600">
-                                                {transaction.processed_at
-                                                    ? formatDate(
-                                                          transaction.processed_at
-                                                      )
-                                                    : "-"}
-                                            </Timeline.Time>
-                                            <Timeline.Body className="text-2xl">
-                                                Pesanan Dibayar
-                                            </Timeline.Body>
-                                        </Timeline.Content>
+
+                                        {transaction.processed_at ? (
+                                            <>
+                                                <Timeline.Content>
+                                                    <Timeline.Title className="text-3xl">
+                                                        Pesanan Dibayar
+                                                    </Timeline.Title>
+                                                    <Timeline.Time className="text-xl text-gray-600">
+                                                        {transaction.processed_at
+                                                            ? formatDate(
+                                                                  transaction.processed_at
+                                                              )
+                                                            : "-"}
+                                                    </Timeline.Time>
+                                                    <Timeline.Body className="text-2xl">
+                                                        Pesanan Dibayar
+                                                    </Timeline.Body>
+                                                </Timeline.Content>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Timeline.Content>
+                                                    <Timeline.Title
+                                                        className="text-3xl"
+                                                        style={{
+                                                            color: "gray",
+                                                        }}
+                                                    >
+                                                        Pesanan Dibayar
+                                                    </Timeline.Title>
+                                                    <Timeline.Time className="text-xl text-gray-600">
+                                                        -
+                                                    </Timeline.Time>
+                                                </Timeline.Content>
+                                            </>
+                                        )}
                                     </Timeline.Item>
 
                                     <Timeline.Item>
                                         <Timeline.Point icon={HiCalendar} />
-                                        <Timeline.Content>
-                                            <Timeline.Title className="text-3xl">
-                                                Pesanan Dikirim
-                                            </Timeline.Title>
-                                            <Timeline.Time className="text-xl text-gray-600">
-                                                {transaction.shipped_at
-                                                    ? formatDate(
-                                                          transaction.shipped_at
-                                                      )
-                                                    : "-"}{" "}
-                                            </Timeline.Time>
-                                            <Timeline.Body className="text-2xl">
-                                                Admin telah mengatur pesanan.
-                                                Menunggu pesanan diserahkan ke
-                                                pihak jasa kirim.
-                                            </Timeline.Body>
-                                        </Timeline.Content>
+                                        {transaction.shipped_at ? (
+                                            <Timeline.Content>
+                                                <Timeline.Title className="text-3xl">
+                                                    Pesanan Dikirim
+                                                </Timeline.Title>
+                                                <Timeline.Time className="text-xl text-gray-600">
+                                                    {transaction.shipped_at
+                                                        ? formatDate(
+                                                              transaction.shipped_at
+                                                          )
+                                                        : "-"}{" "}
+                                                </Timeline.Time>
+                                                <Timeline.Body className="text-2xl">
+                                                    Admin telah mengatur
+                                                    pesanan. Menunggu pesanan
+                                                    diserahkan ke pihak jasa
+                                                    kirim.
+                                                </Timeline.Body>
+                                            </Timeline.Content>
+                                        ) : (
+                                            <Timeline.Content>
+                                                <Timeline.Title
+                                                    className="text-3xl"
+                                                    style={{
+                                                        color: "gray",
+                                                    }}
+                                                >
+                                                    Pesanan Dikirim
+                                                </Timeline.Title>
+                                                <Timeline.Time className="text-xl text-gray-600">
+                                                    -
+                                                </Timeline.Time>
+                                            </Timeline.Content>
+                                        )}
                                     </Timeline.Item>
                                     <Timeline.Item>
                                         <Timeline.Point icon={HiCalendar} />
-                                        <Timeline.Content>
-                                            <Timeline.Title className="text-3xl">
-                                                Pesanan Diterima
-                                            </Timeline.Title>
-                                            <Timeline.Time className="text-xl text-gray-600">
-                                                {transaction.accepted_at
-                                                    ? formatDate(
-                                                          transaction.accepted_at
-                                                      )
-                                                    : "-"}
-                                            </Timeline.Time>
-                                            <Timeline.Body className="text-2xl">
-                                                Pesanan telah Sampai ke Alamat
-                                                Pengguna.
-                                            </Timeline.Body>
-                                        </Timeline.Content>
+                                        {transaction.accepted_at ? (
+                                            <Timeline.Content>
+                                                <Timeline.Title className="text-3xl">
+                                                    Pesanan Diterima
+                                                </Timeline.Title>
+                                                <Timeline.Time className="text-xl text-gray-600">
+                                                    {transaction.accepted_at
+                                                        ? formatDate(
+                                                              transaction.accepted_at
+                                                          )
+                                                        : "-"}
+                                                </Timeline.Time>
+                                                <Timeline.Body className="text-2xl">
+                                                    Pesanan telah Sampai ke
+                                                    Alamat Pengguna.
+                                                </Timeline.Body>
+                                            </Timeline.Content>
+                                        ) : (
+                                            <Timeline.Content>
+                                                <Timeline.Title
+                                                    className="text-3xl"
+                                                    style={{
+                                                        color: "gray",
+                                                    }}
+                                                >
+                                                    Pesanan Diterima
+                                                </Timeline.Title>
+                                                <Timeline.Time className="text-xl text-gray-600">
+                                                    -
+                                                </Timeline.Time>
+                                            </Timeline.Content>
+                                        )}
                                     </Timeline.Item>
 
                                     {transaction.status === "canceled" && (
@@ -432,6 +504,22 @@ export default function Index({ user, transaction }) {
                             )}
                         </div>
                     </div>
+
+                    {transaction.status === "unpaid" && (
+                        <div style={{ display: "flex", justifyContent: "end" }}>
+                            <p
+                                style={{
+                                    display: "block",
+                                    fontSize: "1.5rem",
+                                    marginTop: "1rem",
+                                    color: "gray",
+                                }}
+                            >
+                                Segera lakukan pembayaran, maksimal 1 hari jika
+                                tidak pesanan akan otomatis dibatalkan!
+                            </p>
+                        </div>
+                    )}
                 </div>
             </main>
         </GuestLayout>

@@ -69,6 +69,26 @@ export default function Checkout(props) {
             });
     }, [shippingCost, selectedAddress]);
 
+    const handleOnCheckout = () => {
+        if (Object.keys(selectedAddress).length === 0) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Alamat belum dipilih!",
+            });
+        } else {
+            router.post(
+                route("checkout", {
+                    user_address_id: selectedAddress.id,
+                    total_weight: weight,
+                    total_price: subTotal,
+                    shipping_cost: shippingCost,
+                    note: note,
+                })
+            );
+        }
+    };
+
     return (
         <GuestLayout>
             <ToastContainer />
@@ -283,26 +303,18 @@ export default function Checkout(props) {
                                         </table>
                                     </div>
 
-                                    <Link
+                                    <button
                                         className="checkout__now--btn primary__btn"
-                                        type="submit"
+                                        type="button"
                                         style={{
                                             marginTop: "3rem",
                                         }}
-                                        href={route("checkout")}
-                                        method="post"
-                                        data={{
-                                            user_address_id: selectedAddress.id,
-                                            total_weight: weight,
-                                            total_price: subTotal,
-                                            shipping_cost: shippingCost,
-                                            note: note,
-                                        }}
+                                        onClick={handleOnCheckout}
                                     >
                                         <p style={{ color: "white" }}>
                                             Checkout Now
                                         </p>
-                                    </Link>
+                                    </button>
                                 </aside>
                             </div>
                         </div>

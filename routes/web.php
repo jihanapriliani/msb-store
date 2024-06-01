@@ -157,7 +157,7 @@ Route::middleware('auth')->group(function () {
                 'user' => $user,
                 'userAddress' => $user_address
             ]);
-        });
+        })->name('user.settings');
         
         Route::get('/user-transaction', function() {
             $user = Auth::user();

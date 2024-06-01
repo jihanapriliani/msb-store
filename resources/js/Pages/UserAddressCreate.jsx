@@ -5,7 +5,7 @@ import { Tabs } from "flowbite-react";
 
 import TransactionCard from "@/Components/TransactionCard";
 import UserSidebar from "@/Components/UserSidebar";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 
 import { Button, Timeline } from "flowbite-react";
 import { HiArrowNarrowLeft, HiCalendar, HiPhone } from "react-icons/hi";
@@ -13,20 +13,47 @@ import { useEffect } from "react";
 
 import Select from "react-select";
 import { useForm } from "@inertiajs/react";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function UserAddressCreate() {
-    const { data, setData, post, processing, errors, reset, setError } =
-        useForm({
-            alias: "",
-            province_id: "",
-            city_id: "",
-            district_id: "",
-            village: "",
-            phone: "",
-            zipcode: "",
-            country: "Indonesia",
-            address: "",
-        });
+    const { flash } = usePage().props;
+    useEffect(() => {
+        if (flash.error) {
+            toast.error(flash.error, {
+                position: "top-right",
+            });
+
+            flash.error = null;
+        }
+
+        if (flash.success) {
+            toast.success(flash.success, {
+                position: "top-right",
+            });
+
+            flash.success = null;
+        }
+    }, [user, flash]);
+    const {
+        data,
+        setData,
+        post,
+        processing,
+        errors,
+        reset,
+        setError,
+        clearErrors,
+    } = useForm({
+        alias: "",
+        province_id: "",
+        city_id: "",
+        district_id: "",
+        village: "",
+        phone: "",
+        zipcode: "",
+        country: "Indonesia",
+        address: "",
+    });
 
     const submit = (e) => {
         e.preventDefault();
@@ -35,12 +62,11 @@ export default function UserAddressCreate() {
             forceFormData: true,
             onError: (e) => {
                 console.log(e);
-                if (e.errors) {
-                    setError(e.errors);
-                }
+                setError(e);
             },
             onSuccess: () => {
                 reset();
+                clearErrors();
             },
         });
     };
@@ -107,6 +133,7 @@ export default function UserAddressCreate() {
 
     return (
         <GuestLayout>
+            <ToastContainer />
             <main className="container flex gap-10 my-36 min-h-[20vh]">
                 <UserSidebar />
 
@@ -128,7 +155,7 @@ export default function UserAddressCreate() {
                             <div className="mb-3">
                                 <label
                                     htmlFor="exampleInputEmail1"
-                                    className="form-label text-2xl text-gray-600"
+                                    className="form-label text-2xl text-gray-600 mb-3"
                                 >
                                     Alias
                                 </label>
@@ -160,6 +187,12 @@ export default function UserAddressCreate() {
                                 </label>
 
                                 <Select
+                                    styles={{
+                                        control: (baseStyles, state) => ({
+                                            ...baseStyles,
+                                            fontSize: "1.5rem",
+                                        }),
+                                    }}
                                     className="basic-single"
                                     classNamePrefix="select"
                                     isClearable
@@ -204,6 +237,12 @@ export default function UserAddressCreate() {
                                 </label>
 
                                 <Select
+                                    styles={{
+                                        control: (baseStyles, state) => ({
+                                            ...baseStyles,
+                                            fontSize: "1.5rem",
+                                        }),
+                                    }}
                                     className="basic-single"
                                     classNamePrefix="select"
                                     isClearable
@@ -242,6 +281,12 @@ export default function UserAddressCreate() {
                                     </label>
 
                                     <Select
+                                        styles={{
+                                            control: (baseStyles, state) => ({
+                                                ...baseStyles,
+                                                fontSize: "1.5rem",
+                                            }),
+                                        }}
                                         className="basic-single"
                                         classNamePrefix="select"
                                         isClearable
