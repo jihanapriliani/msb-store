@@ -21,7 +21,7 @@ export default function UserAddressEdit({ address }) {
             province_id: address.province_id,
             city_id: address.city_id,
             district_id: address.district_id,
-            village_id: address.village_id,
+            village: address.village,
             zipcode: address.zipcode,
             country: address.country,
             address: address.address,
@@ -293,7 +293,7 @@ export default function UserAddressEdit({ address }) {
                                         className="form-control"
                                         id=""
                                         aria-describedby=""
-                                        value={data.village_id}
+                                        value={data.village}
                                         name="username"
                                         style={{
                                             fontSize: "1.5rem",
@@ -301,15 +301,12 @@ export default function UserAddressEdit({ address }) {
                                             padding: "0.7rem",
                                         }}
                                         onChange={(e) =>
-                                            setData(
-                                                "village_id",
-                                                e.target.value
-                                            )
+                                            setData("village", e.target.value)
                                         }
                                         placeholder=""
                                     />
                                     <p className="text-red-500">
-                                        {errors.village_id}
+                                        {errors.village}
                                     </p>
                                 </div>
 

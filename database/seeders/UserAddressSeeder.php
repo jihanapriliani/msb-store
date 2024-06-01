@@ -21,14 +21,12 @@ class UserAddressSeeder extends Seeder
             'user_id' => User::where('fullname', 'Superadmin')->first()->id,
             'province_id' => 1, 
             'city_id' => 1, 
-            'district_id' => 1, 
-            'village_id' => 1, 
+            'district_id' => 1,
+            'village' => 1, 
             'alias' => 'Rumah Superadmin',
             'zipcode' => 12345,
             'country' => 'Indonesia',
             'address' => 'Jalan Contoh No. 123',
-            'lat' => -6.123456, 
-            'long' => 106.123456,
         ]);
 
         // Admin Address
@@ -36,14 +34,12 @@ class UserAddressSeeder extends Seeder
             'user_id' => User::where('fullname', 'admin')->first()->id,
             'province_id' => 1, 
             'city_id' => 1, 
-            'district_id' => 1, 
-            'village_id' => 1, 
+            'district_id' => 1,
+            'village' => 1, 
             'alias' => 'Rumah Admin',
             'zipcode' => 12345,
             'country' => 'Indonesia',
             'address' => 'Jalan Contoh No. 123',
-            'lat' => -6.123456, 
-            'long' => 106.123456,
         ]);
 
         // Jihan Address
@@ -51,14 +47,12 @@ class UserAddressSeeder extends Seeder
             'user_id' => User::where('fullname', 'Jihan')->first()->id,
             'province_id' => 1, 
             'city_id' => 1, 
-            'district_id' => 1, 
-            'village_id' => 1, 
+            'district_id' => 1,
+            'village' => 1, 
             'alias' => 'Rumah Jihan',
             'zipcode' => 12345,
             'country' => 'Indonesia',
             'address' => 'Jalan Contoh No. 123',
-            'lat' => -6.123456, 
-            'long' => 106.123456,
         ]);
 
         // Nisa Address
@@ -66,14 +60,12 @@ class UserAddressSeeder extends Seeder
             'user_id' => User::where('fullname', 'Nisa')->first()->id,
             'province_id' => 1, 
             'city_id' => 1, 
-            'district_id' => 1, 
-            'village_id' => 1, 
+            'district_id' => 1,
+            'village' => 1, 
             'alias' => 'Rumah Nisa',
             'zipcode' => 12345,
             'country' => 'Indonesia',
             'address' => 'Jalan Contoh No. 123',
-            'lat' => -6.123456, 
-            'long' => 106.123456,
         ]);
 
         // Diba Address
@@ -81,14 +73,12 @@ class UserAddressSeeder extends Seeder
             'user_id' => User::where('fullname', 'Diba')->first()->id,
             'province_id' => 1, 
             'city_id' => 1, 
-            'district_id' => 1, 
-            'village_id' => 1, 
+            'district_id' => 1,
+            'village' => 1, 
             'alias' => 'Rumah Diba',
             'zipcode' => 12345,
             'country' => 'Indonesia',
             'address' => 'Jalan Contoh No. 123',
-            'lat' => -6.123456, 
-            'long' => 106.123456,
         ]);
 
         // Bijar Address
@@ -96,14 +86,12 @@ class UserAddressSeeder extends Seeder
             'user_id' => User::where('fullname', 'Bijar')->first()->id,
             'province_id' => 1, 
             'city_id' => 1, 
-            'district_id' => 1, 
-            'village_id' => 1, 
+            'district_id' => 1,
+            'village' => 1, 
             'alias' => 'Rumah Bijar',
             'zipcode' => 12345,
             'country' => 'Indonesia',
             'address' => 'Jalan Contoh No. 123',
-            'lat' => -6.123456, 
-            'long' => 106.123456,
         ]);
 
         // Ikhsan Address
@@ -111,14 +99,12 @@ class UserAddressSeeder extends Seeder
             'user_id' => User::where('fullname', 'Ikhsan')->first()->id,
             'province_id' => 1, 
             'city_id' => 1, 
-            'district_id' => 1, 
-            'village_id' => 1, 
+            'district_id' => 1,
+            'village' => 1, 
             'alias' => 'Rumah Ikhsan',
             'zipcode' => 12345,
             'country' => 'Indonesia',
             'address' => 'Jalan Contoh No. 123',
-            'lat' => -6.123456, 
-            'long' => 106.123456,
         ]);
     }
 }

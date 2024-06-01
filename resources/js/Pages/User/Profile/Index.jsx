@@ -227,7 +227,7 @@ export default function Edit(props) {
                                         </h3>
 
                                         <Link
-                                            href="/dashboard/user/profile/create-address"
+                                            href={route("profile.address.create")}
                                             className="btn btn-primary"
                                         >
                                             Tambah Alamat
