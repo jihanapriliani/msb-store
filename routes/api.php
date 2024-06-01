@@ -151,6 +151,35 @@ Route::post('/change-password', function(Request $request) {
     }
 });
 
+
+Route::post('/cart-total', function(Request $request) {
+    try {
+
+        $cartCount = 0;
+        $cartTotalAmount = 0;
+        if ($request->params['user_id']) {
+            $cartCount = Cart::where('user_id', $request->params['user_id'])->count();
+            $cartTotalAmount = Cart::where('user_id',  $request->params['user_id'])->sum('amount');
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'cart total amout',
+            'data'    => [
+                'cartTotal' => $cartCount,
+                'cartTotalAmount' => $cartTotalAmount
+            ]
+        ]);
+
+    } catch(\Throwable $th) {
+        return response()->json([
+            'success' => false,
+            'message' => $th->getMessage(),
+            'data'    => []
+        ]);
+    }
+});
+
 // Route::post('/get-products-by-category', function(Request $request) {
 //     $selectedCategoryIds = array_map(function($category) {
 //         return $category['id'];

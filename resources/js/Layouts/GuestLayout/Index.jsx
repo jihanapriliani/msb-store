@@ -1,12 +1,32 @@
 import ApplicationLogo from "@/Components/ApplicationLogo";
-import { Link, router } from "@inertiajs/react";
+import { Link, router, usePage } from "@inertiajs/react";
 import { useState } from "react";
 
 import "../../../assets/guest-layout/css/style.css";
 import "../../../assets/guest-layout/css/custom.css";
 import "../../../assets/guest-layout/css/vendor/bootstrap.min.css";
+import { useEffect } from "react";
+import axios from "axios";
 
 export default function Guest({ children, setIsLoading }) {
+    const user = usePage().props.auth.user;
+
+    const [cartTotal, setCartTotal] = useState(0);
+
+    useEffect(() => {
+        if (user) {
+            axios
+                .post("/api/cart-total", {
+                    params: {
+                        user_id: user.id,
+                    },
+                })
+                .then(async (res) => {
+                    setCartTotal(await res.data.data.cartTotalAmount);
+                });
+        }
+    }, [cartTotal]);
+
     const [search, setSearch] = useState(
         new URLSearchParams(window.location.search).get("search") || ""
     );
@@ -276,35 +296,57 @@ export default function Guest({ children, setIsLoading }) {
 
                             <div className="header__account header__sticky--none">
                                 <ul className="header__account--wrapper d-flex align-items-center">
-                                    <li className="header__account--items d-none d-lg-block">
-                                        <Link
-                                            className="header__account--btn"
-                                            href="/dashboard"
-                                        >
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="24"
-                                                height="24"
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                strokeWidth="2"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                className=" -user"
+                                    {/* ICON KE DASHBOARD */}
+
+                                    {user ? (
+                                        <li className="header__account--items d-none d-lg-block">
+                                            <Link
+                                                className="header__account--btn"
+                                                href="/dashboard"
                                             >
-                                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                                <circle
-                                                    cx="12"
-                                                    cy="7"
-                                                    r="4"
-                                                ></circle>
-                                            </svg>
-                                            <span className="visually-hidden">
-                                                My account
-                                            </span>
-                                        </Link>
-                                    </li>
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="24"
+                                                    height="24"
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    strokeWidth="2"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    className=" -user"
+                                                >
+                                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                                    <circle
+                                                        cx="12"
+                                                        cy="7"
+                                                        r="4"
+                                                    ></circle>
+                                                </svg>
+                                                <span className="visually-hidden">
+                                                    My account
+                                                </span>
+                                            </Link>
+                                        </li>
+                                    ) : (
+                                        <li>
+                                            <Link>
+                                                <span
+                                                    className=""
+                                                    style={{
+                                                        padding: "1rem 2rem",
+                                                        background: "black",
+                                                        color: "white",
+                                                        fontSize: "1.5rem",
+                                                        borderRadius: "10px",
+                                                    }}
+                                                >
+                                                    Login
+                                                </span>
+                                            </Link>
+                                        </li>
+                                    )}
+
                                     <li className="header__account--items  header__account--search__items mobile__d--block d-sm-2-none">
                                         <Link
                                             className="header__account--btn search__open--btn"
@@ -340,7 +382,10 @@ export default function Guest({ children, setIsLoading }) {
                                         </Link>
                                     </li>
 
-                                    <li className="header__account--items header__minicart--items">
+                                    <li
+                                        className="header__account--items header__minicart--items"
+                                        style={{ position: "relative" }}
+                                    >
                                         <Link
                                             className="header__account--btn minicart__open--btn"
                                             href="/cart"
@@ -375,6 +420,25 @@ export default function Guest({ children, setIsLoading }) {
                                                     </g>
                                                 </g>
                                             </svg>
+
+                                            <p
+                                                style={{
+                                                    background: "red",
+                                                    width: "2rem",
+                                                    height: "2rem",
+                                                    display: "flex",
+                                                    justifyContent: "center",
+                                                    alignItems: "center",
+                                                    color: "white",
+                                                    borderRadius: "50%",
+                                                    position: "absolute",
+                                                    right: "-12px",
+                                                    bottom: "-7px",
+                                                    opacity: "0.7",
+                                                }}
+                                            >
+                                                {cartTotal}
+                                            </p>
                                         </Link>
                                     </li>
                                 </ul>
@@ -1360,7 +1424,11 @@ export default function Guest({ children, setIsLoading }) {
                                         <li className="footer__widget--menu__list">
                                             <Link
                                                 className="footer__widget--menu__text"
-                                                href="my-account.html"
+                                                href={
+                                                    user
+                                                        ? "/dashboard"
+                                                        : "/login"
+                                                }
                                             >
                                                 My Account
                                             </Link>
@@ -1368,7 +1436,7 @@ export default function Guest({ children, setIsLoading }) {
                                         <li className="footer__widget--menu__list">
                                             <Link
                                                 className="footer__widget--menu__text"
-                                                href="cart.html"
+                                                href="/cart"
                                             >
                                                 Shopping Cart
                                             </Link>
@@ -1376,7 +1444,11 @@ export default function Guest({ children, setIsLoading }) {
                                         <li className="footer__widget--menu__list">
                                             <Link
                                                 className="footer__widget--menu__text"
-                                                href="cart.html"
+                                                href={
+                                                    user
+                                                        ? "/dashboard"
+                                                        : "/login"
+                                                }
                                             >
                                                 Login
                                             </Link>
@@ -1384,7 +1456,11 @@ export default function Guest({ children, setIsLoading }) {
                                         <li className="footer__widget--menu__list">
                                             <Link
                                                 className="footer__widget--menu__text"
-                                                href="login.html"
+                                                href={
+                                                    user
+                                                        ? "/dashboard"
+                                                        : "/register"
+                                                }
                                             >
                                                 Register
                                             </Link>
@@ -1392,7 +1468,11 @@ export default function Guest({ children, setIsLoading }) {
                                         <li className="footer__widget--menu__list">
                                             <Link
                                                 className="footer__widget--menu__text"
-                                                href="checkout.html"
+                                                href={
+                                                    user
+                                                        ? "/checkout"
+                                                        : "/login"
+                                                }
                                             >
                                                 Checkout
                                             </Link>
@@ -1426,7 +1506,7 @@ export default function Guest({ children, setIsLoading }) {
                                         <li className="footer__widget--menu__list">
                                             <Link
                                                 className="footer__widget--menu__text"
-                                                href="contact.html"
+                                                href="/"
                                             >
                                                 Contact Us
                                             </Link>
@@ -1434,7 +1514,7 @@ export default function Guest({ children, setIsLoading }) {
                                         <li className="footer__widget--menu__list">
                                             <Link
                                                 className="footer__widget--menu__text"
-                                                href="about.html"
+                                                href="/"
                                             >
                                                 About Us
                                             </Link>
@@ -1443,7 +1523,7 @@ export default function Guest({ children, setIsLoading }) {
                                         <li className="footer__widget--menu__list">
                                             <Link
                                                 className="footer__widget--menu__text"
-                                                href="privacy-policy.html"
+                                                href="/"
                                             >
                                                 Privacy Policy
                                             </Link>
@@ -1451,7 +1531,7 @@ export default function Guest({ children, setIsLoading }) {
                                         <li className="footer__widget--menu__list">
                                             <Link
                                                 className="footer__widget--menu__text"
-                                                href="faq.html"
+                                                href="/"
                                             >
                                                 Frequently
                                             </Link>
@@ -1485,7 +1565,7 @@ export default function Guest({ children, setIsLoading }) {
                                         <li className="footer__widget--menu__list">
                                             <Link
                                                 className="footer__widget--menu__text"
-                                                href=" "
+                                                href="/shop"
                                             >
                                                 Products
                                             </Link>
@@ -1494,7 +1574,7 @@ export default function Guest({ children, setIsLoading }) {
                                         <li className="footer__widget--menu__list">
                                             <Link
                                                 className="footer__widget--menu__text"
-                                                href=" "
+                                                href="/shop"
                                             >
                                                 Search
                                             </Link>

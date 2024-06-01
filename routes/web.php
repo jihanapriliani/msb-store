@@ -48,10 +48,11 @@ Route::get('/', function () {
     $user = Auth::user();    
     $products = Product::with('images')->take(8)->get();
     $categories = Category::take(10)->get();
+
     return Inertia::render('LandingPage', [
         'products' => $products,
         'categories' => $categories,
-        'user' => $user
+        'user' => $user,
     ]);
 })->name('landing-page');
 
