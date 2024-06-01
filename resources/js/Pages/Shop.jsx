@@ -227,6 +227,26 @@ export default function LandingPage({ categories, products, user }) {
         }
     };
 
+    const handleResetFilter = () => {
+        const url = new URL(window.location.href);
+        url.searchParams.delete("startPrice");
+        url.searchParams.delete("endPrice");
+
+        setStartPrice("");
+        setEndPrice("");
+
+        setIsLoading(true);
+        if (window.location.href.toString() !== url.toString()) {
+            window.history.replaceState(null, "", url.toString());
+            router.reload({
+                only: ["products"],
+                onFinish: () => {
+                    setIsLoading(false);
+                },
+            });
+        }
+    };
+
     return (
         <GuestLayout setIsLoading={setIsLoading}>
             <main class="main__content_wrapper">
@@ -403,25 +423,28 @@ export default function LandingPage({ categories, products, user }) {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <button
-                                                className="primary__btn price__filter--btn"
-                                                type="button"
-                                                onClick={handlePriceFilter}
-                                            >
-                                                Filter
-                                            </button>
+                                            <div className="flex justify-between">
+                                                <button
+                                                    className="primary__btn price__filter--btn"
+                                                    type="button"
+                                                    onClick={handlePriceFilter}
+                                                >
+                                                    Filter
+                                                </button>
 
-                                            {/* <button
-                                                className="primary__btn price__filter--btn"
-                                                style={{
-                                                    backgroundColor: "black",
-                                                    marginLeft: "1rem",
-                                                }}
-                                                type="button"
-                                                onClick={handlePriceFilter}
-                                            >
-                                                Reset
-                                            </button> */}
+                                                <button
+                                                    className="primary__btn price__filter--btn"
+                                                    style={{
+                                                        backgroundColor:
+                                                            "black",
+                                                        marginLeft: "1rem",
+                                                    }}
+                                                    type="button"
+                                                    onClick={handleResetFilter}
+                                                >
+                                                    Reset
+                                                </button>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
