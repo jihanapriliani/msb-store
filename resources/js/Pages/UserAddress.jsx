@@ -10,14 +10,9 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { Card, Sidebar } from "flowbite-react";
 
-import { Tabs } from "flowbite-react";
 import UserSidebar from "@/Components/UserSidebar";
 
-import { Button, Checkbox, Label, TextInput } from "flowbite-react";
-import InputError from "@/Components/InputError";
-
 export default function Index({ user, addresses }) {
-    console.log("ISI DARI DAFTAR USER", addresses);
     return (
         <GuestLayout>
             <main className="container flex justify-center gap-10  my-36">
@@ -25,7 +20,10 @@ export default function Index({ user, addresses }) {
 
                 <div className="p-6 w-[100%]">
                     <h3 className="text-4xl">Alamat Saya</h3>
-                    <p className="text-xl text-gray-500 mt-4">
+                    <p
+                        className="text-xl text-gray-500 mt-4"
+                        style={{ fontSize: "1.5rem" }}
+                    >
                         Kelola informasi alamat anda untuk mengontrol dan
                         memudahkan proses transaksi.
                     </p>
@@ -37,7 +35,12 @@ export default function Index({ user, addresses }) {
                             href="/user-address/create"
                             className="bg-red-600 px-5 py-3 rounded-lg"
                         >
-                            <p className="text-white text-xl">Tambah Alamat</p>
+                            <p
+                                className="text-white text-xl"
+                                style={{ fontSize: "1.75rem" }}
+                            >
+                                Tambah Alamat
+                            </p>
                         </Link>
                     </div>
 
@@ -48,10 +51,13 @@ export default function Index({ user, addresses }) {
                             </h5>
 
                             <div className="flex justify-between">
-                                <p className="mb-5 text-base text-gray-500 dark:text-gray-400 sm:text-lg">
-                                    {address.address}, {address.province_id},{" "}
-                                    {address.city_id}, {address.district_id},{" "}
-                                    {address.village_id}, {address.zipcode}.
+                                <p
+                                    className="mb-5 text-base text-gray-500 dark:text-gray-400"
+                                    style={{ fontSize: "1.7rem" }}
+                                >
+                                    {address.address}, {address.province},{" "}
+                                    {address.city}, {address.district},{" "}
+                                    {address.village}, {address.zipcode}.
                                 </p>
                                 <div className="items-center justify-center space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
                                     <Link
@@ -62,7 +68,10 @@ export default function Index({ user, addresses }) {
                                         className="inline-flex w-full items-center justify-center rounded-lg bg-gray-800 px-4 py-2.5 text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 sm:w-auto"
                                     >
                                         <div className="text-left">
-                                            <div className="-mt-1 font-sans text-sm font-semibold">
+                                            <div
+                                                className="-mt-1 font-sans text-sm font-semibold"
+                                                style={{ fontSize: "1.5rem" }}
+                                            >
                                                 Ubah
                                             </div>
                                         </div>
@@ -78,7 +87,10 @@ export default function Index({ user, addresses }) {
                                         className="inline-flex w-full items-center justify-center rounded-lg bg-gray-800 px-4 py-2.5 text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 sm:w-auto"
                                     >
                                         <div className="text-left">
-                                            <div className="-mt-1 font-sans text-sm font-semibold">
+                                            <div
+                                                className="-mt-1 font-sans text-sm font-semibold"
+                                                style={{ fontSize: "1.5rem" }}
+                                            >
                                                 Hapus
                                             </div>
                                         </div>

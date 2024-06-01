@@ -12,9 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('user_addresses', function (Blueprint $table) {
-            $table->renameColumn('regency_id', 'district_id');
-
-            $table->string('village_id')->nullable()->after('city_id');
+            $table->renameColumn('village_id', 'village');
         });
     }
 
@@ -24,8 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('user_addresses', function (Blueprint $table) {
-            $table->dropColumn('village_id');
-            $table->renameColumn('district_id', 'regency_id');
+            $table->renameColumn('village', 'village_id');
         });
     }
 };

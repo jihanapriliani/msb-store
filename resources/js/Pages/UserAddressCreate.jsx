@@ -21,7 +21,7 @@ export default function UserAddressCreate() {
             province_id: "",
             city_id: "",
             district_id: "",
-            village_id: "",
+            village: "",
             phone: "",
             zipcode: "",
             country: "Indonesia",
@@ -289,7 +289,7 @@ export default function UserAddressCreate() {
                                         className="form-control"
                                         id=""
                                         aria-describedby=""
-                                        value={data.village_id}
+                                        value={data.village}
                                         name="username"
                                         style={{
                                             fontSize: "1.5rem",
@@ -297,15 +297,12 @@ export default function UserAddressCreate() {
                                             padding: "0.7rem",
                                         }}
                                         onChange={(e) =>
-                                            setData(
-                                                "village_id",
-                                                e.target.value
-                                            )
+                                            setData("village", e.target.value)
                                         }
                                         placeholder=""
                                     />
                                     <p className="text-red-500">
-                                        {errors.village_id}
+                                        {errors.village}
                                     </p>
                                 </div>
 

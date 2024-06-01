@@ -22,6 +22,7 @@ use Inertia\Inertia;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Cart;
+use App\Models\District;
 use App\Models\UserAddress;
 use App\Models\Transaction;
 
@@ -186,11 +187,35 @@ Route::middleware('auth')->group(function () {
             $user = Auth::user();
             
             $addresses = UserAddress::where('user_id', $user->id)->get();
+
+            $userAddresses = [];
+            foreach ($addresses as $address) {
+                $data = District::where('district_id', $address->district_id)->first();
+        
+                $addressWithNewData = (object) [
+                    'id' => $address->id,
+                    'user_id' => $address->user_id,
+                    'province_id' => $address->province_id,
+                    'city_id' => $address->city_id,
+                    'district_id' => $address->district_id,
+                    'alias' => $address->alias,
+                    'zipcode' => $address->zipcode,
+                    'country' => $address->country,
+                    'address' => $address->address,
+                    'province' => $data["province"],
+                    'city' => $data["city"],
+                    'district' => $data["district_name"],
+                    'village' => $address->village,
+                ];
+    
+                
+                $userAddresses[] = $addressWithNewData;
+            }
         
            
             return Inertia::render('UserAddress', [
                 'user' => $user,
-                'addresses' => $addresses
+                'addresses' => $userAddresses
             ]);
         })->name('user.address');
         

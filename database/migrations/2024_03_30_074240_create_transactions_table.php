@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer("shipping_cost");
             $table->string("delivery_code");
             $table->string('code');
+            $table->text('address');
             $table->date("processed_at")->nullable();
             $table->date("shipped_at")->nullable();
             $table->date("accepted_at")->nullable();

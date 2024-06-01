@@ -21,8 +21,6 @@ return new class extends Migration
             $table->integer("zipcode");
             $table->string("country");
             $table->string("address");
-            $table->double('lat');
-            $table->double('long');
             $table->softDeletes();
             $table->timestamps();
         });

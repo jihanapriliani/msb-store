@@ -330,7 +330,7 @@ export default function Guest({ children, setIsLoading }) {
                                         </li>
                                     ) : (
                                         <li>
-                                            <Link>
+                                            <Link href="/login">
                                                 <span
                                                     className=""
                                                     style={{
