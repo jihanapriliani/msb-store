@@ -159,7 +159,7 @@ export default function DetailProduct({ product, user, productCart }) {
                                         <div className="product__variant--list mb-15">
                                             <div className="product__details--info__meta">
                                                 <p className="product__details--info__meta--list">
-                                                    <strong>Stock:</strong>{" "}
+                                                    <strong>Stok :</strong>{" "}
                                                     <span>{product.stock}</span>{" "}
                                                 </p>
                                             </div>
@@ -302,7 +302,7 @@ export default function DetailProduct({ product, user, productCart }) {
                                                         )
                                                     }
                                                 >
-                                                    Buy it now
+                                                    Beli Sekarang!
                                                 </button>
                                             </div>
                                         </div>
@@ -323,7 +323,7 @@ export default function DetailProduct({ product, user, productCart }) {
                                         data-toggle="tab"
                                         data-target="#description"
                                     >
-                                        Description
+                                        Deskripsi Produk
                                     </li>
                                 </ul>
                                 <div className="product__details--tab__inner border-radius-10">
