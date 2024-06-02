@@ -90,7 +90,11 @@ export default function Checkout(props) {
                     onSuccess: () => {
                         console.log("success");
                         reset();
-                        setFormAddress({ show: false, mode: "create", data: defaultFormAddress });
+                        setFormAddress({
+                            show: false,
+                            mode: "create",
+                            data: defaultFormAddress,
+                        });
                         setFormAddress({
                             show: false,
                             mode: "create",
@@ -117,7 +121,11 @@ export default function Checkout(props) {
                     onSuccess: () => {
                         console.log("success");
                         reset();
-                        setFormAddress({ show: false, mode: "create", data: defaultFormAddress });
+                        setFormAddress({
+                            show: false,
+                            mode: "create",
+                            data: defaultFormAddress,
+                        });
                     },
                 }
             );
@@ -195,7 +203,6 @@ export default function Checkout(props) {
             return acc + currTotal;
         }, 0);
         setWeight(totalWeight * 1000);
-
     }, []);
 
     useEffect(() => {
@@ -210,14 +217,14 @@ export default function Checkout(props) {
 
         if (Object.keys(selectedAddress).length > 0) {
             axios
-            .post("/api/get-shipping-cost", { params: requestData })
-            .then((response) => {
-                setLoadAddress(false);
-                setShippingCost(response.data[0].costs[0].cost[0].value);
-            })
-            .catch((error) => {
-                console.error(error.message);
-            });
+                .post("/api/get-shipping-cost", { params: requestData })
+                .then((response) => {
+                    setLoadAddress(false);
+                    setShippingCost(response.data[0].costs[0].cost[0].value);
+                })
+                .catch((error) => {
+                    console.error(error.message);
+                });
         }
     }, [shippingCost, selectedAddress]);
 
@@ -924,6 +931,7 @@ export default function Checkout(props) {
                                             marginTop: "3rem",
                                         }}
                                         onClick={handleOnCheckout}
+                                        disabled={loadAddress}
                                     >
                                         <p style={{ color: "white" }}>
                                             Checkout Now
