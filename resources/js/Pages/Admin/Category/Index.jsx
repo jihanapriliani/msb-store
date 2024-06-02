@@ -25,7 +25,7 @@ export default function Index(props) {
 
             flash.success = null;
         }
-    }, [categories]);
+    }, [flash]);
 
     const handleDelete = (e, id) => {
         Swal.fire({
