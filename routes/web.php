@@ -118,12 +118,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('/', function() {
                     return Inertia::render('User/Dashboard/Index');
                 })->name('dashboard.user');  
-
-                Route::resource('transactions', UserTransactionController::class);
-                Route::put('/transactions/{id}/cancel', [UserTransactionController::class, 'cancel'])->name('transactions.cancel');
                 
-            
-
                 Route::prefix('profile')->name('profile.')->group(function() {
                     Route::get('/', [UserProfileController::class, 'index'])->name('index');
                     Route::get('/address/create', [UserProfileController::class,'createAddress'])->name('address.create');
@@ -144,11 +139,6 @@ Route::middleware('auth')->group(function () {
         Route::delete('/cart/{id}', [UserCartController::class, 'destroy'])->name('user.cart.destroy');
         Route::delete('/cart', [UserCartController::class, 'clear'])->name('user.cart.clear');
 
-        Route::get('/checkout', [UserCartController::class, 'checkout'])->name('user.cart.checkout');
-
-        Route::get('/transactions/{id}/invoice', [UserTransactionController::class, 'invoice'])->name('transactions.invoice');
-
-
         Route::get('/user-settings', function() {
             $user = Auth::user();
             
@@ -159,85 +149,91 @@ Route::middleware('auth')->group(function () {
                 'userAddress' => $user_address
             ]);
         })->name('user.settings');
-        
-        Route::get('/user-transaction', function() {
-            $user = Auth::user();
-            
-            $transactions = Transaction::where('user_id', $user->id)->with('transaction_details.product.images')->get();
-           
-        
-            return Inertia::render('UserTransaction', [
-                'user' => $user,
-                'transactions' => $transactions
-            ]);
-        });
-        
-        Route::get('/user-transaction/{id}', function(string $id) {
-            $user = Auth::user();
-            
-            $transaction = Transaction::where('code', $id)->with('transaction_details.product.images', 'user_address')->first();
-        
-           
-            return Inertia::render('UserTransactionDetail', [
-                'user' => $user,
-                'transaction' => $transaction
-            ]);
-        });
-        Route::get('/user-address', function () {
-            $user = Auth::user();
-
-            $addresses = UserAddress::where('user_id', $user->id)->get();
-
-            $userAddresses = [];
-            foreach ($addresses as $address) {
-                $data = District::where('district_id', $address->district_id)->first();
-
-                $addressWithNewData = (object) [
-                    'id' => $address->id,
-                    'user_id' => $address->user_id,
-                    'province_id' => $address->province_id,
-                    'city_id' => $address->city_id,
-                    'district_id' => $address->district_id,
-                    'alias' => $address->alias,
-                    'zipcode' => $address->zipcode,
-                    'country' => $address->country,
-                    'address' => $address->address,
-                    'province' => $data["province"],
-                    'city' => $data["city"],
-                    'district' => $data["district_name"],
-                    'village' => $address->village,
-                ];
-
-
-                $userAddresses[] = $addressWithNewData;
-            }
-
-
-            return Inertia::render('UserAddress', [
-                'user' => $user,
-                'addresses' => $userAddresses
-            ]);
-        })->name('user.address');
-
-        Route::get('/user-address/create', function () {
-            return Inertia::render('UserAddressCreate');
-        });
-
-        Route::get('/user-address/edit', function () {
-            return Inertia::render('UserAddressEdit');
-        });
 
         Route::middleware(['auth:sanctum', 'verified'])->group(function () {
             // Taruh sini untuk route yang perlu verifikasi terlebih dahulu
 
+            Route::resource('transactions', UserTransactionController::class);
+            Route::put('/transactions/{id}/cancel', [UserTransactionController::class, 'cancel'])->name('transactions.cancel');
+
+            Route::get('/checkout', [UserCartController::class, 'checkout'])->name('user.cart.checkout');
+
+            Route::get('/transactions/{id}/invoice', [UserTransactionController::class, 'invoice'])->name('transactions.invoice');
+            Route::get('/user-transaction', function () {
+                $user = Auth::user();
+
+                $transactions = Transaction::where('user_id', $user->id)->with('transaction_details.product.images')->get();
+
+
+                return Inertia::render('UserTransaction', [
+                    'user' => $user,
+                    'transactions' => $transactions
+                ]);
+            });
+
+            Route::get('/user-transaction/{id}', function (string $id) {
+                $user = Auth::user();
+
+                $transaction = Transaction::where('code', $id)->with('transaction_details.product.images', 'user_address')->first();
+
+
+                return Inertia::render('UserTransactionDetail', [
+                    'user' => $user,
+                    'transaction' => $transaction
+                ]);
+            });
+            Route::get('/user-address', function () {
+                $user = Auth::user();
+
+                $addresses = UserAddress::where('user_id', $user->id)->get();
+
+                $userAddresses = [];
+                foreach ($addresses as $address) {
+                    $data = District::where('district_id', $address->district_id)->first();
+
+                    $addressWithNewData = (object) [
+                        'id' => $address->id,
+                        'user_id' => $address->user_id,
+                        'province_id' => $address->province_id,
+                        'city_id' => $address->city_id,
+                        'district_id' => $address->district_id,
+                        'alias' => $address->alias,
+                        'zipcode' => $address->zipcode,
+                        'country' => $address->country,
+                        'address' => $address->address,
+                        'province' => $data["province"],
+                        'city' => $data["city"],
+                        'district' => $data["district_name"],
+                        'village' => $address->village,
+                    ];
+
+
+                    $userAddresses[] = $addressWithNewData;
+                }
+
+
+                return Inertia::render('UserAddress', [
+                    'user' => $user,
+                    'addresses' => $userAddresses
+                ]);
+            })->name('user.address');
+
+            Route::get('/user-address/create', function () {
+                return Inertia::render('UserAddressCreate');
+            });
+
+            Route::get('/user-address/edit', function () {
+                return Inertia::render('UserAddressEdit');
+            });
+
+            Route::post('/checkout', [CheckoutController::class, 'processPayment'])->name('checkout');
+            Route::get('/invoice/{id}', [CheckoutController::class, 'invoice'])->name('invoice');
         });
         
        
     });
 });
 
-Route::post('/checkout', [CheckoutController::class, 'processPayment'])->name('checkout');
-Route::get('/invoice/{id}', [CheckoutController::class, 'invoice'])->name('invoice');
 
 
 // Route::get('/send-email', [TestSendEmailController::class, 'index']);
