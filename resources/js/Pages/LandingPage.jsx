@@ -49,9 +49,9 @@ export default function LandingPage({ categories, products, user }) {
                                 className="section__heading--maintitle"
                                 style={{ fontSize: "2rem", fontWeight: "bold" }}
                             >
-                                Shop by{" "}
+                                Berdasarkan{" "}
                                 <span style={{ fontWeight: "500" }}>
-                                    Categories
+                                    Kategori
                                 </span>
                             </h2>
                         </div>
@@ -83,9 +83,9 @@ export default function LandingPage({ categories, products, user }) {
                                             <h2 className="categories__content--title">
                                                 {category.display_name}
                                             </h2>
-                                            <span className="categories__content--subtitle">
+                                            {/* <span className="categories__content--subtitle">
                                                 Tyres Sensor
-                                            </span>
+                                            </span> */}
                                         </div>
                                     </Link>
                                 </div>
@@ -103,9 +103,9 @@ export default function LandingPage({ categories, products, user }) {
                                 className="section__heading--maintitle"
                                 style={{ fontSize: "2rem", fontWeight: "bold" }}
                             >
-                                Populer{" "}
+                                Produk{" "}
                                 <span style={{ fontWeight: "500" }}>
-                                    Products
+                                    Teratas
                                 </span>
                             </h2>
                         </div>

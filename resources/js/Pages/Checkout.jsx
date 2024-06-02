@@ -90,7 +90,11 @@ export default function Checkout(props) {
                     onSuccess: () => {
                         console.log("success");
                         reset();
-                        setFormAddress({ show: false, mode: "create", data: defaultFormAddress });
+                        setFormAddress({
+                            show: false,
+                            mode: "create",
+                            data: defaultFormAddress,
+                        });
                         setFormAddress({
                             show: false,
                             mode: "create",
@@ -100,7 +104,6 @@ export default function Checkout(props) {
                 }
             );
         } else {
-            console.log(formAddress.data);
             router.post(
                 route("profile.address.update", formAddress.data.id),
                 {
@@ -117,7 +120,11 @@ export default function Checkout(props) {
                     onSuccess: () => {
                         console.log("success");
                         reset();
-                        setFormAddress({ show: false, mode: "create", data: defaultFormAddress });
+                        setFormAddress({
+                            show: false,
+                            mode: "create",
+                            data: defaultFormAddress,
+                        });
                     },
                 }
             );
@@ -195,7 +202,6 @@ export default function Checkout(props) {
             return acc + currTotal;
         }, 0);
         setWeight(totalWeight * 1000);
-
     }, []);
 
     useEffect(() => {
@@ -210,14 +216,14 @@ export default function Checkout(props) {
 
         if (Object.keys(selectedAddress).length > 0) {
             axios
-            .post("/api/get-shipping-cost", { params: requestData })
-            .then((response) => {
-                setLoadAddress(false);
-                setShippingCost(response.data[0].costs[0].cost[0].value);
-            })
-            .catch((error) => {
-                console.error(error.message);
-            });
+                .post("/api/get-shipping-cost", { params: requestData })
+                .then((response) => {
+                    setLoadAddress(false);
+                    setShippingCost(response.data[0].costs[0].cost[0].value);
+                })
+                .catch((error) => {
+                    console.error(error.message);
+                });
         }
     }, [shippingCost, selectedAddress]);
 
@@ -782,7 +788,7 @@ export default function Checkout(props) {
                                                         fontWeight: "300",
                                                     }}
                                                 >
-                                                    Continue To Shop
+                                                    Lanjut Belanja
                                                 </p>
                                             </Link>
                                             <Link
@@ -790,7 +796,7 @@ export default function Checkout(props) {
                                                 href="/cart"
                                             >
                                                 <p className="text-2xl">
-                                                    Return to cart
+                                                    Kembali Ke Keranjang
                                                 </p>
                                             </Link>
                                         </div>
@@ -892,9 +898,11 @@ export default function Checkout(props) {
                                                         Biaya Pengiriman
                                                     </td>
                                                     <td className="checkout__total--calculated__text text-right text-2xl">
-                                                        {loadAddress
-                                                            ? "Sedang Mengambil Data....."
-                                                            : `Rp ${shippingCost.toLocaleString()}`}
+                                                        {selectedAddress.id
+                                                            ? loadAddress
+                                                                ? "Sedang Mengambil Data....."
+                                                                : `Rp ${shippingCost.toLocaleString()}`
+                                                            : "Pilih Alamat Terlebih Dahulu"}
                                                     </td>
                                                 </tr>
                                             </tbody>

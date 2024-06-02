@@ -17,7 +17,7 @@ export default function Index({ user, transactions }) {
     const [selectedTab, setSelectedTab] = useState("Semua");
 
     const filterTransactions = () => {
-        if (selectedTab === "Semua") {
+        if (selectedTab === "semua") {
             return transactions;
         } else {
             return transactions.filter(
@@ -50,8 +50,8 @@ export default function Index({ user, transactions }) {
                                 ))
                             ) : (
                                 <p className="text-3xl text-center mt-10 text-gray-500 dark:text-gray-400">
-                                    Tidak ada transaksi dengan status{" "}
-                                    <Link href="/shop">Belanja Sekarang</Link>
+                                    Belum ada transaksi{" "}
+                                    <Link href="/shop">Belanja Sekarang !</Link>
                                 </p>
                             )}
                         </div>
@@ -67,7 +67,7 @@ export default function Index({ user, transactions }) {
                             ) : (
                                 <p className="text-3xl text-center mt-10 text-gray-500 dark:text-gray-400">
                                     Tidak ada transaksi dengan status "
-                                    {selectedTab}"
+                                    {selectedTab}" (Belum Dibayar)
                                 </p>
                             )}
                         </div>
@@ -86,7 +86,7 @@ export default function Index({ user, transactions }) {
                             ) : (
                                 <p className="text-3xl text-center mt-10 text-gray-500 dark:text-gray-400">
                                     Tidak ada transaksi dengan status "
-                                    {selectedTab}"
+                                    {selectedTab}" (Diproses)
                                 </p>
                             )}
                         </div>
@@ -105,7 +105,7 @@ export default function Index({ user, transactions }) {
                             ) : (
                                 <p className="text-3xl text-center mt-10 text-gray-500 dark:text-gray-400">
                                     Tidak ada transaksi dengan status "
-                                    {selectedTab}"
+                                    {selectedTab}" (Dikirim)
                                 </p>
                             )}
                         </div>
@@ -124,7 +124,7 @@ export default function Index({ user, transactions }) {
                             ) : (
                                 <p className="text-3xl text-center mt-10 text-gray-500 dark:text-gray-400">
                                     Tidak ada transaksi dengan status "
-                                    {selectedTab}"
+                                    {selectedTab}" (Selesai)
                                 </p>
                             )}
                         </div>
@@ -143,7 +143,7 @@ export default function Index({ user, transactions }) {
                             ) : (
                                 <p className="text-3xl text-center mt-10 text-gray-500 dark:text-gray-400">
                                     Tidak ada transaksi dengan status "
-                                    {selectedTab}"
+                                    {selectedTab}" (Dibatalkan)
                                 </p>
                             )}
                         </div>

@@ -65,7 +65,7 @@ export default function ProductCard({ product, user }) {
                             type="button"
                             href={`/detail-product/${product.id}`}
                         >
-                            Detail Product
+                            Detail Produk
                         </Link>
                     </div>
                 </div>

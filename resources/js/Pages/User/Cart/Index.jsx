@@ -131,7 +131,7 @@ export default function Index(props) {
                         <div className="cart__section--inner">
                             <form action="#">
                                 <h2 className="cart__title mb-30">
-                                    Shopping Cart
+                                    Keranjang Belanja
                                 </h2>
 
                                 {items.length !== 0 ? (
@@ -142,13 +142,13 @@ export default function Index(props) {
                                                     <thead className="cart__table--header">
                                                         <tr className="cart__table--header__items">
                                                             <th className="cart__table--header__list">
-                                                                Product
+                                                                Produk
                                                             </th>
                                                             <th className="cart__table--header__list">
-                                                                Price
+                                                                Harga
                                                             </th>
                                                             <th className="cart__table--header__list">
-                                                                Quantity
+                                                                Jumlah
                                                             </th>
                                                             <th className="cart__table--header__list">
                                                                 Total
@@ -251,7 +251,7 @@ export default function Index(props) {
                                                                                     </h3>
 
                                                                                     <span className="cart__content--variant">
-                                                                                        WEIGHT:
+                                                                                        Berat:
                                                                                         {
                                                                                             cart
                                                                                                 .product
@@ -332,7 +332,7 @@ export default function Index(props) {
                                                         className="continue__shopping--link"
                                                         href="/shop"
                                                     >
-                                                        Continue shopping
+                                                        Lanjut Belanja
                                                     </Link>
                                                     <button
                                                         className="continue__shopping--clear"
@@ -367,7 +367,7 @@ export default function Index(props) {
                                                             );
                                                         }}
                                                     >
-                                                        Clear Cart
+                                                        Bersihkan Keranjang
                                                     </button>
                                                 </div>
                                             </div>
