@@ -23,15 +23,15 @@ class UserProfileController extends Controller
 
         $user = Auth::user();
         $user->load('addresses', 'transactions', 'carts');
-    
+
         return Inertia::render('User/Profile/Index', [
             'user' => $user,
         ]);
-
     }
 
 
-    public function createAddress(Request $request) {
+    public function createAddress(Request $request)
+    {
         return Inertia::render('UserAddressCreate');
     }
 
@@ -48,10 +48,8 @@ class UserProfileController extends Controller
             'address' => 'required|string',
         ]);
 
-
         $user = Auth::user();
 
-    
         $address = UserAddress::create([
             'user_id' => $user->id,
             'alias' =>  $validatedData['alias'],
@@ -64,18 +62,23 @@ class UserProfileController extends Controller
             'address' => $validatedData['address'],
         ]);
 
-     
-        return redirect()->route('user.address')->with('success', 'Alamat berhasil ditambahkan!');
+        if (isset($request->route) && $request->route == 'checkout') {
+            return redirect()->route('checkout')->with('success', 'Alamat berhasil ditambahkan!');
+        } else {
+            return redirect()->route('user.address')->with('success', 'Alamat berhasil ditambahkan!');
+        }
     }
 
-    public function deleteAddress(string $id) {
+    public function deleteAddress(string $id)
+    {
         $address = UserAddress::findOrFail($id);
 
         $address->delete();
         return redirect()->route('user.address')->with('success', 'Alamat berhasil dihapus!');
     }
 
-    public function editAddress(string $id) {
+    public function editAddress(string $id)
+    {
 
         $address =  UserAddress::findOrFail($id);
 
@@ -85,8 +88,8 @@ class UserProfileController extends Controller
     }
 
 
-    public function updateAddress(Request $request, string $id) {
-    
+    public function updateAddress(Request $request, string $id)
+    {
         $validatedData = $request->validate([
             'alias' => 'required|string',
             'province_id' => 'required|integer',
@@ -102,8 +105,11 @@ class UserProfileController extends Controller
 
 
         $address->update($validatedData);
-
-        return redirect()->route('user.address')->with('success', 'Alamat berhasil diperbarui!');
+        if (isset($request->route) && $request->route == 'checkout') {
+            return redirect()->route('checkout')->with('success', 'Alamat berhasil diperbarui!');
+        } else {
+            return redirect()->route('user.address')->with('success', 'Alamat berhasil diperbarui!');
+        }
     }
 
 
@@ -121,7 +127,6 @@ class UserProfileController extends Controller
      */
     public function store(Request $request)
     {
-        
     }
 
     /**
@@ -142,7 +147,6 @@ class UserProfileController extends Controller
         return Inertia::render('User/Profile/EditProfile', [
             'user' => $user,
         ]);
-
     }
 
     /**
@@ -159,24 +163,23 @@ class UserProfileController extends Controller
         try {
             $validatedData = $request->validate([
                 'fullname' => 'required|string|max:255',
-                'phone' => 'required|string|digits_between:10,14', 
+                'phone' => 'required|string|digits_between:10,14',
             ]);
 
             $user->update($validatedData);
-    
-            return redirect()->back()->with('success', 'Profil berhasil diperbarui!');
 
-        } catch (ValidationException $e) { 
+            return redirect()->back()->with('success', 'Profil berhasil diperbarui!');
+        } catch (ValidationException $e) {
             if ($e->validator->errors()->has('email')) {
                 return redirect()->back()->withInput()->with('error', 'Email tidak tersedia.');
             } else {
                 throw $e;
             }
         }
-        
     }
 
-    public function updateEmail(Request $request) {
+    public function updateEmail(Request $request)
+    {
         $user = Auth::user();
         $request->validate([
             'email' => "required|string|email|unique:users,email",
@@ -194,18 +197,18 @@ class UserProfileController extends Controller
             $request->user()->sendEmailVerificationNotification();
 
             return redirect()->back();
-
-        } catch (ValidationException $e) { 
+        } catch (ValidationException $e) {
             if ($e->validator->errors()->has('email')) {
                 return redirect()->back()->withInput()->with('error', 'Email tidak tersedia.');
             } else {
                 throw $e;
             }
         }
-    } 
+    }
 
 
-    public function resendEmail(Request $request) {
+    public function resendEmail(Request $request)
+    {
         $request->user()->sendEmailVerificationNotification();
         return redirect()->back();
     }
@@ -218,6 +221,4 @@ class UserProfileController extends Controller
     {
         //
     }
-
-    
 }

@@ -48,13 +48,13 @@ class UserCartController extends Controller
                 'user_id' => $address->user_id,
                 'province_id' => $address->province_id,
                 'city_id' => $address->city_id,
-                'regency_id' => $address->regency_id,
+                'district_id' => $address->district_id,
                 'alias' => $address->alias,
                 'zipcode' => $address->zipcode,
                 'country' => $address->country,
                 'address' => $address->address,
-                'lat' => $address->lat,
-                'long' => $address->long,
+                'address' => $address->address,
+                'village' => $address->village,
                 'province' => $data["province"],
                 'city' => $data["city_name"]
             ];
