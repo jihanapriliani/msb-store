@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useForm } from "@inertiajs/react";
 import { Link } from "@inertiajs/react";
 import { router } from "@inertiajs/react";
+import Swal from "sweetalert2";
 
 export default function Create() {
     const form = useForm({
@@ -23,6 +24,16 @@ export default function Create() {
             },
             onError: (errors) => {
                 form.setError(errors);
+                console.log(errors);
+                Swal.fire({
+                    icon: "error",
+                    title: "Gagal menyimpan data!",
+                    text: "Data tidak valid! Silahkan periksa data masukkan Anda.",
+                    confirmButtonText: "Oke",
+                    customClass: {
+                        confirmButton: "swal2-confirm",
+                    },
+                });
             },
         });
     };
@@ -82,9 +93,6 @@ export default function Create() {
                                     </div>
 
                                     <div className="flex items-center flex-wrap gap-3">
-                                        <div class="form-text text-danger">
-                                            {form.errors.image}
-                                        </div>
                                         {form.data.image ? (
                                             <div className=" pt-3">
                                                 <img
@@ -150,6 +158,9 @@ export default function Create() {
                                                 </label>
                                             </div>
                                         )}
+                                    </div>
+                                    <div class="form-text text-danger">
+                                        {form.errors.image}
                                     </div>
                                 </div>
 

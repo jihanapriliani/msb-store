@@ -202,7 +202,7 @@ export default function Login({ status, canResetPassword }) {
                             )}
                         </button>
                     </div>
-
+                    <InputError message={errors.email} className="mt-2" />
                     <InputError message={errors.password} className="mt-2" />
                 </div>
 
@@ -221,9 +221,7 @@ export default function Login({ status, canResetPassword }) {
                     href={route("register")}
                     className="mt-10 underline text-sm mx-auto mr-5 text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
-                    <p className="text-2xl">
-                        Belum punya akun? Register disini.
-                    </p>
+                    <p className="text-2xl">Belum punya akun? Daftar disini.</p>
                 </Link>
             </form>
         </GuestLayout>

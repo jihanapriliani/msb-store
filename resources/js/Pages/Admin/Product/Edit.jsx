@@ -5,6 +5,7 @@ import { useForm } from "@inertiajs/react";
 import { router } from "@inertiajs/react";
 
 import CurrencyInput from "react-currency-input-field";
+import Swal from "sweetalert2";
 
 export default function Edit(props) {
     const { categories, product, product_images } = props;
@@ -31,6 +32,9 @@ export default function Edit(props) {
         new_product_images: [],
     });
 
+    console.log(errors);
+
+
     const submit = (e) => {
         e.preventDefault();
         clearErrors();
@@ -46,6 +50,15 @@ export default function Edit(props) {
                 forceFormData: true,
                 onError: (e) => {
                     setError(e);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Gagal menyimpan data!",
+                        text: "Data tidak valid! Silahkan periksa data masukkan Anda.",
+                        confirmButtonText: "Oke",
+                        customClass: {
+                            confirmButton: "swal2-confirm",
+                        },
+                    });
                 },
             }
         );
@@ -301,9 +314,6 @@ export default function Edit(props) {
                                                 onChange={handleImageChange}
                                                 multiple
                                             />
-                                            <div className="form-text text-danger">
-                                                {errors.product_images}
-                                            </div>
                                         </label>
                                     </div>
 
@@ -347,7 +357,13 @@ export default function Edit(props) {
                                                     alt={`Uploaded Image ${index}`}
                                                     className=" object-cover rounded-lg mr-2 w-[300px] h-[220px]"
                                                 />
-
+                                                <div className="form-text text-danger my-3">
+                                                    {
+                                                        errors[
+                                                            `new_product_images.${index}`
+                                                        ]
+                                                    }
+                                                </div>
                                                 <button
                                                     type="button"
                                                     onClick={() =>

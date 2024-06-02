@@ -48,7 +48,7 @@ class ProductController extends Controller
             'stock' => 'required',
             'price' => 'required',
             'unit_weight' => 'required',
-            'product_images.*' => 'nullable|image|mimes:jpeg,png,jpg', 
+            'product_images.*' => 'nullable|image|mimes:jpeg,png,jpg|max:5000', 
         ]);
         
      
@@ -123,7 +123,7 @@ class ProductController extends Controller
             'price' => 'required|numeric',
             'unit_weight' => 'required|numeric',
             'old_product_images.*' => 'nullable', 
-            'new_product_images.*' => 'nullable|image|mimes:jpeg,png,jpg'
+            'new_product_images.*' =>'nullable|image|mimes:jpeg,png,jpg|max:5000', 
         ]);
 
         $product = Product::findOrFail($product->id);

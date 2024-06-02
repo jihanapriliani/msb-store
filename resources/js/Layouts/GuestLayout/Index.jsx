@@ -324,7 +324,7 @@ export default function Guest({ children, setIsLoading }) {
                                                     ></circle>
                                                 </svg>
                                                 <span className="visually-hidden">
-                                                    My account
+                                                    Akun Saya
                                                 </span>
                                             </Link>
                                         </li>
@@ -377,7 +377,7 @@ export default function Guest({ children, setIsLoading }) {
                                                 />
                                             </svg>
                                             <span className="visually-hidden">
-                                                Search
+                                                Cari
                                             </span>
                                         </Link>
                                     </li>
@@ -1362,7 +1362,7 @@ export default function Guest({ children, setIsLoading }) {
                             <div className="col-lg-4 col-md-10">
                                 <div className="footer__widget">
                                     <h2 className="footer__widget--title">
-                                        About Us{" "}
+                                        Tentang Kami{" "}
                                         <button
                                             className="footer__widget--button"
                                             aria-label="footer widget button"
@@ -1401,7 +1401,7 @@ export default function Guest({ children, setIsLoading }) {
                             <div className="col-lg-3 col-md-4">
                                 <div className="footer__widget">
                                     <h2 className="footer__widget--title ">
-                                        My Account{" "}
+                                        Akun{" "}
                                         <button
                                             className="footer__widget--button"
                                             aria-label="footer widget button"
@@ -1430,7 +1430,7 @@ export default function Guest({ children, setIsLoading }) {
                                                         : "/login"
                                                 }
                                             >
-                                                My Account
+                                                Akun Saya
                                             </Link>
                                         </li>
                                         <li className="footer__widget--menu__list">
@@ -1438,7 +1438,7 @@ export default function Guest({ children, setIsLoading }) {
                                                 className="footer__widget--menu__text"
                                                 href="/cart"
                                             >
-                                                Shopping Cart
+                                                Keranjang Belanja
                                             </Link>
                                         </li>
                                         <li className="footer__widget--menu__list">
@@ -1462,7 +1462,7 @@ export default function Guest({ children, setIsLoading }) {
                                                         : "/register"
                                                 }
                                             >
-                                                Register
+                                                Daftar
                                             </Link>
                                         </li>
                                         <li className="footer__widget--menu__list">
@@ -1483,7 +1483,7 @@ export default function Guest({ children, setIsLoading }) {
                             <div className="col-lg-3 col-md-4">
                                 <div className="footer__widget">
                                     <h2 className="footer__widget--title ">
-                                        Resources{" "}
+                                        Lainnya{" "}
                                         <button
                                             className="footer__widget--button"
                                             aria-label="footer widget button"
@@ -1508,7 +1508,7 @@ export default function Guest({ children, setIsLoading }) {
                                                 className="footer__widget--menu__text"
                                                 href="/"
                                             >
-                                                Contact Us
+                                                Hubungi Kami
                                             </Link>
                                         </li>
                                         <li className="footer__widget--menu__list">
@@ -1516,33 +1516,33 @@ export default function Guest({ children, setIsLoading }) {
                                                 className="footer__widget--menu__text"
                                                 href="/"
                                             >
-                                                About Us
+                                                Tentang Kami   
                                             </Link>
                                         </li>
 
-                                        <li className="footer__widget--menu__list">
+                                        {/* <li className="footer__widget--menu__list">
                                             <Link
                                                 className="footer__widget--menu__text"
                                                 href="/"
                                             >
-                                                Privacy Policy
+                                                Kebijakan Privasi
                                             </Link>
-                                        </li>
-                                        <li className="footer__widget--menu__list">
+                                        </li> */}
+                                        {/* <li className="footer__widget--menu__list">
                                             <Link
                                                 className="footer__widget--menu__text"
                                                 href="/"
                                             >
                                                 Frequently
                                             </Link>
-                                        </li>
+                                        </li> */}
                                     </ul>
                                 </div>
                             </div>
                             <div className="col-lg-2 col-md-4">
                                 <div className="footer__widget">
                                     <h2 className="footer__widget--title ">
-                                        FIND IT FAST{" "}
+                                        TEMUKAN CEPAT{" "}
                                         <button
                                             className="footer__widget--button"
                                             aria-label="footer widget button"
@@ -1567,7 +1567,7 @@ export default function Guest({ children, setIsLoading }) {
                                                 className="footer__widget--menu__text"
                                                 href="/shop"
                                             >
-                                                Products
+                                                Produk
                                             </Link>
                                         </li>
 
@@ -1576,7 +1576,7 @@ export default function Guest({ children, setIsLoading }) {
                                                 className="footer__widget--menu__text"
                                                 href="/shop"
                                             >
-                                                Search
+                                                Cari
                                             </Link>
                                         </li>
                                     </ul>

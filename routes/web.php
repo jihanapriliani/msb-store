@@ -183,16 +183,15 @@ Route::middleware('auth')->group(function () {
                 'transaction' => $transaction
             ]);
         });
-        
-        Route::get('/user-address', function() {
+        Route::get('/user-address', function () {
             $user = Auth::user();
-            
+
             $addresses = UserAddress::where('user_id', $user->id)->get();
 
             $userAddresses = [];
             foreach ($addresses as $address) {
                 $data = District::where('district_id', $address->district_id)->first();
-        
+
                 $addressWithNewData = (object) [
                     'id' => $address->id,
                     'user_id' => $address->user_id,
@@ -208,24 +207,29 @@ Route::middleware('auth')->group(function () {
                     'district' => $data["district_name"],
                     'village' => $address->village,
                 ];
-    
-                
+
+
                 $userAddresses[] = $addressWithNewData;
             }
-        
-           
+
+
             return Inertia::render('UserAddress', [
                 'user' => $user,
                 'addresses' => $userAddresses
             ]);
         })->name('user.address');
-        
-        Route::get('/user-address/create', function() {
+
+        Route::get('/user-address/create', function () {
             return Inertia::render('UserAddressCreate');
         });
-        
-        Route::get('/user-address/edit', function() {
+
+        Route::get('/user-address/edit', function () {
             return Inertia::render('UserAddressEdit');
+        });
+
+        Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+            // Taruh sini untuk route yang perlu verifikasi terlebih dahulu
+
         });
         
        

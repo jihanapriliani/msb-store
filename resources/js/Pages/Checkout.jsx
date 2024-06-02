@@ -104,7 +104,6 @@ export default function Checkout(props) {
                 }
             );
         } else {
-            console.log(formAddress.data);
             router.post(
                 route("profile.address.update", formAddress.data.id),
                 {
@@ -789,7 +788,7 @@ export default function Checkout(props) {
                                                         fontWeight: "300",
                                                     }}
                                                 >
-                                                    Continue To Shop
+                                                    Lanjut Belanja
                                                 </p>
                                             </Link>
                                             <Link
@@ -797,7 +796,7 @@ export default function Checkout(props) {
                                                 href="/cart"
                                             >
                                                 <p className="text-2xl">
-                                                    Return to cart
+                                                    Kembali Ke Keranjang
                                                 </p>
                                             </Link>
                                         </div>
@@ -899,9 +898,11 @@ export default function Checkout(props) {
                                                         Biaya Pengiriman
                                                     </td>
                                                     <td className="checkout__total--calculated__text text-right text-2xl">
-                                                        {loadAddress
-                                                            ? "Sedang Mengambil Data....."
-                                                            : `Rp ${shippingCost.toLocaleString()}`}
+                                                        {selectedAddress.id
+                                                            ? loadAddress
+                                                                ? "Sedang Mengambil Data....."
+                                                                : `Rp ${shippingCost.toLocaleString()}`
+                                                            : "Pilih Alamat Terlebih Dahulu"}
                                                     </td>
                                                 </tr>
                                             </tbody>

@@ -52,6 +52,7 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
+        $request->session()->put('register', "Registrasi Berhasil, silahkan aktivasi akun dengan mengecek email anda");
         return  redirect()->intended(RouteServiceProvider::HOME);
     }
 }

@@ -5,6 +5,7 @@ import { useForm } from "@inertiajs/react";
 import { Link, router } from "@inertiajs/react";
 
 import Select from "react-select";
+import Swal from "sweetalert2";
 
 export default function Edit(props) {
     const { user, roles } = props;
@@ -41,6 +42,15 @@ export default function Edit(props) {
                 onError: (e) => {
                     console.log(e);
                     setError(e);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Gagal menyimpan data!",
+                        text: "Data tidak valid! Silahkan periksa data masukkan Anda.",
+                        confirmButtonText: "Oke",
+                        customClass: {
+                            confirmButton: "swal2-confirm",
+                        },
+                    });
                 },
                 onSuccess: () => {
                     reset();

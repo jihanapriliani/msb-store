@@ -33,7 +33,13 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-
+        $user = Auth::user();
+        if (!isset($user->email_verified_at)) {
+            $request->session()->put('login', "Akun anda belum diaktivasi, silahkan cek email anda");
+        }else {
+            $request->session()->put('success', "Login Berhasil");
+        }
+        
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 

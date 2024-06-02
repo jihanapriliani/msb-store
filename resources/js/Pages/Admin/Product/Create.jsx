@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useForm } from "@inertiajs/react";
 
 import CurrencyInput from "react-currency-input-field";
+import Swal from "sweetalert2";
 
 export default function Create(props) {
     const { categories } = props;
@@ -42,6 +43,15 @@ export default function Create(props) {
                 onError: (e) => {
                     console.log(e);
                     setError(e);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Gagal menyimpan data!",
+                        text: "Data tidak valid! Silahkan periksa data masukkan Anda.",
+                        confirmButtonText: "Oke",
+                        customClass: {
+                            confirmButton: "swal2-confirm",
+                        },
+                    });
                 },
                 onSuccess: () => {
                     reset();
@@ -295,7 +305,13 @@ export default function Create(props) {
                                                     alt={`Uploaded Image ${index}`}
                                                     className=" object-cover rounded-lg mr-2 w-[300px] h-[220px]"
                                                 />
-
+                                                <div className="form-text text-danger my-3">
+                                                    {
+                                                        errors[
+                                                            `product_images.${index}`
+                                                        ]
+                                                    }
+                                                </div>
                                                 <button
                                                     onClick={() =>
                                                         handleImageRemove(index)

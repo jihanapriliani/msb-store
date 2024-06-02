@@ -8,6 +8,7 @@ import { usePage } from "@inertiajs/react";
 
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Swal from "sweetalert2";
 
 export default function Edit(props) {
     const { transaction } = props;
@@ -55,6 +56,15 @@ export default function Edit(props) {
                 onError: (e) => {
                     console.log(e);
                     setError(e);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Gagal menyimpan data!",
+                        text: "Data tidak valid! Silahkan periksa data masukkan Anda.",
+                        confirmButtonText: "Oke",
+                        customClass: {
+                            confirmButton: "swal2-confirm",
+                        },
+                    });
                 },
             }
         );

@@ -196,6 +196,8 @@ class UserProfileController extends Controller
 
             $request->user()->sendEmailVerificationNotification();
 
+            $request->session()->put('email', "Email berhasil diperbarui!, silahkan cek email Anda untuk verifikasi.");
+
             return redirect()->back();
         } catch (ValidationException $e) {
             if ($e->validator->errors()->has('email')) {

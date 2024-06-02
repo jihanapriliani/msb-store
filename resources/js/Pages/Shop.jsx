@@ -277,7 +277,7 @@ export default function LandingPage({ categories, products, user }) {
                                         class="breadcrumb__content--title"
                                         style={{ color: "white" }}
                                     >
-                                        Product
+                                        Produk
                                     </h1>
                                     <ul className="breadcrumb__content--menu d-flex justify-content-center">
                                         <li className="breadcrumb__content--menu__items">
@@ -308,7 +308,7 @@ export default function LandingPage({ categories, products, user }) {
                                 <div className="shop__sidebar--widget widget__area d-none d-lg-block">
                                     <div className="single__widget widget__bg">
                                         <h2 className="widget__title h3">
-                                            Filter Kategori
+                                            Kategori
                                         </h2>
                                         <ul class="widget__form--check">
                                             {categories.map((category) => (
@@ -346,7 +346,7 @@ export default function LandingPage({ categories, products, user }) {
                                     </div>
                                     <div className="single__widget price__filter widget__bg">
                                         <h2 className="widget__title h3">
-                                            Filter Harga
+                                            Harga
                                         </h2>
                                         <form className="price__filter--form">
                                             <div className="price__filter--form__inner mb-15 d-flex align-items-center">
@@ -561,7 +561,7 @@ export default function LandingPage({ categories, products, user }) {
                                                             fontSize: "1.5rem",
                                                         }}
                                                     >
-                                                        urutkan :
+                                                        Urutkan :
                                                     </label>
                                                     <div>
                                                         <select
@@ -581,21 +581,19 @@ export default function LandingPage({ categories, products, user }) {
                                                             <option
                                                                 defaultValue={1}
                                                             >
-                                                                Sort by newest
+                                                                Terbaru
                                                             </option>
                                                             <option value="2">
-                                                                Sort by highest
-                                                                price
+                                                                Harga Tertinggi
                                                             </option>
                                                             <option value="3">
-                                                                Sort by lowest
-                                                                price
+                                                                Harge Terendah
                                                             </option>
                                                             <option value="4">
-                                                                Sort by a to z
+                                                                Nama A - Z
                                                             </option>
                                                             <option value="5">
-                                                                Sort by z to a
+                                                                Nama Z - A
                                                             </option>
                                                         </select>
                                                     </div>
@@ -608,7 +606,7 @@ export default function LandingPage({ categories, products, user }) {
                                                 }}
                                             >
                                                 Menampilkan {products.from}–
-                                                {products.to} of{" "}
+                                                {products.to} dari {" "}
                                                 {products.total} Hasil
                                             </p>
                                         </div>
@@ -728,7 +726,13 @@ export default function LandingPage({ categories, products, user }) {
                                                                     }`}
                                                                 >
                                                                     <div
-                                                                        class="pagination__item link "
+                                                                        class={`pagination__item bg-red-500 ${
+                                                                            i ===
+                                                                            products.current_page -
+                                                                                1
+                                                                                ? "active"
+                                                                                : ""
+                                                                        }`}
                                                                         onClick={(
                                                                             e
                                                                         ) => {
@@ -751,7 +755,7 @@ export default function LandingPage({ categories, products, user }) {
                                                     <li class="pagination__list">
                                                         <button
                                                             href="shop.html"
-                                                            class="pagination__item--arrow  link "
+                                                            class={`pagination__item--arrow link `}
                                                             disabled={
                                                                 products.current_page ===
                                                                 products.last_page
