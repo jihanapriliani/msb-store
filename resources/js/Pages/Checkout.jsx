@@ -249,6 +249,7 @@ export default function Checkout(props) {
 
     return (
         <GuestLayout>
+            <Head title="Pemesanan" />
             <ToastContainer />
 
             <main className="main__content_wrapper">

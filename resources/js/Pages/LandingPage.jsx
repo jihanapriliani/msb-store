@@ -1,4 +1,4 @@
-import { Link } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 
 import GuestLayout from "@/Layouts/GuestLayout/Index";
 import ProductCard from "@/Components/ProductCard";
@@ -8,6 +8,8 @@ import { Carousel } from "flowbite-react";
 export default function LandingPage({ categories, products, user }) {
     return (
         <GuestLayout>
+            <Head title="Beranda" />
+
             <main className="main__content_wrapper">
                 {/* START SECTION 1 */}
                 <div className="h-56 sm:h-64 xl:h-80 2xl:h-[50vh] container">
