@@ -15,6 +15,8 @@ export default function Index(props) {
 
     const { flash } = usePage().props;
 
+    console.log(flash);
+
     useEffect(() => {
         if (flash.success) {
             toast.success(flash.success, {
@@ -23,7 +25,7 @@ export default function Index(props) {
 
             flash.success = null;
         }
-    }, [products]);
+    }, [flash]);
 
     return (
         <AuthenticatedLayout>
