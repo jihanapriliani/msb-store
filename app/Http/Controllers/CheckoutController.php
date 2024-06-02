@@ -62,7 +62,7 @@ class CheckoutController extends Controller
         $transaction = Transaction::create([
             'user_id' => $user->id,
             'user_address_id' => $request->user_address_id,
-            'total_weight' => $request->total_weight,
+            'total_weight' => ($request->total_weight / 1000),
             'total_price' => $request->total_price,
             'shipping_cost' => $request->shipping_cost,
             'delivery_code' => "-",

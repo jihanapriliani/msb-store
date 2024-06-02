@@ -165,6 +165,17 @@ export default function DetailProduct({ product, user, productCart }) {
                                             </div>
                                         </div>
 
+                                        <div className="product__variant--list mb-15">
+                                            <div className="product__details--info__meta">
+                                                <p className="product__details--info__meta--list">
+                                                    <strong>Berat :</strong>{" "}
+                                                    <span>
+                                                        {product.unit_weight} Kg
+                                                    </span>{" "}
+                                                </p>
+                                            </div>
+                                        </div>
+
                                         <div
                                             style={{
                                                 display: "flex",
