@@ -1,8 +1,6 @@
 import { useEffect } from "react";
 import GuestLayout from "@/Layouts/GuestLayout/Index";
 import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
-import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
 
@@ -14,6 +12,7 @@ export default function Register() {
         useForm({
             fullname: "",
             email: "",
+            phone: "",
             password: "",
             password_confirmation: "",
         });
@@ -27,7 +26,25 @@ export default function Register() {
     const submit = (e) => {
         e.preventDefault();
         clearErrors();
-        post(route("register"));
+        post(
+            route("register"),
+            {
+                ...data,
+            },
+            {
+                forceFormData: true,
+                onError: (e) => {
+                    console.log(e);
+                    if (e) {
+                        setError(e);
+                    }
+                },
+                onSuccess: () => {
+                    console.log("success");
+                    reset();
+                },
+            }
+        );
     };
 
     const [passwordVisible, setPasswordVisible] = useState(false);
@@ -52,7 +69,7 @@ export default function Register() {
                         htmlFor="fullname"
                         className="block mb-2 font-medium text-gray-700 dark:text-white text-3xl"
                     >
-                        Fullname
+                        Nama Lengkap
                     </label>
                     <TextInput
                         type="text"
@@ -93,6 +110,30 @@ export default function Register() {
                     />
 
                     <InputError message={errors.email} className="mt-2" />
+                </div>
+
+                <div className="my-5">
+                    <label
+                        htmlFor="email"
+                        className="block mb-2 font-medium text-gray-700 dark:text-white text-3xl"
+                    >
+                        Nomor Telepon
+                    </label>
+                    <TextInput
+                        type="phone"
+                        id="phone"
+                        name="phone"
+                        phone
+                        autoComplete="phone"
+                        className="h-[50px]  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="08xxxxxxxx"
+                        style={{ fontSize: "2rem" }}
+                        isFocused={true}
+                        onChange={(e) => setData("phone", e.target.value)}
+                        required
+                    />
+
+                    <InputError message={errors.phone} className="mt-2" />
                 </div>
 
                 <div className="mb-5" style={{ position: "relative" }}>
