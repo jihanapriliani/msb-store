@@ -5,7 +5,7 @@ import { Tabs } from "flowbite-react";
 
 import TransactionCard from "@/Components/TransactionCard";
 import UserSidebar from "@/Components/UserSidebar";
-import { Link, router } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 
 import { Button, Timeline } from "flowbite-react";
 import {
@@ -123,6 +123,7 @@ export default function Index({ user, transaction }) {
 
     return (
         <GuestLayout>
+            <Head title="Pembelian" />
             <main className="container flex gap-10 my-36 min-h-[20vh]">
                 <UserSidebar />
 

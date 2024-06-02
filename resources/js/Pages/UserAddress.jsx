@@ -1,4 +1,4 @@
-import { Link, router, usePage } from "@inertiajs/react";
+import { Head, Link, router, usePage } from "@inertiajs/react";
 
 import GuestLayout from "@/Layouts/GuestLayout/Index";
 import { useState, useEffect } from "react";
@@ -33,6 +33,7 @@ export default function Index({ user, addresses }) {
     }, [user, flash]);
     return (
         <GuestLayout>
+            <Head title="Alamat" />
             <ToastContainer />
             <main className="container flex justify-center gap-10  my-36">
                 <UserSidebar />
