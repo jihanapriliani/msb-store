@@ -186,33 +186,49 @@ export default function Index({ user, userAddress }) {
     };
 
     const handleVerify = () => {
-        router.post(
-            route("profile.resend.email"),
-            {
-                _method: "put",
-                ...data,
+        Swal.fire({
+            icon: "info",
+            title: "Email Anda Belum Diverfikasi",
+            text: "Periksa daftar pesan email anda yang digunakan untuk register di aplikasi ini.",
+            showCancelButton: true,
+            confirmButtonText: "Kirim Ulang",
+            cancelButtonText: "Oke",
+            customClass: {
+                confirmButton: "btn btn-secondary ",
+                cancelButton: "btn btn-danger ml-2",
             },
-            {
-                forceFormData: true,
-                onSuccess: () => {
-                    Swal.fire({
-                        icon: "success",
-                        title: "Email Verfikasi Berhasil Dikirim!",
-                        text: "Silakan buka email Anda untuk verifikasi.",
-                        confirmButtonText: "Oke",
-                        customClass: {
-                            confirmButton: "swal2-confirm",
+            buttonsStyling: false,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                router.post(
+                    route("profile.resend.email"),
+                    {
+                        _method: "put",
+                        ...data,
+                    },
+                    {
+                        forceFormData: true,
+                        onSuccess: () => {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Email Verfikasi Berhasil Dikirim!",
+                                text: "Silakan buka email Anda untuk verifikasi.",
+                                confirmButtonText: "Oke",
+                                customClass: {
+                                    confirmButton: "swal2-confirm",
+                                },
+                            });
                         },
-                    });
-                },
-                onError: (e) => {
-                    console.log(e);
-                    if (e) {
-                        setError(e);
+                        onError: (e) => {
+                            console.log(e);
+                            if (e) {
+                                setError(e);
+                            }
+                        },
                     }
-                },
-            }
-        );
+                );
+            } else result.dismiss === Swal.DismissReason.cancel;
+        });
     };
 
     return (
