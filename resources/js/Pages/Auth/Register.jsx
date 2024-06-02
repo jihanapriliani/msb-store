@@ -56,7 +56,7 @@ export default function Register() {
     const [passwordConfVisible, setPasswordConfVisible] = useState(false);
 
     const togglePasswordConfVisibility = () => {
-        setPasswordConfVisible(!passwordVisible);
+        setPasswordConfVisible(!passwordConfVisible);
     };
 
     return (
