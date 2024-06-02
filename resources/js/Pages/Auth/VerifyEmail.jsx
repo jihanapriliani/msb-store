@@ -57,6 +57,7 @@ export default function VerifyEmail({ status }) {
                                 display: "flex",
                                 justifyContent: "center",
                                 alignItems: "center",
+                                borderRadius: "10px",
                             }}
                         >
                             Kirim Ulang Verifikasi
@@ -67,7 +68,7 @@ export default function VerifyEmail({ status }) {
                             method="post"
                             as="button"
                             style={{ fontSize: "2rem", marginLeft: "2rem" }}
-                            className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            className=" text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 "
                         >
                             Log Out
                         </Link>
