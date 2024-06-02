@@ -5,9 +5,6 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout/Index";
 // import ApexCharts from "apexcharts";
 import Chart from "react-apexcharts";
 import { useState } from "react";
-import { useEffect } from "react";
-import { usePage } from "@inertiajs/react";
-import { toast, ToastContainer } from "react-toastify";
 
 export default function Index({
     total_customers,
@@ -18,24 +15,10 @@ export default function Index({
 }) {
     const [option, setOption] = useState();
 
-
-    const { flash } = usePage().props;
-    console.log(flash);
-
-    useEffect(() => {
-        if (flash.success) {
-            toast.success(flash.success, {
-                position: "top-right",
-            });
-
-            flash.success = null;
-        }
-    }, [flash]);
-
     return (
         <>
+
             <AuthenticatedLayout>
-                <ToastContainer />
                 <div className="row">
                     <div className="col-md-6 col-xl-3">
                         <div className="card stat-widget">
