@@ -3,6 +3,7 @@ import React, { useState } from "react";
 
 import { router, useForm } from "@inertiajs/react";
 import { Link } from "@inertiajs/react";
+import Swal from "sweetalert2";
 
 export default function Edit(props) {
     const { category } = props;
@@ -40,6 +41,15 @@ export default function Edit(props) {
                 onError: (e) => {
                     console.log(e);
                     setError(e);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Gagal menyimpan data!",
+                        text: "Data tidak valid! Silahkan periksa data masukkan Anda.",
+                        confirmButtonText: "Oke",
+                        customClass: {
+                            confirmButton: "swal2-confirm",
+                        },
+                    });
                 },
             }
         );
@@ -183,12 +193,12 @@ export default function Edit(props) {
                                                             )
                                                         }
                                                     />
-                                                    <div className="form-text text-danger">
-                                                        {errors.image}
-                                                    </div>
                                                 </label>
                                             </div>
                                         )}
+                                    </div>
+                                    <div className="form-text text-danger">
+                                        {errors.image_file}
                                     </div>
                                 </div>
 
