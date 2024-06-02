@@ -115,6 +115,7 @@ export default function Index(props) {
 
     return (
         <GuestLayout>
+            <Head title="Keranjang" />
             <ToastContainer />
             <main
                 className="main__content_wrapper "

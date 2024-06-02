@@ -5,7 +5,7 @@ import { Tabs } from "flowbite-react";
 
 import TransactionCard from "@/Components/TransactionCard";
 import UserSidebar from "@/Components/UserSidebar";
-import { Link, usePage } from "@inertiajs/react";
+import { Head, Link, usePage } from "@inertiajs/react";
 
 import { Button, Timeline } from "flowbite-react";
 import { HiArrowNarrowLeft, HiCalendar, HiPhone } from "react-icons/hi";
@@ -133,6 +133,7 @@ export default function UserAddressCreate() {
 
     return (
         <GuestLayout>
+            <Head title="Alamat" />
             <ToastContainer />
             <main className="container flex gap-10 my-36 min-h-[20vh]">
                 <UserSidebar />

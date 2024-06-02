@@ -5,7 +5,7 @@ import { Tabs } from "flowbite-react";
 
 import TransactionCard from "@/Components/TransactionCard";
 import UserSidebar from "@/Components/UserSidebar";
-import { Link } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 
 const customTheme = {
     color: {
@@ -30,6 +30,7 @@ export default function Index({ user, transactions }) {
 
     return (
         <GuestLayout>
+            <Head title="Pembelian" />
             <main className="container flex  gap-10 my-36 min-h-[20vh]">
                 <UserSidebar />
 
