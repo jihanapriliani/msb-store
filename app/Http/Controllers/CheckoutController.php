@@ -12,12 +12,15 @@ use App\Models\Product;
 use App\Models\District;
 
 use Midtrans\Notification;
+use App\Jobs\ProcessStatus;
 use App\Models\Transaction;
+
 use App\Models\UserAddress;
-
+use App\Models\User
+;
 use Illuminate\Http\Request;
-use App\Models\TransactionDetail;
 
+use App\Models\TransactionDetail;
 use App\Mail\ProcessedNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -139,6 +142,10 @@ class CheckoutController extends Controller
         
         $serverKey = config('services.midtrans.serverKey');
         $hashed = hash("sha512", $request->order_id.$request->status_code.$request->gross_amount.$serverKey);
+
+        $emails = User::whereHas('roles', function ($query) {
+            $query->whereIn('name', ['admin', 'super-admin']);
+        })->pluck('email');
         
         $transaction = Transaction::where('code', $request->order_id)->firstOrFail();
 
@@ -146,11 +153,19 @@ class CheckoutController extends Controller
             if($request->transaction_status == 'capture') {
                 $transaction->update(['status' => 'processed']);
 
+                foreach ($emails as $email) {
+                    ProcessStatus::dispatch($email, $transaction);
+                }
+
                 Mail::to($transaction->user->email)->send(new ProcessedNotification($transaction));
             }
     
             else if($request->transaction_status == 'settlement') {
                 $transaction->update(['status' => 'processed']);
+
+                foreach ($emails as $email) {
+                    ProcessStatus::dispatch($email, $transaction);
+                }
 
                 Mail::to($transaction->user->email)->send(new ProcessedNotification($transaction));
             }

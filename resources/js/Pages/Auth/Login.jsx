@@ -123,7 +123,7 @@ export default function Login({ status, canResetPassword }) {
             <form
                 className="max-w-5xl mx-auto mb-20 mt-10 flex flex-col "
                 onSubmit={submit}
-                style={{ minHeight: "40vh" }}
+                style={{ minHeight: "45vh" }}
             >
                 <div className="my-5">
                     <label
