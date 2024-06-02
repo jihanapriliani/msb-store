@@ -16,8 +16,6 @@ export default function Index({
 }) {
     const [option, setOption] = useState();
 
-    console.log("ISI TRANSACTION", transactions);
-
     useEffect(() => {}, []);
 
     return (

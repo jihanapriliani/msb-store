@@ -60,7 +60,7 @@ export default function Edit(props) {
                             <div class="profile-header">
                                 <div class="profile-img">
                                     <img
-                                        src="../../assets/images/avatars/profile-image.png"
+                                        src="https://i.pinimg.com/736x/0d/64/98/0d64989794b1a4c9d89bff571d3d5842.jpg"
                                         alt=""
                                     />
                                 </div>
@@ -79,9 +79,9 @@ export default function Edit(props) {
                                     <ul class="list-unstyled profile-about-list">
                                         <li>
                                             <i class="far fa-building m-r-xxs"></i>
-                                            <span>
+                                            <span style={{ color: "black" }}>
                                                 Email :
-                                                <a href="#"> {user.email}</a>
+                                                <a href="#">{user.email}</a>
                                             </span>
                                         </li>
                                         <li>
@@ -135,6 +135,75 @@ export default function Edit(props) {
                                                 )
                                             )}
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="row">
+                        <div className="card"></div>
+                    </div>
+
+                    <div className="row">
+                        <div className="col-md-12 col-lg-12">
+                            <div className="card table-widget">
+                                <div className="card-body">
+                                    <h5 className="card-title">
+                                        Recent Orders
+                                    </h5>
+                                    <div className="table-responsive">
+                                        <table className="table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">No</th>
+                                                    <th scope="col">Invoice</th>
+                                                    <th scope="col">Total</th>
+                                                    <th scope="col">Status</th>
+                                                    <th scope="col">Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {user.transactions.map(
+                                                    (transaction, index) => (
+                                                        <tr>
+                                                            <th scope="row">
+                                                                {index + 1}
+                                                            </th>
+
+                                                            <td>
+                                                                {
+                                                                    transaction.code
+                                                                }
+                                                            </td>
+                                                            <td>
+                                                                Rp{" "}
+                                                                {transaction.total_price.toLocaleString()}
+                                                            </td>
+                                                            <td>
+                                                                <span className="badge bg-info">
+                                                                    {
+                                                                        transaction.status
+                                                                    }
+                                                                </span>
+                                                            </td>
+
+                                                            <td>
+                                                                <Link
+                                                                    href={`/dashboard/admin/transaction/${transaction.id}`}
+                                                                    style={{
+                                                                        textDecoration:
+                                                                            "underline",
+                                                                    }}
+                                                                >
+                                                                    Lihat Detail
+                                                                </Link>
+                                                            </td>
+                                                        </tr>
+                                                    )
+                                                )}
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
