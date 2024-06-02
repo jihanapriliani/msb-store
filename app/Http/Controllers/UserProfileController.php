@@ -194,7 +194,7 @@ class UserProfileController extends Controller
                 'email_verified_at' => null
             ]);
 
-            // $request->user()->sendEmailVerificationNotification();
+            $request->user()->sendEmailVerificationNotification();
 
             $request->session()->put('email', "Email berhasil diperbarui!, silahkan cek email Anda untuk verifikasi.");
 
