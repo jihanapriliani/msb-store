@@ -41,7 +41,16 @@ export default function Login({ status, canResetPassword }) {
             <Head title="Log in" />
 
             {status && (
-                <div className="mb-4 font-medium text-sm text-green-600">
+                <div
+                    className=" font-medium text-sm text-green-600"
+                    style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        fontSize: "2rem",
+                        marginTop: "4rem",
+                    }}
+                >
                     {status}
                 </div>
             )}
@@ -112,7 +121,7 @@ export default function Login({ status, canResetPassword }) {
             </form> */}
 
             <form
-                className="max-w-5xl mx-auto my-20 flex flex-col "
+                className="max-w-5xl mx-auto mb-20 mt-10 flex flex-col "
                 onSubmit={submit}
                 style={{ minHeight: "40vh" }}
             >

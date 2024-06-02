@@ -31,7 +31,11 @@ export default function ForgotPassword({ status }) {
                 </div>
             )}
 
-            <form onSubmit={submit} className="max-w-5xl mx-auto my-20">
+            <form
+                onSubmit={submit}
+                className="max-w-5xl mx-auto my-20"
+                style={{ margin: "10rem 0" }}
+            >
                 <div className="my-5">
                     <label
                         htmlFor="email"
