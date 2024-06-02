@@ -21,6 +21,8 @@ import { useForm } from "@inertiajs/react";
 export default function Index({ user, userAddress }) {
     const { flash } = usePage().props;
 
+    console.log(flash)
+
     const {
         data,
         setData,
@@ -51,6 +53,42 @@ export default function Index({ user, userAddress }) {
             });
 
             flash.success = null;
+        }
+
+        if (flash.register) {
+            Swal.fire({
+                icon: "success",
+                title: "Registrasi Berhasil!",
+                text: flash.register,
+                confirmButtonText: "Oke",
+                customClass: {
+                    confirmButton: "swal2-confirm",
+                },
+            });
+        }
+
+        if (flash.email) {
+            Swal.fire({
+                icon: "success",
+                title: "Email Berubah!",
+                text: flash.email,
+                confirmButtonText: "Oke",
+                customClass: {
+                    confirmButton: "swal2-confirm",
+                },
+            });
+        }
+
+        if (flash.login) {
+            Swal.fire({
+                icon: "warning",
+                title: "Belum verifikasi email!",
+                text: flash.login,
+                confirmButtonText: "Oke",
+                customClass: {
+                    confirmButton: "swal2-confirm",
+                },
+            });
         }
     }, [user, flash]);
 
