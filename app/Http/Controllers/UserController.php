@@ -50,7 +50,7 @@ class UserController extends Controller
             'fullname' => 'required|string',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string',
-            'phone' => 'required|string',
+            'phone' => 'required|string|digits_between:10,14',
             'role' => 'required|string|exists:roles,name'
         ]);
 
@@ -107,7 +107,7 @@ class UserController extends Controller
             'fullname' => 'required|string',
             'email' => 'required|email|unique:users,email,' . $id,
             'password' => 'nullable|string',
-            'phone' => 'required|string',
+            'phone' => 'required|string|digits_between:10,14',
             'role' => 'required|string|exists:roles,name'
         ]);
 
