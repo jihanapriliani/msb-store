@@ -43,8 +43,8 @@ export default function Index({ user, transactions }) {
                 >
                     <Tabs.Item active={selectedTab === "semua"} title="Semua">
                         <div className="transaction-list min-h-[20vh] flex flex-col gap-3">
-                            {filteredTransactions.length > 0 ? (
-                                filteredTransactions.map((transaction) => (
+                            {transactions.length > 0 ? (
+                                transactions.map((transaction) => (
                                     <TransactionCard
                                         transaction={transaction}
                                     />

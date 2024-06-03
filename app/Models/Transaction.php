@@ -30,7 +30,8 @@ class Transaction extends Model
         'canceled_at',
         'payment_url',
         'address',
-        'note'
+        'note',
+        'token'
     ];
 
 

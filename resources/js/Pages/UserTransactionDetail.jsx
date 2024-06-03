@@ -77,7 +77,10 @@ export default function Index({ user, transaction }) {
 
     const handlePayment = () => {
         if (transaction.payment_url) {
-            window.location.href = transaction.payment_url;
+            router.get("/payment", {
+                token: transaction.token,
+                code: transaction.code,
+            });
         } else {
             Swal.fire({
                 icon: "error",

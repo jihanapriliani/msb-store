@@ -27,6 +27,7 @@ use App\Models\District;
 use App\Models\UserAddress;
 use App\Models\Transaction;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 // use App\Http\Controllers\Email\TestSendEmailController;
@@ -229,9 +230,23 @@ Route::middleware('auth')->group(function () {
 
             Route::post('/checkout', [CheckoutController::class, 'processPayment'])->name('checkout');
             Route::get('/invoice/{id}', [CheckoutController::class, 'invoice'])->name('invoice');
+
+            Route::get('/payment', function(Request $request) {
+                $token = $request->query('token');
+                $code = $request->query('code');
+                
+                return Inertia::render('Payment', [
+                    'token' => $token,
+                    'code' => $code
+                ]);
+            })->name('payment');
+
+            
         });
     });
 });
+
+
 
 
 

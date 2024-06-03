@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
         Schema::table('transactions', function (Blueprint $table) {
-            $table->string('address')->nullable()->after('user_id');
+            $table->string('token')->nullable();
         });
     }
 
@@ -22,9 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
         Schema::table('transactions', function (Blueprint $table) {
-            $table->dropColumn('address');
+            $table->dropColumn('token');
         });
     }
 };

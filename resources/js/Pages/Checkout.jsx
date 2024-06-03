@@ -234,6 +234,12 @@ export default function Checkout(props) {
                 title: "Oops...",
                 text: "Alamat belum dipilih!",
             });
+        } else if (carts.length === 0) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Tidak ada barang dikeranjang!",
+            });
         } else {
             router.post(
                 route("checkout", {

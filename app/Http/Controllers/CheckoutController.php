@@ -124,13 +124,17 @@ class CheckoutController extends Controller
             
         
         try {
-                $paymentUrl = Snap::createTransaction($midtrans)->redirect_url;
+                $payment = Snap::createTransaction($midtrans);
                 
                 $transaction->update([
-                    'payment_url' => $paymentUrl
+                    'payment_url' => $payment->redirect_url,
+                    'token'=>  $payment->token,
                 ]);
 
-                return Inertia::location($paymentUrl);
+                return Inertia::render('Payment', [
+                    'token' => $payment->token,
+                    'code' => $transaction->code
+                ]);
         }
         catch (Exception $e) {
             echo $e->getMessage();
