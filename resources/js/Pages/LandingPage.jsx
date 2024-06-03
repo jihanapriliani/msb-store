@@ -12,7 +12,7 @@ export default function LandingPage({ categories, products, user }) {
 
             <main className="main__content_wrapper">
                 {/* START SECTION 1 */}
-                <div className="h-56 sm:h-64 xl:h-80 2xl:h-[50vh] container">
+                <div className="h-56 sm:h-64 xl:h-80 2xl:h-[55vh] container">
                     <Carousel>
                         <img
                             src="/assets/images/banner-1.png"

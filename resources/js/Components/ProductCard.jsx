@@ -19,9 +19,9 @@ export default function ProductCard({ product, user }) {
                             className="product__card--thumbnail__img product__primary--img w-[300px] h-[200px] object-cover"
                             src={
                                 window.location.origin +
-                                    "/" +
-                                    (product.images[0].image ??
-                                "assets/images/default.png")
+                                "/" +
+                                (product.images[0].image ??
+                                    "assets/images/default.png")
                             }
                             alt="product-img"
                         />
@@ -29,9 +29,9 @@ export default function ProductCard({ product, user }) {
                             className="product__card--thumbnail__img product__secondary--img"
                             src={
                                 window.location.origin +
-                                    "/" +
-                                    (product.images[0].image ??
-                                "assets/images/default.png")
+                                "/" +
+                                (product.images[0].image ??
+                                    "assets/images/default.png")
                             }
                             alt="product-img"
                         />
@@ -40,16 +40,14 @@ export default function ProductCard({ product, user }) {
                     <ul className="product__card--action d-flex align-items-center justify-content-center"></ul>
                 </div>
                 <div className="product__card--content">
-                    <h3 className="product__card--title">
-                        <a
-                            style={{
-                                fontSize: "2rem",
-                                fontWeight: "600",
-                            }}
-                            href="product-details.html"
-                        >
-                            {product.name}{" "}
-                        </a>
+                    <h3
+                        className="product__card--title"
+                        style={{
+                            fontSize: "2rem",
+                            fontWeight: "600",
+                        }}
+                    >
+                        {product.name}{" "}
                     </h3>
                     <div
                         className="product__card--price"

@@ -223,7 +223,7 @@ export default function Create(props) {
                                         </label>
                                         <input
                                             type="number"
-                                            step={0.1}
+                                            step={0.005}
                                             className="form-control"
                                             id=""
                                             aria-describedby=""

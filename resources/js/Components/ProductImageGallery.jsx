@@ -8,7 +8,7 @@ const ProductImages = ({ images }) => {
     };
 
     return (
-        <div className="product-images">
+        <div className="product-images" style={{ marginRight: "2rem" }}>
             <div className="product-display">
                 <img
                     src={
@@ -16,7 +16,7 @@ const ProductImages = ({ images }) => {
                         "/" +
                         (selectedImage.image ?? "assets/images/default.png")
                     }
-                    className="h-[30rem] w-[100%] object-cover rounded-xl"
+                    className="h-[40rem] w-[100%] object-cover rounded-xl"
                     alt="Product Display"
                 />
             </div>

@@ -32,9 +32,6 @@ export default function Edit(props) {
         new_product_images: [],
     });
 
-    console.log(errors);
-
-
     const submit = (e) => {
         e.preventDefault();
         clearErrors();
@@ -250,7 +247,7 @@ export default function Edit(props) {
                                             className="form-control"
                                             id=""
                                             min={0}
-                                            step={0.1}
+                                            step={0.005}
                                             aria-describedby=""
                                             name="unit_weight"
                                             value={data.unit_weight}
