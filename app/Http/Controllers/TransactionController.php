@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\ShippedNotification;
 use App\Mail\CanceledNotification;
 use App\Mail\ProcessedNotification;
+use App\Exports\TransactionExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Excel as ExcelExcel;
 
 class TransactionController extends Controller
 {
@@ -126,5 +129,14 @@ class TransactionController extends Controller
     public function destroy(Transaction $transaction)
     {
         //
+    }
+
+    public function exportAll()
+    {
+        return Excel::download(
+            new TransactionExport(),
+            'transaction.xlsx',
+            ExcelExcel::XLSX,
+        );
     }
 }
