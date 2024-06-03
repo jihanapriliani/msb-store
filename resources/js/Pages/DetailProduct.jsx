@@ -117,6 +117,7 @@ export default function DetailProduct({ product, user, productCart }) {
 
     return (
         <GuestLayout>
+            <Head title={product.name} />
             <main className="main__content_wrapper">
                 <section className="product__details--section section--padding">
                     <div className="container">
