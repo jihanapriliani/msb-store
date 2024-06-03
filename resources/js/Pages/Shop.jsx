@@ -228,10 +228,25 @@ export default function LandingPage({ categories, products, user }) {
     };
 
     const handleResetFilter = () => {
-        const url = new URL(window.location.href);
+        const url = new URL(route(route().current()).toString());
+        const params = {};
+
+        setPagination({
+            pageSize: 12,
+            pageIndex: 0,
+        });
+        params.page = pagination.pageIndex + 1;
+        params.per_page = pagination.pageSize;
+        params.orderBy = orderBy;
+        
+        url.searchParams.delete("categories");
         url.searchParams.delete("startPrice");
         url.searchParams.delete("endPrice");
+        url.searchParams.delete("search");
 
+        url.searchParams.sort();
+
+        setSelectedCategories([]);
         setStartPrice("");
         setEndPrice("");
 
@@ -240,6 +255,7 @@ export default function LandingPage({ categories, products, user }) {
             window.history.replaceState(null, "", url.toString());
             router.reload({
                 only: ["products"],
+                data: params,
                 onFinish: () => {
                     setIsLoading(false);
                 },

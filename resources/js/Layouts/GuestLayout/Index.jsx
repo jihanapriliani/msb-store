@@ -31,12 +31,22 @@ export default function Guest({ children, setIsLoading }) {
         new URLSearchParams(window.location.search).get("search") || ""
     );
 
+    useEffect(() => {
+        setSearch(
+            new URLSearchParams(window.location.search).get("search") || ""
+        );
+    }, [window.location.search.toString()]);
+
+    console.log(
+        search
+    );
+
     if (!setIsLoading) {
         setIsLoading = () => {};
     }
 
     const handleSearch = () => {
-        const url = new URL(window.location.href);
+        const url = new URL(route(route().current()).toString());
 
         if (!url.toString().includes(route("shop").toString())) {
             url.pathname = "/shop";
