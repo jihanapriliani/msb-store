@@ -927,13 +927,19 @@ export default function Checkout(props) {
                                     </div>
 
                                     <button
-                                        className="checkout__now--btn primary__btn"
+                                        className={`checkout__now--btn primary__btn ${
+                                            loadAddress || !selectedAddress.id
+                                                ? "disabled:opacity-50 disabled:cursor-not-allowed"
+                                                : ""
+                                        }`}
                                         type="button"
                                         style={{
                                             marginTop: "3rem",
                                         }}
                                         onClick={handleOnCheckout}
-                                        disabled={loadAddress}
+                                        disabled={
+                                            loadAddress || !selectedAddress.id
+                                        }
                                     >
                                         <p style={{ color: "white" }}>
                                             Checkout Now
