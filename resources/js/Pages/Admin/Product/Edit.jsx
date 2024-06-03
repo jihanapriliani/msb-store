@@ -106,6 +106,7 @@ export default function Edit(props) {
                                         Nama Produk
                                     </label>
                                     <input
+                                        required
                                         type="text"
                                         className="form-control"
                                         id=""
@@ -130,6 +131,7 @@ export default function Edit(props) {
                                         Deskripsi Produk
                                     </label>
                                     <textarea
+                                        required
                                         className="form-control"
                                         id="exampleInputDescription"
                                         aria-describedby=""
@@ -157,6 +159,7 @@ export default function Edit(props) {
                                     </label>
 
                                     <CurrencyInput
+                                        required
                                         prefix="Rp "
                                         id="input-example"
                                         name="input-name"
@@ -181,6 +184,7 @@ export default function Edit(props) {
                                         Kategori
                                     </label>
                                     <select
+                                        required
                                         className="form-select"
                                         id="exampleInputCategory"
                                         aria-describedby=""
@@ -218,6 +222,7 @@ export default function Edit(props) {
                                             Stok
                                         </label>
                                         <input
+                                            required
                                             type="number"
                                             className="form-control"
                                             id=""
@@ -243,6 +248,7 @@ export default function Edit(props) {
                                             Berat Barang (KG)
                                         </label>
                                         <input
+                                            required
                                             type="number"
                                             className="form-control"
                                             id=""

@@ -104,6 +104,7 @@ export default function Create(props) {
                                             setData("name", e.target.value)
                                         }
                                         placeholder="example: New Bolts.."
+                                        required
                                     />
                                     <div className="form-text text-danger">
                                         {errors.name}
@@ -127,6 +128,7 @@ export default function Create(props) {
                                                 e.target.value
                                             )
                                         }
+                                        required
                                         placeholder="example: This is a new bolts made from.."
                                     ></textarea>
                                     <div className="form-text text-danger">
@@ -153,6 +155,7 @@ export default function Create(props) {
                                         onValueChange={(value) => {
                                             setData("price", value);
                                         }}
+                                        required
                                     />
                                     <div className="form-text text-danger">
                                         {errors.price}
@@ -171,6 +174,7 @@ export default function Create(props) {
                                         id="exampleInputCategory"
                                         aria-describedby=""
                                         value={data.category}
+                                        required
                                         onChange={(e) =>
                                             setData("category", e.target.value)
                                         }
@@ -203,6 +207,7 @@ export default function Create(props) {
                                             id=""
                                             aria-describedby=""
                                             min={0}
+                                            required
                                             name={data.stock}
                                             onChange={(e) =>
                                                 setData("stock", e.target.value)
@@ -227,6 +232,7 @@ export default function Create(props) {
                                             className="form-control"
                                             id=""
                                             aria-describedby=""
+                                            required
                                             name={data.unit_weight}
                                             min={0}
                                             onChange={(e) =>

@@ -85,6 +85,7 @@ export default function Edit(props) {
                                         id=""
                                         aria-describedby=""
                                         name="fullname"
+                                        required
                                         value={data.fullname}
                                         onChange={(e) =>
                                             setData("fullname", e.target.value)
@@ -107,6 +108,7 @@ export default function Edit(props) {
                                         type="email"
                                         class="form-control"
                                         id=""
+                                        required
                                         aria-describedby=""
                                         name="email"
                                         value={data.email}
@@ -131,6 +133,7 @@ export default function Edit(props) {
                                         type="telp"
                                         class="form-control"
                                         id=""
+                                        required
                                         aria-describedby=""
                                         name="phone"
                                         value={data.phone}
@@ -156,6 +159,7 @@ export default function Edit(props) {
                                             class="form-select"
                                             aria-label="Default select example"
                                             name="role"
+                                            required
                                             value={data.role}
                                             onChange={(e) =>
                                                 setData("role", e.target.value)

@@ -67,6 +67,7 @@ export default function Create() {
                                         class="form-control"
                                         id=""
                                         aria-describedby=""
+                                        required
                                         name={form.data.display_name}
                                         onChange={(e) =>
                                             form.setData(

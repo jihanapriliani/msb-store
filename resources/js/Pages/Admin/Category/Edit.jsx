@@ -88,6 +88,7 @@ export default function Edit(props) {
                                         type="text"
                                         className="form-control"
                                         id=""
+                                        required
                                         aria-describedby=""
                                         name="display_name"
                                         value={data.display_name}

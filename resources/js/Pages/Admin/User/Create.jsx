@@ -86,6 +86,7 @@ export default function Create(props) {
                                         type="text"
                                         class="form-control"
                                         id=""
+                                        required
                                         aria-describedby=""
                                         name="fullname"
                                         onChange={(e) =>
@@ -109,6 +110,7 @@ export default function Create(props) {
                                         type="email"
                                         class="form-control"
                                         id=""
+                                        required
                                         aria-describedby=""
                                         name="email"
                                         onChange={(e) =>
@@ -132,6 +134,7 @@ export default function Create(props) {
                                         type="telp"
                                         class="form-control"
                                         id=""
+                                        required
                                         aria-describedby=""
                                         name="phone"
                                         onChange={(e) =>
@@ -156,6 +159,7 @@ export default function Create(props) {
                                             class="form-select"
                                             aria-label="Default select example"
                                             name="role"
+                                            required
                                             value={data.role}
                                             onChange={(e) =>
                                                 setData("role", e.target.value)
@@ -185,6 +189,7 @@ export default function Create(props) {
                                         type="password"
                                         class="form-control"
                                         id=""
+                                        required
                                         aria-describedby=""
                                         name="password"
                                         onChange={(e) =>
