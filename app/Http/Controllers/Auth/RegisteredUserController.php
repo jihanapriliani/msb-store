@@ -48,11 +48,11 @@ class RegisteredUserController extends Controller
 
         $user->assignRole('user');
 
-        event(new Registered($user));
+        // event(new Registered($user));
 
         Auth::login($user);
 
-        $request->session()->put('register', "Registrasi Berhasil, silahkan aktivasi akun dengan mengecek email anda");
+        session()->flash('register', "Registrasi Berhasil, silahkan aktivasi akun dengan mengecek email anda");
         return  redirect()->intended(RouteServiceProvider::HOME);
     }
 }

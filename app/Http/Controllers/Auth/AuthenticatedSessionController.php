@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -35,12 +36,21 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
         $user = Auth::user();
         if (!isset($user->email_verified_at)) {
+            Session::put('login', "Akun anda belum diaktivasi, silahkan cek email anda");
+            $session_key = 'login';
+            $session_message = "Akun anda belum diaktivasi, silahkan cek email anda";
             $request->session()->put('login', "Akun anda belum diaktivasi, silahkan cek email anda");
-        }else {
+        } else {
+            Session::put('success', "Login Berhasil");
+            $session_key = 'success';
+            $session_message = "Login Berhasil";
             $request->session()->put('success', "Login Berhasil");
         }
-        
-        return redirect()->intended(RouteServiceProvider::HOME);
+
+        return redirect()->intended(RouteServiceProvider::HOME)->withHeaders([
+            'Cache-Control' => 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0',
+            $session_key => $session_message
+        ]);
     }
 
     /**
