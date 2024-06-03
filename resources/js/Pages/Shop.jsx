@@ -265,6 +265,7 @@ export default function LandingPage({ categories, products, user }) {
 
     return (
         <GuestLayout setIsLoading={setIsLoading}>
+            <Head title="Produk" />
             <main class="main__content_wrapper">
                 <section
                     class="breadcrumb__section breadcrumb__bg"
@@ -622,7 +623,7 @@ export default function LandingPage({ categories, products, user }) {
                                                 }}
                                             >
                                                 Menampilkan {products.from}–
-                                                {products.to} dari {" "}
+                                                {products.to} dari{" "}
                                                 {products.total} Hasil
                                             </p>
                                         </div>
