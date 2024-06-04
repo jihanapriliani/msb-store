@@ -213,6 +213,7 @@ export default function Checkout(props) {
             axios
                 .post("/api/get-shipping-cost", { params: requestData })
                 .then((response) => {
+                    console.log(response.data);
                     setLoadAddress(false);
                     setShippingCost(response.data[0].costs[0].cost[0].value);
                 })
