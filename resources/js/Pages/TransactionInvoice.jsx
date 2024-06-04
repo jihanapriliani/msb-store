@@ -105,13 +105,23 @@ export default function TransactionInvoice({ user, transaction }) {
                                             class="p-5 text-lg font-medium text-end"
                                         >
                                             <b class="uppercase">Sub total</b>{" "}
-                                            $0.00 <br />{" "}
-                                            <b class="uppercase pe-14">Tax</b>{" "}
-                                            $0.00 <br />
+                                            Rp{" "}
+                                            {transaction.actual_price.toLocaleString()}{" "}
+                                            <br />{" "}
+                                            <b class="uppercase pe-14">
+                                                Ongkir
+                                            </b>{" "}
+                                            Rp{" "}
+                                            {transaction.shipping_cost.toLocaleString()}
+                                            <br />
                                             <b class="uppercase pe-10">
                                                 Total
                                             </b>{" "}
-                                            $0.00
+                                            Rp{" "}
+                                            {(
+                                                transaction.actual_price +
+                                                transaction.shipping_cost
+                                            ).toLocaleString()}
                                         </td>
                                     </tr>
                                 </tbody>
@@ -120,7 +130,7 @@ export default function TransactionInvoice({ user, transaction }) {
 
                         <div class="md:max-w-3xl">
                             <h1 class="text-xl font-semibold uppercase tracking-widest">
-                                Terms & conditions:
+                                Syarat dan ketentuan
                             </h1>
                             <p class="text-base font-medium mt-3">
                                 Barang yang sudah dibeli,tidak dapat
