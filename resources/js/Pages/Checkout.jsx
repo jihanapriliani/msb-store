@@ -217,7 +217,16 @@ export default function Checkout(props) {
                     setShippingCost(response.data[0].costs[0].cost[0].value);
                 })
                 .catch((error) => {
-                    console.error(error.message);
+                    console.log(error);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Terjadi kesalahan!",
+                        text: "Gagal memuat biaya pengiriman! Coba lagi nanti.",
+                        confirmButtonText: "Oke",
+                        customClass: {
+                            confirmButton: "swal2-confirm",
+                        },
+                    });
                 });
         }
     }, [shippingCost, selectedAddress]);

@@ -27,26 +27,24 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::put('/user/cart/{id}', function(Request $request, string $id) {
-    
+Route::put('/user/cart/{id}', function (Request $request, string $id) {
+
     $cart = Cart::findOrFail($id);
     $cart->update(['amount' => $request->amount]);
-  
-    return response()->json(['success' => 'Amount berhasil ditambahkan!']);
 
+    return response()->json(['success' => 'Amount berhasil ditambahkan!']);
 })->name('api.user.cart.update');
 
 
-Route::delete('/user/cart/{id}', function(string $id) {
+Route::delete('/user/cart/{id}', function (string $id) {
     $cart = Cart::findOrFail($id);
     $cart->delete();
-    
-    return response()->json(['success' => 'Barang berhasil dihapus!']);
 
+    return response()->json(['success' => 'Barang berhasil dihapus!']);
 })->name('api.user.cart.delete');
 
 
-Route::post('/add-product-to-cart', function(Request $request) {
+Route::post('/add-product-to-cart', function (Request $request) {
     $validated = $request->validate([
         'user_id' => 'required|exists:users,id',
         'product_id' => 'required|exists:products,id',
@@ -68,20 +66,25 @@ Route::post('/add-product-to-cart', function(Request $request) {
 
 
 Route::get('/get-provinces', [LocationController::class, 'getProvincesApi'])->name('api.get_provinces');
-Route::get('/get-cities',[LocationController::class, 'getCitiesApi'])->name('api.get_cities');
-Route::get('/get-districts',[LocationController::class, 'getDistrictsApi'])->name('api.get_districts');
+Route::get('/get-cities', [LocationController::class, 'getCitiesApi'])->name('api.get_cities');
+Route::get('/get-districts', [LocationController::class, 'getDistrictsApi'])->name('api.get_districts');
 
-Route::post('/get-shipping-cost', function(Request $request) {
+Route::post('/get-shipping-cost', function (Request $request) {
     try {
         $response = Http::withOptions(['verify' => false,])->withHeaders([
             'key' => env('RAJAONGKIR_API_KEY')
-        ])->post('https://api.rajaongkir.com/starter/cost',[
+        ])->post('https://api.rajaongkir.com/starter/cost', [
             'origin'        => $request->params['origin'],
             'destination'   => $request->params['destination'],
             'weight'        => $request->params['weight'],
             'courier'       => $request->params['courier']
-        ])
-        ->json()['rajaongkir']['results'];
+        ])->json();
+
+        if ($response['rajaongkir']['status']['code'] != 200) {
+            throw new Exception($response['rajaongkir']['status']['description']);
+        } else {
+            $response = $response['rajaongkir']['results'];
+        }
 
         return response()->json($response);
     } catch (\Throwable $th) {
@@ -89,21 +92,21 @@ Route::post('/get-shipping-cost', function(Request $request) {
             'success' => false,
             'message' => $th->getMessage(),
             'data'    => []
-        ]);
+        ])->setStatusCode($response['rajaongkir']['status']['code']);
     }
 })->name('get_shipping_cost');
 
 
-Route::post('/compare-password', function(Request $request) {
+Route::post('/compare-password', function (Request $request) {
     try {
         $user = User::findOrFail($request->params['user_id']);
-        
+
         $user->refresh();
 
         $savedPassword = $user->password;
         $password = $request->params['password'];
 
-        if(Hash::check($password, $savedPassword)) {
+        if (Hash::check($password, $savedPassword)) {
             return response()->json([
                 'success' => true,
                 'message' => 'Password match',
@@ -112,8 +115,7 @@ Route::post('/compare-password', function(Request $request) {
         } else {
             throw new Exception('Passwords do not match');
         }
-
-    } catch(\Throwable $th) {
+    } catch (\Throwable $th) {
         return response()->json([
             'success' => false,
             'message' => $th->getMessage(),
@@ -122,10 +124,10 @@ Route::post('/compare-password', function(Request $request) {
     }
 });
 
-Route::post('/change-password', function(Request $request) {
+Route::post('/change-password', function (Request $request) {
     try {
         $user = User::findOrFail($request->params['user_id']);
-        
+
         $user->refresh();
 
         $password = $request->params['password'];
@@ -141,8 +143,7 @@ Route::post('/change-password', function(Request $request) {
             'message' => 'Password successfully changed',
             'data'    => []
         ]);
-
-    } catch(\Throwable $th) {
+    } catch (\Throwable $th) {
         return response()->json([
             'success' => false,
             'message' => $th->getMessage(),
@@ -152,7 +153,7 @@ Route::post('/change-password', function(Request $request) {
 });
 
 
-Route::post('/cart-total', function(Request $request) {
+Route::post('/cart-total', function (Request $request) {
     try {
 
         $cartCount = 0;
@@ -170,8 +171,7 @@ Route::post('/cart-total', function(Request $request) {
                 'cartTotalAmount' => $cartTotalAmount
             ]
         ]);
-
-    } catch(\Throwable $th) {
+    } catch (\Throwable $th) {
         return response()->json([
             'success' => false,
             'message' => $th->getMessage(),
@@ -196,17 +196,17 @@ Route::post('/cart-total', function(Request $request) {
 //         ]
 //     ]);
 
-    
+
 
 // });
 
 
 // Route::post('/get-products-with-price-range', function (Request $request) {
-   
+
 //     $startPrice = $request->start_price;
 //     $endPrice = $request->end_price;
 
-    
+
 //     if(empty($request->selected_categories)) {
 //         $products = Product::whereBetween('price', [$startPrice, $endPrice])->with('images')->get();
 //     } else {
@@ -228,6 +228,3 @@ Route::post('/cart-total', function(Request $request) {
 // });
 
 Route::post('/midtrans-callback', [CheckoutController::class, 'callback'])->name('midtrans.callback');
-
-
-
