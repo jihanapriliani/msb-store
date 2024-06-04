@@ -254,70 +254,84 @@ export default function DetailProduct({ product, user, productCart }) {
                                             </div>
                                         </div>
 
-                                        <div className="product__variant mt-8">
-                                            <div className="product__variant--list quantity d-flex align-items-center mb-20">
-                                                <div className="quantity__box">
+                                        {product.stock <= 0 ? (
+                                            <div>
+                                                <h3
+                                                    style={{
+                                                        margin: "5rem 0",
+                                                        fontSize: "3rem",
+                                                        color: "red",
+                                                    }}
+                                                >
+                                                    STOK HABIS!
+                                                </h3>
+                                            </div>
+                                        ) : (
+                                            <div className="product__variant mt-8">
+                                                <div className="product__variant--list quantity d-flex align-items-center mb-20">
+                                                    <div className="quantity__box">
+                                                        <button
+                                                            type="button"
+                                                            className="quantity__value quickview__value--quantity decrease"
+                                                            aria-label="quantity value"
+                                                            value="Decrease Value"
+                                                            onClick={() =>
+                                                                handleDecreaseAmount()
+                                                            }
+                                                        >
+                                                            -
+                                                        </button>
+                                                        <label>
+                                                            <input
+                                                                type="number"
+                                                                className="quantity__number quickview__value--number"
+                                                                value={amount}
+                                                                min={1}
+                                                            />
+                                                        </label>
+                                                        <button
+                                                            type="button"
+                                                            className="quantity__value quickview__value--quantity increase"
+                                                            aria-label="quantity value"
+                                                            value="Increase Value"
+                                                            onClick={() =>
+                                                                handleIncreaseAmount()
+                                                            }
+                                                        >
+                                                            +
+                                                        </button>
+                                                    </div>
                                                     <button
+                                                        className="primary__btn quickview__cart--btn"
                                                         type="button"
-                                                        className="quantity__value quickview__value--quantity decrease"
-                                                        aria-label="quantity value"
-                                                        value="Decrease Value"
                                                         onClick={() =>
-                                                            handleDecreaseAmount()
+                                                            handleAddProductToCart(
+                                                                product.id,
+                                                                false
+                                                            )
                                                         }
                                                     >
-                                                        -
-                                                    </button>
-                                                    <label>
-                                                        <input
-                                                            type="number"
-                                                            className="quantity__number quickview__value--number"
-                                                            value={amount}
-                                                            min={1}
-                                                        />
-                                                    </label>
-                                                    <button
-                                                        type="button"
-                                                        className="quantity__value quickview__value--quantity increase"
-                                                        aria-label="quantity value"
-                                                        value="Increase Value"
-                                                        onClick={() =>
-                                                            handleIncreaseAmount()
-                                                        }
-                                                    >
-                                                        +
+                                                        {productCart
+                                                            ? "Perbarui Keranjang"
+                                                            : "Tambah Keranjang"}
                                                     </button>
                                                 </div>
-                                                <button
-                                                    className="primary__btn quickview__cart--btn"
-                                                    type="button"
-                                                    onClick={() =>
-                                                        handleAddProductToCart(
-                                                            product.id,
-                                                            false
-                                                        )
-                                                    }
-                                                >
-                                                    {productCart
-                                                        ? "Perbarui Keranjang"
-                                                        : "Tambah Keranjang"}
-                                                </button>
+                                                <div className="product__variant--list mb-15">
+                                                    <button
+                                                        className="variant__buy--now__btn primary__btn"
+                                                        type="button"
+                                                        onClick={() =>
+                                                            handleAddProductToCart(
+                                                                product.id,
+                                                                true
+                                                            )
+                                                        }
+                                                    >
+                                                        Beli Sekarang!
+                                                    </button>
+                                                </div>
                                             </div>
-                                            <div className="product__variant--list mb-15">
-                                                <button
-                                                    className="variant__buy--now__btn primary__btn"
-                                                    type="button"
-                                                    onClick={() =>
-                                                        handleAddProductToCart(
-                                                            product.id,
-                                                            true
-                                                        )
-                                                    }
-                                                >
-                                                    Beli Sekarang!
-                                                </button>
-                                            </div>
-                                        </div>
+                                        )}
                                     </form>
                                 </div>
                             </div>
