@@ -120,9 +120,9 @@ export default function Edit(props) {
                                         <option value="accepted">
                                             Accepted
                                         </option>
-                                        <option value="rejected">
+                                        {/* <option value="rejected">
                                             Rejected
-                                        </option>
+                                        </option> */}
                                         <option value="canceled">
                                             Canceled
                                         </option>

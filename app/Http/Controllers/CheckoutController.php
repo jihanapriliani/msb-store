@@ -155,7 +155,10 @@ class CheckoutController extends Controller
 
         if($hashed == $request->signature_key) {
             if($request->transaction_status == 'capture') {
-                $transaction->update(['status' => 'processed']);
+                $transaction->update([
+                    'status' => 'processed',
+                    'processed_at' => now(),
+                ]);
 
                 foreach ($emails as $email) {
                     ProcessStatus::dispatch($email, $transaction);
@@ -165,7 +168,10 @@ class CheckoutController extends Controller
             }
     
             else if($request->transaction_status == 'settlement') {
-                $transaction->update(['status' => 'processed']);
+                $transaction->update([
+                    'status' => 'processed',
+                    'processed_at' => now(),
+                ]);
 
                 foreach ($emails as $email) {
                     ProcessStatus::dispatch($email, $transaction);
@@ -179,7 +185,10 @@ class CheckoutController extends Controller
             }
     
             else if($request->transaction_status == 'deny') {
-                $transaction->update(['status' => 'canceled']);
+                $transaction->update([
+                    'status' => 'canceled',
+                    'canceled_at' => now(),
+                ]);
 
                 foreach ($transaction->transaction_details as $transaction_detail) {
                     $transaction_detail->product->update([
@@ -190,7 +199,10 @@ class CheckoutController extends Controller
             }
     
             else if($request->transaction_status == 'expire') {
-                $transaction->update(['status' => 'canceled']);
+                 $transaction->update([
+                    'status' => 'canceled',
+                    'canceled_at' => now(),
+                ]);
 
                 foreach ($transaction->transaction_details as $transaction_detail) {
                     $transaction_detail->product->update([
@@ -200,7 +212,10 @@ class CheckoutController extends Controller
             }
     
             else if($request->transaction_status == 'cancel') {
-                 $transaction->update(['status' => 'canceled']);
+                  $transaction->update([
+                    'status' => 'canceled',
+                    'canceled_at' => now(),
+                ]);
 
                  foreach ($transaction->transaction_details as $transaction_detail) {
                     $transaction_detail->product->update([
