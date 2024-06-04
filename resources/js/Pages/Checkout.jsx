@@ -95,11 +95,6 @@ export default function Checkout(props) {
                             mode: "create",
                             data: defaultFormAddress,
                         });
-                        setFormAddress({
-                            show: false,
-                            mode: "create",
-                            data: defaultFormAddress,
-                        });
                     },
                 }
             );
