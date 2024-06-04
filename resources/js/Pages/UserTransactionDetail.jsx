@@ -1,9 +1,8 @@
 import GuestLayout from "@/Layouts/GuestLayout/Index";
 import { useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
-import { Tabs } from "flowbite-react";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
-import TransactionCard from "@/Components/TransactionCard";
 import UserSidebar from "@/Components/UserSidebar";
 import { Head, Link, router } from "@inertiajs/react";
 
@@ -155,13 +154,42 @@ export default function Index({ user, transaction }) {
                             <h4 className="text-3xl">
                                 Jalur Nugraha Ekakurir (JNE)
                             </h4>
-                            <h5 className="text-2xl text-gray-600">
-                                No. Resi : {"  "}
-                                {transaction.delivery_code !== "-" ||
-                                !transaction.delivery_code
-                                    ? transaction.delivery_code
-                                    : "(Belum Ada)"}
-                            </h5>
+                            {transaction.delivery_code !== "-" ||
+                            !transaction.delivery_code ? (
+                                <>
+                                    <h5 className="text-2xl text-gray-600">
+                                        No Resi: {transaction.delivery_code}
+                                    </h5>
+                                        <button
+                                        className="text-2xl text-gray-600 underline hover:text-gray-400 cursor-pointer"
+                                        onClick={() => {
+                                            navigator.clipboard
+                                                .writeText(
+                                                    transaction.delivery_code
+                                                )
+                                                .then(() => {
+                                                    toast.success(
+                                                        "Berhasil menyalin kode pengiriman",
+                                                        {
+                                                            position:
+                                                                "top-right",
+                                                        }
+                                                    );
+                                                })
+                                                .catch((err) => {
+                                                    console.error(err);
+                                                });
+                                        }}
+                                        color="gray"
+                                    >
+                                        Salin Kode
+                                    </button>
+                                </>
+                            ) : (
+                                <h5 className="text-2xl text-gray-600">
+                                    Belum Ada Resi
+                                </h5>
+                            )}
                         </div>
                         <div className="flex w-100 gap-6">
                             <div className="flex-1">
