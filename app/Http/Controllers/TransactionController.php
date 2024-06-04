@@ -102,14 +102,23 @@ class TransactionController extends Controller
             $transaction->update($validatedData);
 
             if($validatedData['status'] === "processed") {
+                $transaction->update([
+                    'processed_at' => now(),
+                ]);
                 Mail::to($transaction->user->email)->send(new ProcessedNotification($transaction));
             }
 
             if($validatedData['status'] === "shipped") {
+                $transaction->update([
+                    'shipped_at' => now(),
+                ]);
                 Mail::to($transaction->user->email)->send(new ShippedNotification($transaction));
             }
     
             if($validatedData['status'] === "canceled") {
+                $transaction->update([
+                    'canceled_at' => now(),
+                ]);
                 Mail::to($transaction->user->email)->send(new CanceledNotification($transaction));
             }
 
