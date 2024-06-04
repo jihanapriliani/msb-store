@@ -276,6 +276,55 @@ export default function Show(props) {
                                         <p>{transaction.code}</p>
                                     </div>
                                     <div className="col">
+                                        <p className="info">No Resi:</p>
+                                        <p>
+                                            {transaction.delivery_code !==
+                                                "-" ||
+                                            !transaction.delivery_code ? (
+                                                <>
+                                                    <h5 className=" text-gray-600">
+                                                        No Resi:{" "}
+                                                        {
+                                                            transaction.delivery_code
+                                                        }
+                                                    </h5>
+                                                    <button
+                                                        className="text-gray-600 underline hover:text-gray-400 cursor-pointer"
+                                                        onClick={() => {
+                                                            navigator.clipboard
+                                                                .writeText(
+                                                                    transaction.delivery_code
+                                                                )
+                                                                .then(() => {
+                                                                    toast.success(
+                                                                        "Berhasil menyalin kode pengiriman",
+                                                                        {
+                                                                            position:
+                                                                                "top-right",
+                                                                        }
+                                                                    );
+                                                                })
+                                                                .catch(
+                                                                    (err) => {
+                                                                        console.error(
+                                                                            err
+                                                                        );
+                                                                    }
+                                                                );
+                                                        }}
+                                                        color="gray"
+                                                    >
+                                                        Salin Kode
+                                                    </button>
+                                                </>
+                                            ) : (
+                                                <h5 className=" text-gray-600">
+                                                    Belum Ada Resi
+                                                </h5>
+                                            )}
+                                        </p>
+                                    </div>
+                                    <div className="col">
                                         <p className="info">Pembeli:</p>
                                         <p>
                                             {transaction.user.fullname},{" "}
