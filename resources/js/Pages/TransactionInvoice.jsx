@@ -106,7 +106,7 @@ export default function TransactionInvoice({ user, transaction }) {
                                         >
                                             <b class="uppercase">Sub total</b>{" "}
                                             Rp{" "}
-                                            {transaction.actual_price.toLocaleString()}{" "}
+                                            {transaction.total_price.toLocaleString()}{" "}
                                             <br />{" "}
                                             <b class="uppercase pe-14">
                                                 Ongkir
@@ -119,7 +119,7 @@ export default function TransactionInvoice({ user, transaction }) {
                                             </b>{" "}
                                             Rp{" "}
                                             {(
-                                                transaction.actual_price +
+                                                transaction.total_price +
                                                 transaction.shipping_cost
                                             ).toLocaleString()}
                                         </td>
