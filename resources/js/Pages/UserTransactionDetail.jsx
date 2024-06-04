@@ -470,7 +470,7 @@ export default function Index({ user, transaction }) {
 
                         <div className="flex gap-3">
                             <Link
-                                href={`/transactions/${transaction.code}/invoice `}
+                                href={route("invoice", transaction.code)}
                                 className="bg-transparent border-1 border-gray-500 text-gray-600 text-xl px-5 py-3 rounded-lg"
                             >
                                 Lihat Faktur
