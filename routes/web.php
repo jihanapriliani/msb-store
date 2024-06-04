@@ -115,27 +115,27 @@ Route::middleware('auth')->group(function () {
 
 
     Route::group(['middleware' => ['role:user']], function () {
-        // Route::prefix('dashboard')->group(function () {
-        //     Route::prefix('user')->group(function () {
+        Route::prefix('dashboard')->group(function () {
+            Route::prefix('user')->group(function () {
         //         Route::get('/', function () {
         //             return Inertia::render('User/Dashboard/Index');
         //         })->name('dashboard.user');
 
-        //         Route::prefix('profile')->name('profile.')->group(function () {
-        //             Route::get('/', [UserProfileController::class, 'index'])->name('index');
-        //             Route::get('/address/create', [UserProfileController::class, 'createAddress'])->name('address.create');
-        //             Route::post('/address/store', [UserProfileController::class, 'storeAddress'])->name('address.store');
-        //             Route::get('/address/edit/{id}', [UserProfileController::class, 'editAddress'])->name('address.edit');
-        //             Route::put('/address/update/{id}', [UserProfileController::class, 'updateAddress'])->name('address.update');
-        //             Route::delete('/address/delete/{id}', [UserProfileController::class, 'deleteAddress'])->name('address.delete');
+                Route::prefix('profile')->name('profile.')->group(function () {
+                    Route::get('/', [UserProfileController::class, 'index'])->name('index');
+                    Route::get('/address/create', [UserProfileController::class, 'createAddress'])->name('address.create');
+                    Route::post('/address/store', [UserProfileController::class, 'storeAddress'])->name('address.store');
+                    Route::get('/address/edit/{id}', [UserProfileController::class, 'editAddress'])->name('address.edit');
+                    Route::put('/address/update/{id}', [UserProfileController::class, 'updateAddress'])->name('address.update');
+                    Route::delete('/address/delete/{id}', [UserProfileController::class, 'deleteAddress'])->name('address.delete');
 
-        //             Route::get('/edit-profile', [UserProfileController::class, 'edit'])->name('edit');
-        //             Route::put('/update-profile', [UserProfileController::class, 'update'])->name('update');
-        //             Route::put('/update-email', [UserProfileController::class, 'updateEmail'])->name('update.email');
-        //             Route::put('/resend-email', [UserProfileController::class, 'resendEmail'])->name('resend.email');
-        //         });
-        //     });
-        // });
+                    Route::get('/edit-profile', [UserProfileController::class, 'edit'])->name('edit');
+                    Route::put('/update-profile', [UserProfileController::class, 'update'])->name('update');
+                    Route::put('/update-email', [UserProfileController::class, 'updateEmail'])->name('update.email');
+                    Route::put('/resend-email', [UserProfileController::class, 'resendEmail'])->name('resend.email');
+                });
+            });
+        });
 
         Route::get('/cart', [UserCartController::class, 'index'])->name('user.cart');
         Route::delete('/cart/{id}', [UserCartController::class, 'destroy'])->name('user.cart.destroy');
