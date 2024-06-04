@@ -3,7 +3,7 @@ import React from "react";
 import GuestLayout from "@/Layouts/GuestLayout/Index";
 
 export default function TransactionInvoice({ user, transaction }) {
-    transaction = transaction[0];
+    transaction = transaction;
 
     console.log("ISI TRANSACTION", transaction);
 
