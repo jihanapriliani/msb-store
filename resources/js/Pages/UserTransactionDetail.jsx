@@ -1,8 +1,6 @@
 import GuestLayout from "@/Layouts/GuestLayout/Index";
 import { useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
-import { CopyToClipboard } from "react-copy-to-clipboard";
-
 import UserSidebar from "@/Components/UserSidebar";
 import { Head, Link, router } from "@inertiajs/react";
 
