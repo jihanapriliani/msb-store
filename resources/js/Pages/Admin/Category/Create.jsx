@@ -39,7 +39,7 @@ export default function Create() {
     };
 
     const handleImageRemove = () => {
-        setData("image", null);
+        form.setData("image", null);
     };
 
     return (
