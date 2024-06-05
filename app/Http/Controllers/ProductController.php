@@ -48,10 +48,10 @@ class ProductController extends Controller
             'stock' => 'required',
             'price' => 'required',
             'unit_weight' => 'required',
-            'product_images.*' => 'nullable|image|mimes:jpeg,png,jpg|max:5000', 
+            'product_images.*' => 'nullable|image|mimes:jpeg,png,jpg|max:5000',
         ]);
-        
-     
+
+
         $product = Product::create([
             'name' => $validatedData['name'],
             'slug' => Str::slug($validatedData['name'], '-'),
@@ -61,28 +61,22 @@ class ProductController extends Controller
             'stock' => $validatedData['stock'],
             'unit_weight' => $validatedData['unit_weight']
         ]);
-           
+
         if ($request->hasFile('product_images')) {
             foreach ($request->file('product_images') as $imageFile) {
                 $imageName = time() . '_' . $imageFile->getClientOriginalName();
                 $imageFile->move(public_path('storage/images/product/'), $imageName);
 
-               
+
                 ProductImage::create([
                     'product_id' => $product->id,
                     'is_thumbnail' => "0",
                     'image' => 'storage/images/product/' . $imageName,
                 ]);
             }
-        } else {
-            ProductImage::create([
-                'product_id' => $product->id,
-                'is_thumbnail' => "0",
-                'image' =>  'storage/images/category/bolt.jpg'
-            ]);
         }
 
-        
+
         return redirect()->route('product.index')->with('success', 'Produk baru berhasil ditambahkan!');
     }
 
@@ -91,7 +85,6 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-      
     }
 
     /**
@@ -99,14 +92,14 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        $product = Product::findOrFail($product->id);   
+        $product = Product::findOrFail($product->id);
         $productImages = ProductImage::where('product_id', $product->id)->get();
         $categories = Category::all();
 
         return Inertia::render('Admin/Product/Edit', [
-           'product' => $product,
-           'product_images' => $productImages,
-           'categories' => $categories
+            'product' => $product,
+            'product_images' => $productImages,
+            'categories' => $categories
         ]);
     }
 
@@ -122,12 +115,12 @@ class ProductController extends Controller
             'stock' => 'required|numeric',
             'price' => 'required|numeric',
             'unit_weight' => 'required|numeric',
-            'old_product_images.*' => 'nullable', 
-            'new_product_images.*' =>'nullable|image|mimes:jpeg,png,jpg|max:5000', 
+            'old_product_images.*' => 'nullable',
+            'new_product_images.*' => 'nullable|image|mimes:jpeg,png,jpg|max:5000',
         ]);
 
         $product = Product::findOrFail($product->id);
-        
+
         $product->update([
             'name' => $validatedData['name'],
             'slug' => Str::slug($validatedData['name'], '-'),
@@ -137,28 +130,28 @@ class ProductController extends Controller
             'stock' => $validatedData['stock'],
             'unit_weight' => $validatedData['unit_weight']
         ]);
-           
+
 
         $product->images()->delete();
 
 
-     
+
         if (!empty($validatedData['old_product_images'])) {
             foreach ($validatedData['old_product_images'] as $image) {
                 ProductImage::create([
                     'product_id' => $product->id,
-                    'image' => $image['image'], 
-                    'is_thumbnail' => $image['is_thumbnail'], 
+                    'image' => $image['image'],
+                    'is_thumbnail' => $image['is_thumbnail'],
                 ]);
             }
-        } 
+        }
 
         if ($request->hasFile('new_product_images')) {
             foreach ($request->file('new_product_images') as $imageFile) {
                 $imageName = time() . '_' . $imageFile->getClientOriginalName();
                 $imageFile->move(public_path('storage/images/product/'), $imageName);
 
-               
+
                 ProductImage::create([
                     'product_id' => $product->id,
                     'is_thumbnail' => "0",
@@ -168,7 +161,7 @@ class ProductController extends Controller
         }
 
 
-        if(empty(($validatedData['old_product_images'])) && !($request->hasFile('new_product_images'))) {
+        if (empty(($validatedData['old_product_images'])) && !($request->hasFile('new_product_images'))) {
             ProductImage::create([
                 'product_id' => $product->id,
                 'is_thumbnail' => "0",
@@ -176,7 +169,7 @@ class ProductController extends Controller
             ]);
         }
 
-        
+
         return redirect()->route('product.index')->with('success', 'Produk berhasil diperbarui!');
     }
 
@@ -187,11 +180,11 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($product->id);
         $productImages = ProductImage::where('product_id', $product->id)->get();
-    
+
         $productImages->each(function ($productImage) {
             $productImage->delete();
         });
-    
+
         $product->delete();
 
         return redirect()->route('product.index')->with('success', 'Produk berhasil dihapus!');
