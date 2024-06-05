@@ -280,6 +280,7 @@ export default function Show(props) {
                                         <p>
                                             {transaction.delivery_code !==
                                                 "-" ||
+                                            transaction.delivery_code !== "" ||
                                             !transaction.delivery_code ? (
                                                 <>
                                                     <h5 className=" text-gray-600">
