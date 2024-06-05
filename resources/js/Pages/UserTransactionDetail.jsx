@@ -497,12 +497,14 @@ export default function Index({ user, transaction }) {
                         </a>
 
                         <div className="flex gap-3">
-                            <Link
-                                href={route("invoice", transaction.code)}
-                                className="bg-transparent border-1 border-gray-500 text-gray-600 text-xl px-5 py-3 rounded-lg"
-                            >
-                                Lihat Faktur
-                            </Link>
+                            {transaction.status !== "unpaid" && (
+                                <Link
+                                    href={route("invoice", transaction.code)}
+                                    className="bg-transparent border-1 border-gray-500 text-gray-600 text-xl px-5 py-3 rounded-lg"
+                                >
+                                    Lihat Faktur
+                                </Link>
+                            )}
 
                             {/* <button className="bg-transparent border-1 border-gray-500 text-gray-600 text-xl px-5 py-3 rounded-lg">
                                 Batalkan Pesanan
