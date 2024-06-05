@@ -15,7 +15,12 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::orderBy('created_at', 'asc')->orderBy('id', 'asc')->get();
+        $categories = Category::orderBy('created_at', 'asc')->with('products')->get();
+
+        // count the number of products in each category
+        foreach ($categories as $category) {
+            $category->productCount = $category->products->count();
+        }
 
         return Inertia::render('Admin/Category/Index', [
             'categories' => $categories
