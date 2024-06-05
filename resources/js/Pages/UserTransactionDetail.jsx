@@ -154,7 +154,8 @@ export default function Index({ user, transaction }) {
                             </h4>
                             {transaction.delivery_code !== "-" &&
                             transaction.delivery_code !== "" &&
-                            !transaction.delivery_code ? (
+                            transaction.delivery_code !== null &&
+                            transaction.delivery_code !== undefined ? (
                                 <>
                                     <h5 className="text-2xl text-gray-600">
                                         No Resi: {transaction.delivery_code}

@@ -281,7 +281,10 @@ export default function Show(props) {
                                             {transaction.delivery_code !==
                                                 "-" &&
                                             transaction.delivery_code !== "" &&
-                                            !transaction.delivery_code ? (
+                                            transaction.delivery_code !==
+                                                null &&
+                                            transaction.delivery_code !==
+                                                undefined ? (
                                                 <>
                                                     <h5 className=" text-gray-600">
                                                         No Resi:{" "}
