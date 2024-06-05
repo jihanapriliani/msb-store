@@ -105,6 +105,7 @@ export default function Create() {
                                                 />
 
                                                 <button
+                                                    type="button"
                                                     onClick={handleImageRemove}
                                                     className="text-white bg-red-500 p-2 px-3 rounded-2xl mt-[-3rem] "
                                                 >

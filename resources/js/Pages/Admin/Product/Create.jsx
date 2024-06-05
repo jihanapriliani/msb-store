@@ -319,6 +319,7 @@ export default function Create(props) {
                                                     }
                                                 </div>
                                                 <button
+                                                    type="button"
                                                     onClick={() =>
                                                         handleImageRemove(index)
                                                     }
