@@ -152,13 +152,14 @@ export default function Index({ user, transaction }) {
                             <h4 className="text-3xl">
                                 Jalur Nugraha Ekakurir (JNE)
                             </h4>
-                            {transaction.delivery_code !== "-" ||
+                            {transaction.delivery_code !== "-" &&
+                            transaction.delivery_code !== "" &&
                             !transaction.delivery_code ? (
                                 <>
                                     <h5 className="text-2xl text-gray-600">
                                         No Resi: {transaction.delivery_code}
                                     </h5>
-                                        <button
+                                    <button
                                         className="text-2xl text-gray-600 underline hover:text-gray-400 cursor-pointer"
                                         onClick={() => {
                                             navigator.clipboard
